@@ -33,11 +33,11 @@ public class userController {
         }
     }
 
-    @RequestMapping("/register")
-    public CommonReturnType register(@RequestBody User user) {
-        userService.save(user);
-        return CommonReturnType.create(null,"success");
-    }
+//    @RequestMapping("/register")
+//    public CommonReturnType register(@RequestBody User user) {
+//        userService.save(user);
+//        return CommonReturnType.create(null,"success");
+//    }
 
     @RequestMapping("/isExist")
     public CommonReturnType isExist(@RequestBody User user) {
@@ -45,7 +45,8 @@ public class userController {
         if(one!=null){
             return CommonReturnType.create(null,"用户名已存在");
         }else{
-            return CommonReturnType.create(null,"用户名不存在");
+            userService.save(user);
+            return CommonReturnType.create(one.getRole(),"success");
         }
     }
 

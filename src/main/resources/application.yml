@@ -1,4 +1,6 @@
 spring:
+  mvc:
+    dispatch-options-request: true
   datasource:
     url: jdbc:mysql://localhost:3306/demo?serverTimezone=GMT%2B8
     username: root
