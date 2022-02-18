@@ -39,7 +39,7 @@ public class userController {
 //        return CommonReturnType.create(null,"success");
 //    }
 
-    @RequestMapping("/isExist")
+    @RequestMapping("/register")
     public CommonReturnType isExist(@RequestBody User user) {
         User one = userService.getOne(new QueryWrapper<User>().eq("name", user.getName()));
         if(one!=null){
