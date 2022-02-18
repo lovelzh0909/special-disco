@@ -20,16 +20,16 @@ public class userController {
 //    }
     @RequestMapping("/logon")
     public CommonReturnType logon(@RequestBody User user) {
-        CommonReturnType result = new CommonReturnType();
+        //new CommonReturnType();
         User one = userService.getOne(
                 new QueryWrapper<User>()
                         .eq("phone", user.getPhone())
                         .eq("password", user.getPassword()));
         if(one!=null){
 
-            return result.create(one.getRole(),"success");
+            return CommonReturnType.create(one.getRole(),"success");
         }else{
-            return result.create(null,"用户名或密码错误");
+            return CommonReturnType.create(null,"用户名或密码错误");
         }
     }
 
@@ -40,14 +40,19 @@ public class userController {
 //    }
 
     @RequestMapping("/register")
-    public CommonReturnType isExist(@RequestBody User user) {
-        User one = userService.getOne(new QueryWrapper<User>().eq("name", user.getName()));
+    public CommonReturnType register(@RequestBody User user) {
+        User one = userService.getOne(new QueryWrapper<User>().eq("phone", user.getPhone()));
         if(one!=null){
             return CommonReturnType.create(null,"用户名已存在");
         }else{
             userService.save(user);
-            return CommonReturnType.create(one.getRole(),"success");
+            assert false;
+            return CommonReturnType.create(user.getRole(),"success");
         }
     }
-
+    @RequestMapping("/delete")
+    public CommonReturnType delete(@RequestBody User user) {
+        userService.remove(new QueryWrapper<User>().eq("phone", user.getPhone()));
+        return CommonReturnType.create(null,"success");
+    }
 }
