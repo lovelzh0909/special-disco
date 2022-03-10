@@ -1,0 +1,38 @@
+package com.example.demo.controller;
+
+
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.example.demo.entity.Test;
+import com.example.demo.service.TestService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+
+/**
+ * <p>
+ *  前端控制器
+ * </p>
+ *
+ * @author 作者
+ * @since 2022-02-28
+ */
+@RestController
+@RequestMapping("/test")
+public class TestController {
+    @Autowired
+    TestService testService;
+    @RequestMapping("/all")
+    public List<Test> listAll(){
+        return testService.list();
+    }
+    @RequestMapping("/one")
+    public List<Test> listOne(@RequestBody Test test){
+        return testService.list(new QueryWrapper<Test>().eq("phone", test.getPhone()));
+    }
+}
+

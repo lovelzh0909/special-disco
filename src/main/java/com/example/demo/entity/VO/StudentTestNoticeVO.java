@@ -1,32 +1,16 @@
-package com.example.demo.entity;
+package com.example.demo.entity.VO;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
-import java.io.Serializable;
 import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.experimental.Accessors;
+import lombok.Data;
 
-/**
- * <p>
- * 
- * </p>
- *
- * @author 作者
- * @since 2022-03-03
- */
-@Getter
-@Setter
-@Accessors(chain = true)
-@TableName("test")
-@ApiModel(value = "Test对象", description = "")
-public class Test implements Serializable {
+import java.io.Serializable;
 
+@Data
+@ApiModel(value = "StudentTestNoticeVO对象", description = "")
+public class StudentTestNoticeVO implements Serializable {
     private static final long serialVersionUID = 1L;
-
     @TableId("testid")
     private Integer testid;
 
@@ -62,4 +46,20 @@ public class Test implements Serializable {
 
     @TableField("timelast")
     private String timelast;
+
+    @TableField("studentId")
+    private String studentId;
+
+    @TableField("password")
+    private String password;
+
+    @TableField("school")
+    private String school;
+
+    @TableField("name")
+    private String name;
+
+    @TableField("role")
+    private String role;
+
 }

@@ -26,7 +26,6 @@ public class userController {
                         .eq("phone", user.getPhone())
                         .eq("password", user.getPassword()));
         if(one!=null){
-
             return CommonReturnType.create(one.getRole(),"success");
         }else{
             return CommonReturnType.create(null,"用户名或密码错误");
@@ -54,5 +53,18 @@ public class userController {
     public CommonReturnType delete(@RequestBody User user) {
         userService.remove(new QueryWrapper<User>().eq("phone", user.getPhone()));
         return CommonReturnType.create(null,"success");
+    }
+    @RequestMapping("/information")
+    public CommonReturnType information(@RequestParam String phone) {
+        //new CommonReturnType();
+        User one = userService.getOne(
+                new QueryWrapper<User>()
+                        .eq("phone", phone)
+                        );
+        if(one!=null){
+            return CommonReturnType.create(one,"success");
+        }else{
+            return CommonReturnType.create(null,"用户名错误");
+        }
     }
 }
