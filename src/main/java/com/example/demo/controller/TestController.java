@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.example.demo.entity.Test;
 import com.example.demo.service.TestService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -19,7 +18,7 @@ import java.util.List;
  * </p>
  *
  * @author 作者
- * @since 2022-02-28
+ * @since 2022-03-12
  */
 @RestController
 @RequestMapping("/test")
@@ -33,6 +32,10 @@ public class TestController {
     @RequestMapping("/one")
     public List<Test> listOne(@RequestBody Test test){
         return testService.list(new QueryWrapper<Test>().eq("phone", test.getPhone()));
+    }
+    @RequestMapping("/teacherone")
+    public List<Test> listteacherOne(@RequestBody Test test){
+        return testService.list(new QueryWrapper<Test>().eq("teacherphone", test.getTeacherphone()));
     }
 }
 

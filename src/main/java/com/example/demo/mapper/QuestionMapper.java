@@ -1,6 +1,6 @@
 package com.example.demo.mapper;
 
-import com.example.demo.entity.Teachertest;
+import com.example.demo.GA.Question;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -10,9 +10,9 @@ import org.apache.ibatis.annotations.Mapper;
  * </p>
  *
  * @author 作者
- * @since 2022-03-06
+ * @since 2022-03-12
  */
 @Mapper
-public interface TeachertestMapper extends BaseMapper<Teachertest> {
+public interface QuestionMapper extends BaseMapper<Question> {
 
 }

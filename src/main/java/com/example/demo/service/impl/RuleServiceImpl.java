@@ -1,8 +1,8 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.entity.Test;
-import com.example.demo.mapper.TestMapper;
-import com.example.demo.service.TestService;
+import com.example.demo.GA.Rule;
+import com.example.demo.mapper.RuleMapper;
+import com.example.demo.service.RuleService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +15,6 @@ import org.springframework.stereotype.Service;
  * @since 2022-03-12
  */
 @Service
-public class TestServiceImpl extends ServiceImpl<TestMapper, Test> implements TestService {
+public class RuleServiceImpl extends ServiceImpl<RuleMapper, Rule> implements RuleService {
 
 }

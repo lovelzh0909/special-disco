@@ -1,6 +1,6 @@
 package com.example.demo.mapper;
 
-import com.example.demo.entity.Test;
+import com.example.demo.GA.Rule;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -13,6 +13,6 @@ import org.apache.ibatis.annotations.Mapper;
  * @since 2022-03-12
  */
 @Mapper
-public interface TestMapper extends BaseMapper<Test> {
+public interface RuleMapper extends BaseMapper<Rule> {
 
 }

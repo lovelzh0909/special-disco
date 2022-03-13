@@ -1,6 +1,6 @@
 package com.example.demo.service;
 
-import com.example.demo.entity.Teachertest;
+import com.example.demo.GA.Rule;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
@@ -9,8 +9,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * </p>
  *
  * @author 作者
- * @since 2022-03-06
+ * @since 2022-03-12
  */
-public interface TeachertestService extends IService<Teachertest> {
+public interface RuleService extends IService<Rule> {
 
 }

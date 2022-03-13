@@ -20,7 +20,7 @@
 //	private static final String mapperPath = projectPath + "\\src\\main\\resources\\mybatis\\mappers";// 设置mapperXml 模板路径
 //
 //	public static void main(String[] args) {
-//		String[] tableNames = {"notice"};//可生成多个表
+//		String[] tableNames = {"rule"};//可生成多个表
 //		GeneratorApplication.execute(tableNames);
 //	}
 //
