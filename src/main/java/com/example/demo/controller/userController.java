@@ -12,13 +12,8 @@ import org.springframework.web.bind.annotation.*;
 public class userController {
     @Autowired
     UserService userService;
-    //@ResponseBody
-//    @GetMapping("/user")
-//    public User getById(@RequestParam("id") int id){
-//
-//        return userService.getUserByid(id);
-//    }
-    @RequestMapping("/logon")
+
+    @PostMapping("/logon")
     public CommonReturnType logon(@RequestBody User user) {
         //new CommonReturnType();
         User one = userService.getOne(
@@ -32,13 +27,9 @@ public class userController {
         }
     }
 
-//    @RequestMapping("/register")
-//    public CommonReturnType register(@RequestBody User user) {
-//        userService.save(user);
-//        return CommonReturnType.create(null,"success");
-//    }
 
-    @RequestMapping("/register")
+
+    @PostMapping("/register")
     public CommonReturnType register(@RequestBody User user) {
         User one = userService.getOne(new QueryWrapper<User>().eq("phone", user.getPhone()));
         if(one!=null){
@@ -49,12 +40,12 @@ public class userController {
             return CommonReturnType.create(user.getRole(),"success");
         }
     }
-    @RequestMapping("/delete")
+    @PostMapping("/delete")
     public CommonReturnType delete(@RequestBody User user) {
         userService.remove(new QueryWrapper<User>().eq("phone", user.getPhone()));
         return CommonReturnType.create(null,"success");
     }
-    @RequestMapping("/information")
+    @PostMapping("/information")
     public CommonReturnType information(@RequestParam String phone) {
         //new CommonReturnType();
         User one = userService.getOne(

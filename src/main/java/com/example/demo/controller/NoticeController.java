@@ -36,13 +36,13 @@ public class NoticeController {
     @Autowired
     TestService testService;
 
-    @RequestMapping("/one")
+    @PostMapping("/one")
     public List<Test> listOne(@RequestParam String phone){
         QueryWrapper<Notice> queryWrapper= new QueryWrapper();
         queryWrapper.select("notice");
         return testService.list(new QueryWrapper<Test>().eq("phone",phone));
     }
-    @RequestMapping
+    @PostMapping
     public CommonReturnType notice(@RequestParam String phone) {
         //new CommonReturnType();
         QueryWrapper<Notice> queryWrapper= new QueryWrapper();
@@ -54,7 +54,7 @@ public class NoticeController {
             return CommonReturnType.create(null,"暂无通知");
         }
     }
-    @RequestMapping("/getStudentNotice")
+    @PostMapping("/getStudentNotice")
     public Map<String, Object> getStudentNotice(@RequestParam String phone) {
         Map<String, Object> map = new HashMap<>();
         Page<StudentTestNoticeVO> Studentnote = noticeService.getStudentNote(new Page<>(),phone);
@@ -67,7 +67,7 @@ public class NoticeController {
         return map;
 
     }
-    @RequestMapping("/closenotice")
+    @PostMapping("/closenotice")
     public Map<String, Object> closenotice(@RequestParam String phone) {
         Map<String, Object> map = new HashMap<>();
         //new CommonReturnType();

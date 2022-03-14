@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.example.demo.entity.Test;
 import com.example.demo.service.TestService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -25,15 +26,15 @@ import java.util.List;
 public class TestController {
     @Autowired
     TestService testService;
-    @RequestMapping("/all")
+    @PostMapping("/all")
     public List<Test> listAll(){
         return testService.list();
     }
-    @RequestMapping("/one")
+    @PostMapping("/one")
     public List<Test> listOne(@RequestBody Test test){
         return testService.list(new QueryWrapper<Test>().eq("phone", test.getPhone()));
     }
-    @RequestMapping("/teacherone")
+    @PostMapping("/teacherone")
     public List<Test> listteacherOne(@RequestBody Test test){
         return testService.list(new QueryWrapper<Test>().eq("teacherphone", test.getTeacherphone()));
     }

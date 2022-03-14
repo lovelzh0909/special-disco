@@ -29,7 +29,7 @@ public class SwaggerConfig {
     @Bean
     public Docket restApi() {
         return new Docket(DocumentationType.SWAGGER_2)
-                .groupName("标准接口")
+                .groupName("v1")
                 .apiInfo(apiInfo("Spring Boot中使用Swagger2构建RESTful APIs", "1.0"))
                 .useDefaultResponseMessages(true)
                 .forCodeGeneration(false)

@@ -10,6 +10,7 @@ import com.example.demo.entity.VO.StudentVideoVO;
 import com.example.demo.service.StudentvideoService;
 import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -38,15 +39,14 @@ public class StudentvideoController {
     StudentvideoService studentvideoService;
     @Autowired
     UserService userService;
-    @RequestMapping("/save")
+    @PostMapping("/save")
     public CommonReturnType saveStudentvideo(@RequestBody Studentvideo studentvideo) {
 
         studentvideo.setTime(LocalDateTime.now());
         studentvideoService.save(studentvideo);
-
         return CommonReturnType.create(null);
     }
-    @RequestMapping("/get")
+    @PostMapping("/get")
     public CommonReturnType getStudentvideo(@RequestBody String StudentId) {
         Page<StudentVideoVO> picture = studentvideoService.getStudentPicture(new Page<> (),StudentId);
         return CommonReturnType.create(picture);
