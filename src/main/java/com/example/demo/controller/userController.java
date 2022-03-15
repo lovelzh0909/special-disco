@@ -12,7 +12,12 @@ import org.springframework.web.bind.annotation.*;
 public class userController {
     @Autowired
     UserService userService;
-
+    //@ResponseBody
+//    @GetMapping("/user")
+//    public User getById(@RequestParam("id") int id){
+//
+//        return userService.getUserByid(id);
+//    }
     @PostMapping("/logon")
     public CommonReturnType logon(@RequestBody User user) {
         //new CommonReturnType();
@@ -27,7 +32,11 @@ public class userController {
         }
     }
 
-
+//    @RequestMapping("/register")
+//    public CommonReturnType register(@RequestBody User user) {
+//        userService.save(user);
+//        return CommonReturnType.create(null,"success");
+//    }
 
     @PostMapping("/register")
     public CommonReturnType register(@RequestBody User user) {
@@ -42,7 +51,9 @@ public class userController {
     }
     @PostMapping("/delete")
     public CommonReturnType delete(@RequestBody User user) {
-        userService.remove(new QueryWrapper<User>().eq("phone", user.getPhone()));
+        boolean b=userService.remove(new QueryWrapper<User>().eq("phone", user.getPhone()));
+        if(b==false)
+        return CommonReturnType.create("没有该用户");
         return CommonReturnType.create(null,"success");
     }
     @PostMapping("/information")

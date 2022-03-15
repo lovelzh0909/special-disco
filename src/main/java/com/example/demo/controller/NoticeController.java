@@ -37,10 +37,16 @@ public class NoticeController {
     TestService testService;
 
     @PostMapping("/one")
-    public List<Test> listOne(@RequestParam String phone){
-        QueryWrapper<Notice> queryWrapper= new QueryWrapper();
-        queryWrapper.select("notice");
-        return testService.list(new QueryWrapper<Test>().eq("phone",phone));
+    public CommonReturnType listOne(@RequestParam String phone){
+        // QueryWrapper<Notice> queryWrapper= new QueryWrapper();
+        // queryWrapper.select("notice");
+        List<Test> l=testService.list(new QueryWrapper<Test>().eq("phone",phone));
+        if(l!=null&&l.size() != 0){
+            return CommonReturnType.create(l,"success");
+        }
+        else{
+            return CommonReturnType.create(null,"没有考试信息");
+        }
     }
     @PostMapping
     public CommonReturnType notice(@RequestParam String phone) {
@@ -55,24 +61,30 @@ public class NoticeController {
         }
     }
     @PostMapping("/getStudentNotice")
-    public Map<String, Object> getStudentNotice(@RequestParam String phone) {
-        Map<String, Object> map = new HashMap<>();
+    public CommonReturnType getStudentNotice(@RequestParam String phone) {
+        // Map<String, Object> map = new HashMap<>();
         Page<StudentTestNoticeVO> Studentnote = noticeService.getStudentNote(new Page<>(),phone);
-        if (Studentnote.getRecords().size() == 0) {
-            map.put("message", "暂无数据");
-        } else {
-            map.put("message", "success");
-            map.put("data", Studentnote);
+        if(Studentnote!=null&&Studentnote.getRecords().size() != 0){
+            return CommonReturnType.create(Studentnote,"success");
         }
-        return map;
+        else{
+            return CommonReturnType.create(null,"暂无通知");
+        }
+        // if (Studentnote.getRecords().size() == 0) {
+        //     map.put("message", "暂无数据");
+        // } else {
+        //     map.put("message", "success");
+        //     map.put("data", Studentnote);
+        // }
+        // return map;
 
     }
     @PostMapping("/closenotice")
-    public Map<String, Object> closenotice(@RequestParam String phone) {
-        Map<String, Object> map = new HashMap<>();
+    public CommonReturnType closenotice(@RequestParam String phone) {
+        // Map<String, Object> map = new HashMap<>();
         //new CommonReturnType();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String dateString = "2017-01-01 11:11:11";
+        // String dateString = "2017-01-01 11:11:11";
         Calendar calendar = Calendar.getInstance();
         long specialDate;
         long betweenDate = 0;
@@ -95,13 +107,19 @@ public class NoticeController {
                 note.get(i).setNote(String.valueOf(betweenDate));
             }
         }
-        if (note.size() == 0) {
-            map.put("message", "暂无数据");
-        } else {
-            map.put("message", "success");
-            map.put("data", note);
+        // if (note.size() == 0) {
+        //     map.put("message", "暂无数据");
+        // } else {
+        //     map.put("message", "success");
+        //     map.put("data", note);
+        // }
+        // return map;
+        if(note!=null&&note.size() != 0){
+            return CommonReturnType.create(note,"success");
         }
-        return map;
+        else{
+            return CommonReturnType.create(null,"暂无通知");
+        }
     }
 
 
