@@ -1,5 +1,7 @@
 package com.example.demo.controller;
 
+import java.util.List;
+
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.exam.vo.AnswerVO;
@@ -10,7 +12,10 @@ import com.example.demo.util.ApiResultHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 
 
 @RestController
@@ -25,5 +30,12 @@ public class AnswerController {
        IPage<AnswerVO> answerVOIPage = answerService.findAll(answerVOPage);
        return ApiResultHandler.buildApiResult(200,"查询所有题库",answerVOIPage);
 
+    }
+
+    @PostMapping("/asd")
+    public String findAlluestion(@RequestBody List<String> b){
+       
+        return "HEll";  
+ 
     }
 }

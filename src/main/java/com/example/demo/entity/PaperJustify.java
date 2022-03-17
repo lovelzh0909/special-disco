@@ -27,24 +27,27 @@ public class PaperJustify implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @TableId("questionId")
+    @TableId("Id")
+    private Integer Id;
+
+    @TableField("questionId")
     private Integer questionId;
 
     @TableField("studentId")
     private Integer studentId;
 
     @TableField("studentAnswer")
-    private String studentAnswer;
+    private String exmaineAnswer;
 
-    @TableField("answer")
-    private String answer;
+    @TableField("correctAnswer")
+    private String correctAnswer;
 
-    @ApiModelProperty("1 dui 0 cuo")
+    @ApiModelProperty("de fen")
     @TableField("justify")
-    private Integer justify;
+    private Integer score;
 
     @TableField("score")
-    private Integer score;
+    private Integer totalscore;
 
     @TableField("testId")
     private Integer testId;

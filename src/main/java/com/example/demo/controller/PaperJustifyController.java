@@ -9,6 +9,7 @@ import com.example.demo.entity.PaperJustify;
 import com.example.demo.service.PaperJustifyService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -34,7 +35,21 @@ public class PaperJustifyController {
     //添加成功
     @PostMapping("/save")
     public CommonReturnType saveQuestion(@RequestBody PaperJustify q ){
-        questionService.save(q);
+        boolean data= questionService.save(q);
+        if(data==false){
+            return CommonReturnType.create("没有gaixuesheng");
+        }
+        return CommonReturnType.create(null);
+    }
+    //duojiedhou
+    @PostMapping("/saveall")
+    public CommonReturnType saveallQuestion(@RequestBody List<PaperJustify> p ){
+        // System.out.println(q);
+        //  List<PaperJustify> q=(List<PaperJustify>) p;
+        boolean data= questionService.saveBatch(p);
+        if(data==false){
+            return CommonReturnType.create("没有gaixuesheng");
+        }
         return CommonReturnType.create(null);
     }
     //查询成功
