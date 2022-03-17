@@ -53,5 +53,18 @@ public class TestController {
         return CommonReturnType.create(l);
         // return testService.list(new QueryWrapper<Test>().eq("teacherphone", test.getTeacherphone()));
     }
+
+    @PostMapping ("/remove")
+    public CommonReturnType removeQuestion(@RequestBody int id){
+
+        boolean data=testService.remove(new QueryWrapper<Test>()
+                .eq("testid", id)
+        );
+        if(data==false){
+            return CommonReturnType.create("没有该题目或已经被删除");
+        }
+
+        return CommonReturnType.create(null);
+    }
 }
 
