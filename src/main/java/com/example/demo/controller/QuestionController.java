@@ -39,6 +39,10 @@ public class QuestionController {
                 .eq("userId", phone)
         );
 
+        if(data==null){
+            return CommonReturnType.create("没有该题目或已经被删除");
+        }
+
         return CommonReturnType.create(data);
     }
 
