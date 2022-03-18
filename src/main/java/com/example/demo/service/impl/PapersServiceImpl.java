@@ -21,7 +21,14 @@ import org.springframework.stereotype.Service;
 @Service
 public class PapersServiceImpl extends ServiceImpl<PapersMapper, Papers> implements PapersService {
 
+    @Override
     public List<Question> getpapersQuestions(/*Page<StudentTestNoticeVO> page*/Integer paperId){
         return this.baseMapper.getpapersQuestions(paperId);
+    }
+
+    @Override
+    public Question getQuestions(Integer questionId) {
+        // TODO Auto-generated method stub
+        return this.baseMapper.getQuestions(questionId);
     }
 }

@@ -61,10 +61,13 @@ public class TestController {
                 .eq("testid", id)
         );
         if(data==false){
-            return CommonReturnType.create("没有该题目或已经被删除");
+            return CommonReturnType.create("没有该测试或已经被删除");
         }
 
         return CommonReturnType.create(null);
     }
+
+
+
 }
 

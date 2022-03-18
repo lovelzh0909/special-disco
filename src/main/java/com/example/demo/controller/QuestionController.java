@@ -28,7 +28,17 @@ public class QuestionController {
     //添加成功
     @PostMapping("/save")
     public CommonReturnType saveQuestion(@RequestBody Question q ){
-        questionService.save(q);
+        Boolean data = questionService.save(q);
+        if(data==false)
+        return CommonReturnType.create("添加失败");
+        return CommonReturnType.create(null);
+    }
+    //多条题目保存
+    @PostMapping("/saveall")
+    public CommonReturnType saveallQuestion(@RequestBody List<Question> q ){
+        Boolean data = questionService.saveBatch(q);
+        if(data==false)
+        return CommonReturnType.create("添加失败");
         return CommonReturnType.create(null);
     }
     //查询成功
@@ -37,6 +47,21 @@ public class QuestionController {
 
         List<Question> data=questionService.list(new QueryWrapper<Question>()
                 .eq("userId", phone)
+        );
+
+        if(data==null){
+            return CommonReturnType.create("没有该题目或已经被删除");
+        }
+
+        return CommonReturnType.create(data);
+    }
+
+    //查询该题库的题目
+    @PostMapping ("/getbycourse")
+    public CommonReturnType getCourseQuesion(@RequestParam String phone,String coursename){
+
+        List<Question> data=questionService.list(new QueryWrapper<Question>()
+                .eq("userId", phone) .eq("coursename", coursename)
         );
 
         if(data==null){

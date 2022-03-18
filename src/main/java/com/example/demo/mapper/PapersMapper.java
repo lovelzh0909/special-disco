@@ -26,4 +26,7 @@ public interface PapersMapper extends BaseMapper<Papers> {
 
     @Select("SELECT question.`type`,question.`stem`,question.`choiceA`,question.`choiceB`,question.`choiceC`,question.`choiceD`,question.`choiceE`,question.`choiceF`,question.`choiceG`,question.`answer`,question.`score` FROM question,paper_manage WHERE question.id=paper_manage.questionId and paper_manage.paperId ="+"${paperId}")
     List<Question> getpapersQuestions(/*Page<StudentTestNoticeVO> page*/Integer paperId);
+
+    @Select("select * from question where id = #{questionId}")
+    Question getQuestions(/*Page<StudentTestNoticeVO> page*/Integer questionId);
 }

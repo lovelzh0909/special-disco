@@ -53,8 +53,7 @@ public class Papers implements Serializable {
     @TableField("paperAnswer")
     private String paperAnswer;
 
-    @TableField("paperResult")
-    private String paperResult;
+
 
 
 }

@@ -18,4 +18,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
 public interface PapersService extends IService<Papers> {
 
     List<Question> getpapersQuestions(/*Page<StudentTestNoticeVO> page*/Integer paperId);
+    Question getQuestions(/*Page<StudentTestNoticeVO> page*/Integer questionId);
+
 }

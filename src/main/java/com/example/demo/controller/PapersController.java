@@ -1,6 +1,8 @@
 package com.example.demo.controller;
 
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -33,18 +35,48 @@ public class PapersController {
 
     @PostMapping("/save")
     public CommonReturnType saveQuestion(@RequestBody Papers p){
-        papersService.save(p);
+        Boolean b = papersService.save(p);
+        if(b==false)
+        return CommonReturnType.create("添加试卷失败");
         return CommonReturnType.create(null);
     }
 
     @PostMapping("/getpaper")
     public CommonReturnType getStudentvideo(@RequestBody Integer paperId) {
-        List<Question> picture = papersService.getpapersQuestions(paperId);
-        if(picture==null){
+        Papers p =papersService.getById(paperId);
+        // String lString =p.getPapercontext();
+        //获取每个题目Id放入lint
+        // List<String> l =stringToList(lString);
+        // List<Integer> lint;
+        // for(String i:l ){
+        //     lint.add(Integer.parseInt(i));
+        // }
+        // List<Question> picture = papersService.getpapersQuestions(paperId);
+        if(p==null){
             return CommonReturnType.create("改试卷不存在或没有题目");
         }
-        return CommonReturnType.create(picture);
+        return CommonReturnType.create(p);
     }
+
+    @PostMapping("/getpaperproblem")
+    public CommonReturnType getpaperproblem(@RequestBody Integer paperId) {
+        Papers p =papersService.getById(paperId);
+        String lString =p.getPapercontext();
+        //获取每个题目Id放入lint
+        List<String> l =stringToList(lString);
+        List<Integer> lint =new ArrayList<Integer>();
+        List<Question> lQuestion =new ArrayList<Question>();
+        for(String i:l ){
+            lint.add(Integer.parseInt(i));
+            lQuestion.add(papersService.getQuestions(Integer.parseInt(i)));
+        }
+        // List<Question> picture = papersService.getpapersQuestions(paperId);
+        if(lint.size()==0||lQuestion.size()==0){
+            return CommonReturnType.create("改试卷不存在或没有题目");
+        }
+        return CommonReturnType.create(lQuestion);
+    }
+
 
     @PostMapping("/getteacherallpaper")
     public CommonReturnType getallpaper(@RequestParam String phone) {
@@ -68,6 +100,30 @@ public class PapersController {
 
         return CommonReturnType.create(null);
     }
+
+
+    @PostMapping ("/removemore")
+    public CommonReturnType removemoreQuestion(@RequestParam List<Integer> id){
+        // papersService.removeBatchByIds(list)
+        boolean data=papersService.removeBatchByIds(id);
+        if(data==false){
+            return CommonReturnType.create("试卷已不存在");
+        }
+
+        return CommonReturnType.create(null);
+    }
+
+    private List<String> stringToList(String strs){
+        String str[] = strs.split(",");
+        return Arrays.asList(str);
+   }
     
+//    private List<int[]> stringToIntList(String strs){
+//        int str[];
+//        try{
+//     int str[] =Integer.parseInt(strs.split(","));}
+//     // String str[] =Integer.parseInt(strs.split(","));
+//     return Arrays.asList(str);
 }
+
 
