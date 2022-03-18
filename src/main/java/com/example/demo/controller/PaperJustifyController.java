@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -9,13 +10,9 @@ import com.example.demo.entity.PaperJustify;
 import com.example.demo.service.PaperJustifyService;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
+//import io.swagger.v3.oas.annotations.parameters.RequestBody;
 
 /**
  * <p>
@@ -44,13 +41,11 @@ public class PaperJustifyController {
     //duojiedhou
     @PostMapping("/saveall")
     public CommonReturnType saveallQuestion(@RequestBody List<PaperJustify> p ){
-        // System.out.println(q);
-        //  List<PaperJustify> q=(List<PaperJustify>) p;
         boolean data= questionService.saveBatch(p);
         if(data==false){
             return CommonReturnType.create("没有gaixuesheng");
         }
-        return CommonReturnType.create(null);
+        return CommonReturnType.create(p);
     }
     //查询成功
     @PostMapping ("/get")

@@ -1,5 +1,6 @@
 package com.example.demo.entity;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -28,27 +29,35 @@ public class PaperJustify implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @TableId("Id")
-    private Integer Id;
+    @JSONField(format="id")
+    private Integer id;
 
     @TableField("questionId")
+    @JSONField(format="questionId")
     private Integer questionId;
 
+    @JSONField(format="studentId")
     @TableField("studentId")
     private Integer studentId;
 
+    @JSONField(format="exmaineAnswer")
     @TableField("studentAnswer")
     private String exmaineAnswer;
 
+    @JSONField(format="correctAnswer")
     @TableField("correctAnswer")
     private String correctAnswer;
 
+    @JSONField(format="score")
     @ApiModelProperty("de fen")
     @TableField("justify")
     private Integer score;
 
+    @JSONField(format="totalscore")
     @TableField("score")
     private Integer totalscore;
 
+    @JSONField(format="testId")
     @TableField("testId")
     private Integer testId;
 
