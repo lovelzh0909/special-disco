@@ -1,5 +1,7 @@
 package com.example.demo.GA;
 
+import com.example.demo.entity.Question;
+import com.example.demo.entity.Rule;
 import com.example.demo.service.QuestionService;
 
 
@@ -13,6 +15,7 @@ import java.util.List;
  * @version: 1.0
  */
 public class GA {
+    static QuestionService questionService;
     /**
      * 变异概率
      */
@@ -55,7 +58,7 @@ public class GA {
         Paper tmpPaper;
         for (int i = elitismOffset; i < newPopulation.getLength(); i++) {
             tmpPaper = newPopulation.getPaper(i);
-            mutate(tmpPaper);
+            mutate(tmpPaper,rule);
             // 计算知识点覆盖率与适应度
             tmpPaper.setKpCoverage(rule);
             tmpPaper.setAdaptationDegree(rule, Global.KP_WEIGHT, Global.DIFFCULTY_WEIGHt);
@@ -91,8 +94,10 @@ public class GA {
             } else {
                 int type = getTypeByIndex(i, rule);
                 // getQuestionArray()用来选择指定类型和知识点的试题数组
-                Question[] singleArray = QuestionService.getQuestionArray(type, idString.substring(1, idString
-                        .indexOf("]")));
+                Question[] singleArray = 
+                // questionService.getQuestionArray(type, idString.substring(1, idString
+                //         .indexOf("]")));
+                null;
                 child.saveQuestion(i, singleArray[(int) (Math.random() * singleArray.length)]);
             }
         }
@@ -101,8 +106,10 @@ public class GA {
                 child.saveQuestion(i, parent2.getQuestion(i));
             } else {
                 int type = getTypeByIndex(i, rule);
-                Question[] singleArray = QuestionService.getQuestionArray(type, idString.substring(1, idString
-                        .indexOf("]")));
+                Question[] singleArray =
+                //  questionService.getQuestionArray(type, idString.substring(1, idString
+                        // .indexOf("]")));
+                        null;
                 child.saveQuestion(i, singleArray[(int) (Math.random() * singleArray.length)]);
             }
         }
@@ -130,16 +137,20 @@ public class GA {
      *
      * @param paper
      */
-    public static void mutate(Paper paper) {
+    public static void mutate(Paper paper,Rule rule) {
         Question tmpQuestion;
-        List<Question> list;
         int index;
+        List<Question> list;
+        String idString = rule.getPointIds().toString();
         for (int i = 0; i < paper.getQuestionSize(); i++) {
             if (Math.random() < mutationRate) {
                 // 进行突变，第i道
                 tmpQuestion = paper.getQuestion(i);
+
                 // 从题库中获取和变异的题目类型一样分数相同的题目（不包含变异题目）
-                list = QuestionService.getQuestionListWithOutSId(tmpQuestion);
+                list = 
+                // QuestionService.getQuestionListWithOutSId(idString.substring(1, idString.indexOf(']')),paper.getidString(),tmpQuestion.getType());
+                null;
                 if (list.size() > 0) {
                     // 随机获取一道
                     index = (int) (Math.random() * list.size());

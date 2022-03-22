@@ -35,6 +35,33 @@ public class TestController {
         }
         return CommonReturnType.create(l);
     }
+    @PostMapping("/save")
+    public CommonReturnType saveTest(@RequestBody Test t ){
+        // if(q.getStem()==null||q.getAnswer()==null||q.getCoursename()==null||q.getType()==null)
+        // return CommonReturnType.create(null,"信息不全");
+        if(t.getCreatedate()==null){
+            //添加时间
+            // Date d= new Date();
+        }
+        // if(q.getId()==null){
+        //     q.setId(questionService.lastQuestionId()+1);
+        // }
+        Boolean data = testService.save(t);
+        if(data==false)
+        return CommonReturnType.create(null,"添加失败");
+        return CommonReturnType.create(null);
+    }
+    @PostMapping("/changeStatus")
+    public  CommonReturnType changeStatus(@RequestBody int id){
+        Test t =testService.getById(id);
+        t.setPystatus("pystatus");
+        t.setTeststatus("teststatus");
+        Boolean data = testService.save(t);
+        if(data==false)
+        return CommonReturnType.create(null,"添加失败");
+        return CommonReturnType.create(null);
+        // return testService.list(new QueryWrapper<Test>().eq("phone", test.getPhone()));
+    }
     @PostMapping("/one")
     public  CommonReturnType listOne(@RequestBody Test test){
         List<Test> l =testService.list(new QueryWrapper<Test>().eq("phone", test.getPhone()));

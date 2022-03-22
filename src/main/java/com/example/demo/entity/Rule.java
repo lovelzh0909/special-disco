@@ -1,4 +1,4 @@
-package com.example.demo.GA;
+package com.example.demo.entity;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -63,20 +63,35 @@ public class Rule implements Serializable {
     @TableField("createTime")
     private Date createTime;
 
-    private List<String> pointIds;
-    public List<String> getPointIds() {
+    @TableField("pointIds")
+    private String pointIds;
+    public String getPointIds() {
         return pointIds;
     }
+//    public String getPointIdstring() {
+//        return pointIds.toString();
+//    }
     public void setPointIds(String pointIds) {
         // 是否是表单传过来的数据
-        if (pointIds.endsWith("#")) {
-            pointIds = pointIds.substring(0, pointIds.lastIndexOf("#"));
-        }
-        // 使用HashSet去重
-        this.pointIds = new ArrayList<>(new HashSet<>(Arrays.asList(pointIds.split("#"))));
+        // if (pointIds.endsWith("#")) {
+        //     pointIds = pointIds.substring(0, pointIds.lastIndexOf("#"));
+        // }
+        // // 使用HashSet去重
+        // this.pointIds = new ArrayList<>(new HashSet<>(Arrays.asList(pointIds.split("#"))));
+        this.pointIds=pointIds;
     }
+    public List<String> getpointIdList(){
+      return stringToList(pointIds);
+    }
+
+    private List<String> stringToList(String strs){
+        String str[] = strs.split(",");
+        return Arrays.asList(str);
+   }
+
+
     public Rule(long id, long testId, int totalMark, double difficulty, int singleNum, double singleScore,
-                    int completeNum, double completeScore, int subjectiveNum, double subjectiveScore, List<String> pointIds,
+                    int completeNum, double completeScore, int subjectiveNum, double subjectiveScore, String pointIds,
                 Date createTime) {
         this.id = id;
         this.testId = testId;

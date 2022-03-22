@@ -6,9 +6,9 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.example.demo.GA.Question;
 import com.example.demo.Response.CommonReturnType;
 import com.example.demo.entity.Papers;
+import com.example.demo.entity.Question;
 import com.example.demo.service.PapersService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,10 +35,58 @@ public class PapersController {
 
     @PostMapping("/save")
     public CommonReturnType saveQuestion(@RequestBody Papers p){
+        if(p.getCreaterPhone()==null||p.getPapercontext()==null)
+        return CommonReturnType.create(null,"信息不全");
+        if(p.getPapername()==null){
+            p.setPapername(p.getPaperId()+"");
+        }
+        p.setPaperId(papersService.findOnlyQuestionId());
+        if(p.getPapernum()==null){
+            p.setPapernum(0);
+        }
         Boolean b = papersService.save(p);
         if(b==false)
-        return CommonReturnType.create("添加试卷失败");
+        return CommonReturnType.create(null,"添加试卷失败");
         return CommonReturnType.create(null);
+    }
+
+    @PostMapping("/changenum")
+    public CommonReturnType usePaper(@RequestBody Integer paperId) {
+        Papers p =papersService.getById(paperId);
+        // String lString =p.getPapercontext();
+        //获取每个题目Id放入lint
+        // List<String> l =stringToList(lString);
+        // List<Integer> lint;
+        // for(String i:l ){
+        //     lint.add(Integer.parseInt(i));
+        // }
+        // List<Question> picture = papersService.getpapersQuestions(paperId);
+        if(p==null){
+            return CommonReturnType.create(null,"改试卷不存在或没有题目");
+        }
+        p.setPapernum(p.getPapernum()+1);
+        papersService.save(p);
+        return CommonReturnType.create(p);
+    }
+
+    @PostMapping("/changeStatus")
+    public CommonReturnType changePaperStatus(@RequestBody Integer paperId) {
+        Papers p =papersService.getById(paperId);
+        // String lString =p.getPapercontext();
+        //获取每个题目Id放入lint
+        // List<String> l =stringToList(lString);
+        // List<Integer> lint;
+        // for(String i:l ){
+        //     lint.add(Integer.parseInt(i));
+        // }
+        // List<Question> picture = papersService.getpapersQuestions(paperId);
+        if(p==null){
+            return CommonReturnType.create(null,"改试卷不存在或没有题目");
+        }
+        if(p.getPaperstatus()=="")
+        p.setPaperstatus("paperstatus");
+        papersService.save(p);
+        return CommonReturnType.create(p);
     }
 
     @PostMapping("/getpaper")
@@ -53,12 +101,12 @@ public class PapersController {
         // }
         // List<Question> picture = papersService.getpapersQuestions(paperId);
         if(p==null){
-            return CommonReturnType.create("改试卷不存在或没有题目");
+            return CommonReturnType.create(null,"改试卷不存在或没有题目");
         }
         return CommonReturnType.create(p);
     }
 
-    @PostMapping("/getpaperproblem")
+    @PostMapping("/getPaperQuestion")
     public CommonReturnType getpaperproblem(@RequestBody Integer paperId) {
         Papers p =papersService.getById(paperId);
         String lString =p.getPapercontext();
@@ -72,7 +120,7 @@ public class PapersController {
         }
         // List<Question> picture = papersService.getpapersQuestions(paperId);
         if(lint.size()==0||lQuestion.size()==0){
-            return CommonReturnType.create("改试卷不存在或没有题目");
+            return CommonReturnType.create(null,"改试卷不存在或没有题目");
         }
         return CommonReturnType.create(lQuestion);
     }
@@ -83,7 +131,7 @@ public class PapersController {
         List<Papers> picture = papersService.list(new QueryWrapper<Papers>()
         .eq("createrPhone", phone));
         if(picture==null){
-            return CommonReturnType.create("试卷不存在或没有题目");
+            return CommonReturnType.create(null,"试卷不存在或没有题目");
         }
         return CommonReturnType.create(picture);
     }
@@ -95,7 +143,7 @@ public class PapersController {
                 .eq("paperId", id)
         );
         if(data==false){
-            return CommonReturnType.create("试卷已不存在");
+            return CommonReturnType.create(null,"试卷已不存在");
         }
 
         return CommonReturnType.create(null);
@@ -107,7 +155,7 @@ public class PapersController {
         // papersService.removeBatchByIds(list)
         boolean data=papersService.removeBatchByIds(id);
         if(data==false){
-            return CommonReturnType.create("试卷已不存在");
+            return CommonReturnType.create(null,"试卷已不存在");
         }
 
         return CommonReturnType.create(null);

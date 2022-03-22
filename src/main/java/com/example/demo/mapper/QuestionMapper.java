@@ -1,8 +1,12 @@
 package com.example.demo.mapper;
 
-import com.example.demo.GA.Question;
+import java.util.List;
+
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.example.demo.entity.Question;
+
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
 
 /**
  * <p>
@@ -15,4 +19,16 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface QuestionMapper extends BaseMapper<Question> {
 
+     /**
+     * 查询最后一条记录的questionId
+     * @return JudgeQuestion
+     */
+    @Select("select id from question order by id desc limit 1")
+    int findOnlyQuestionId();
+
+    @Select("select * from question where type = #{type} and pointId in (#{s})")
+    Question[] findsomeQuestion(String type ,String s);
+
+    @Select("select * from question where type = #{type} and pointId in ({)#{pointId}) and id not in #{sid}")
+    Question[] findanothorQuestion(String type ,String pointId,String sid);
 }

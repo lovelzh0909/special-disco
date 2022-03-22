@@ -1,6 +1,6 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.GA.Rule;
+import com.example.demo.entity.Rule;
 import com.example.demo.mapper.RuleMapper;
 import com.example.demo.service.RuleService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;

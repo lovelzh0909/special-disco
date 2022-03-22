@@ -8,6 +8,11 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import com.example.demo.entity.Question;
+import com.example.demo.entity.Rule;
+
+import org.assertj.core.internal.Strings;
+
 /**
  * 遗传算法中的个体，即一套可能的试卷。对试卷进行编码，而不是对整个题库编码
  *
@@ -100,12 +105,18 @@ public class Paper {
      */
     public void setKpCoverage(Rule rule) {
         if (kPCoverage == 0) {
+            int alllength=rule.getPointIds().length();
             Set<String> result = new HashSet<String>();
-            result.addAll(rule.getPointIds());
-            Set<String> another = questionList.stream().map(questionBean -> String.valueOf(questionBean.getPointId())).collect(Collectors.toSet());
-            // 交集操作
-            result.retainAll(another);
-            kPCoverage = result.size() / rule.getPointIds().size();
+            for(Question q:questionList){
+            result.add(q.getPointId());}
+            kPCoverage = result.size()/alllength;
+            // str.valueOf(c)
+            // Set<String> result = new HashSet<String>();
+            // result.addAll(rule.getPointIds());
+            // Set<String> another = questionList.stream().map(questionBean -> String.valueOf(questionBean.getPointId())).collect(Collectors.toSet());
+            // // 交集操作
+            // result.retainAll(another);
+            // kPCoverage = result.size() / rule.getPointIds().size();
         }
     }
 
@@ -162,6 +173,17 @@ public class Paper {
         this.adaptationDegree = 0;
         this.difficulty = 0;
         this.kPCoverage = 0;
+    }
+
+    public String getidString(){
+        String s="";
+        for(Question q:questionList){
+            s=s+q.getId();
+            if(q!=questionList.get(questionList.size()-1)){
+                s=s+",";
+            }
+        }
+        return s;
     }
 
     public Question getQuestion(int index) {

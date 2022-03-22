@@ -1,7 +1,7 @@
 package com.example.demo.service;
 
-import com.example.demo.GA.Question;
 import com.example.demo.entity.Papers;
+import com.example.demo.entity.Question;
 
 import java.util.List;
 
@@ -19,5 +19,7 @@ public interface PapersService extends IService<Papers> {
 
     List<Question> getpapersQuestions(/*Page<StudentTestNoticeVO> page*/Integer paperId);
     Question getQuestions(/*Page<StudentTestNoticeVO> page*/Integer questionId);
+
+    int findOnlyQuestionId();
 
 }

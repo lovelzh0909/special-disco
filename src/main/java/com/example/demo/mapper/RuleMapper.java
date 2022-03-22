@@ -1,7 +1,8 @@
 package com.example.demo.mapper;
 
-import com.example.demo.GA.Rule;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.example.demo.entity.Rule;
+
 import org.apache.ibatis.annotations.Mapper;
 
 /**

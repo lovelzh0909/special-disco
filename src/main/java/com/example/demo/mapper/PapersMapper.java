@@ -1,7 +1,7 @@
 package com.example.demo.mapper;
 
-import com.example.demo.GA.Question;
 import com.example.demo.entity.Papers;
+import com.example.demo.entity.Question;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -29,4 +29,7 @@ public interface PapersMapper extends BaseMapper<Papers> {
 
     @Select("select * from question where id = #{questionId}")
     Question getQuestions(/*Page<StudentTestNoticeVO> page*/Integer questionId);
+
+    @Select("select paperId from papers order by id desc limit 1")
+    int lastQuestionId();
 }

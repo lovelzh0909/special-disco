@@ -1,5 +1,8 @@
 package com.example.demo.GA;
 
+import com.example.demo.entity.Question;
+import com.example.demo.entity.Rule;
+
 // import com.lxl.nebula.question.QuestionService;
 // import sun.rmi.runtime.Log;
 
@@ -21,6 +24,7 @@ public class Population {
      */
     private Paper[] papers;
 
+    QuestionService questionService;
     /**
      * 初始种群
      *
@@ -41,17 +45,17 @@ public class Population {
                     String idString = rule.getPointIds().toString();
                     // 单选题
                     if (rule.getSingleNum() > 0) {
-                        generateQuestion(1, random, rule.getSingleNum(), rule.getSingleScore(), idString,
+                        generateQuestion("xuanze", random, rule.getSingleNum(), rule.getSingleScore(), idString,
                                 "单选题数量不够，组卷失败", paper);
                     }
                     // 填空题
                     if (rule.getCompleteNum() > 0) {
-                        generateQuestion(2, random, rule.getCompleteNum(), rule.getCompleteScore(), idString,
+                        generateQuestion("tiankong", random, rule.getCompleteNum(), rule.getCompleteScore(), idString,
                                 "填空题数量不够，组卷失败", paper);
                     }
                     // 主观题
                     if (rule.getSubjectiveNum() > 0) {
-                        generateQuestion(3, random, rule.getSubjectiveNum(), rule.getSubjectiveScore(), idString,
+                        generateQuestion("subect", random, rule.getSubjectiveNum(), rule.getSubjectiveScore(), idString,
                                 "主观题数量不够，组卷失败", paper);
                     }
                 }
@@ -64,9 +68,9 @@ public class Population {
         }
     }
 
-    private void generateQuestion(int type, Random random, int qustionNum, double score, String idString,
+    private void generateQuestion(String type, Random random, int qustionNum, double score, String idString,
                                   String errorMsg, Paper paper) {
-        Question[] singleArray = QuestionService.getQuestionArray(type, idString
+        Question[] singleArray = questionService.getQuestionArray(type, idString
                 .substring(1, idString.indexOf("]")));
         if (singleArray.length < qustionNum) {
             return;

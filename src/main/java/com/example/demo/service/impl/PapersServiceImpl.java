@@ -1,7 +1,7 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.GA.Question;
 import com.example.demo.entity.Papers;
+import com.example.demo.entity.Question;
 import com.example.demo.mapper.PapersMapper;
 import com.example.demo.service.PapersService;
 
@@ -30,5 +30,11 @@ public class PapersServiceImpl extends ServiceImpl<PapersMapper, Papers> impleme
     public Question getQuestions(Integer questionId) {
         // TODO Auto-generated method stub
         return this.baseMapper.getQuestions(questionId);
+    }
+
+    @Override
+    public int findOnlyQuestionId() {
+        // TODO Auto-generated method stub
+        return this.baseMapper.lastQuestionId();
     }
 }

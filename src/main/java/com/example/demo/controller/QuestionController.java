@@ -2,13 +2,18 @@ package com.example.demo.controller;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.example.demo.GA.Question;
 import com.example.demo.Response.CommonReturnType;
+import com.example.demo.entity.Question;
 import com.example.demo.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import javax.xml.crypto.Data;
 
 /**
  * <p>
@@ -28,9 +33,18 @@ public class QuestionController {
     //添加成功
     @PostMapping("/save")
     public CommonReturnType saveQuestion(@RequestBody Question q ){
+        if(q.getStem()==null||q.getAnswer()==null||q.getCoursename()==null||q.getType()==null)
+        return CommonReturnType.create(null,"信息不全");
+        if(q.getCreateTime()==null){
+            //添加时间
+            // Date d= new Date();
+        }
+        if(q.getId()==null){
+            q.setId(questionService.lastQuestionId()+1);
+        }
         Boolean data = questionService.save(q);
         if(data==false)
-        return CommonReturnType.create("添加失败");
+        return CommonReturnType.create(null,"添加失败");
         return CommonReturnType.create(null);
     }
     //多条题目保存
@@ -70,7 +84,27 @@ public class QuestionController {
 
         return CommonReturnType.create(data);
     }
-
+    /**
+     * 获取该老师的所有题库课程名
+     * @param phone
+     * @return
+     */
+    @PostMapping ("/getCoursename")
+    public CommonReturnType getCoursename(@RequestParam String phone){
+    
+            List<Question> data=questionService.list(new QueryWrapper<Question>().select("distinct coursename")
+                    .eq("userId", phone) 
+            );
+            List<Map<String, Object>> m=
+             questionService.listMaps(new QueryWrapper<Question>().select("distinct coursename")
+            .eq("userId", phone) );
+            //确定这些问题的coursename 集合
+            if(data==null){
+                return CommonReturnType.create("没有该题目或已经被删除");
+            }
+    
+            return CommonReturnType.create(m);
+    }
     //删除成功
     @PostMapping ("/remove")
     public CommonReturnType removeQuestion(@RequestParam int id){
@@ -83,6 +117,25 @@ public class QuestionController {
         }
 
         return CommonReturnType.create(null);
+    }
+    /**
+     * 通过id查询问题
+     * @param List<Integer> id
+     * @return
+     */
+
+    @PostMapping ("/getQuestionbyid")
+    public CommonReturnType getQuestionbyid(@RequestBody List<Integer> id){
+    
+            List<Question> data=questionService.list(new QueryWrapper<Question>()
+                    .in("id", id) 
+            );
+            //确定这些问题的coursename 集合
+            if(data==null){
+                return CommonReturnType.create("没有该题目或已经被删除");
+            }
+    
+            return CommonReturnType.create(data);
     }
 }
 
