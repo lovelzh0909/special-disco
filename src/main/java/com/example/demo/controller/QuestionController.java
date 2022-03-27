@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.demo.Response.CommonReturnType;
 import com.example.demo.entity.Question;
@@ -9,6 +10,7 @@ import com.example.demo.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -37,6 +39,7 @@ public class QuestionController {
         if(q.getStem()==null||q.getAnswer()==null||q.getCoursename()==null)
         return CommonReturnType.create(null,"信息不全");
         if(q.getCreateTime()==null){
+            q.setCreateTime(LocalDateTime.now());
             //添加时间
             // Date d= new Date();
         }
@@ -111,7 +114,39 @@ public class QuestionController {
     public CommonReturnType removeQuestion(@RequestParam int id){
 
         boolean data=questionService.remove(new QueryWrapper<Question>()
-                .eq("userId", id)
+                .eq("id", id)
+        );
+        if(data==false){
+            return CommonReturnType.create("没有该题目或已经被删除");
+        }
+
+        return CommonReturnType.create(null);
+    }
+
+    /***
+     * 删除该用户该课程数据库
+     * @param coursename
+     * @param phone
+     * @return
+     */
+    @PostMapping ("/remove/bycoursename")
+    public CommonReturnType removeQuestion(@RequestParam String coursename ,int phone){
+
+        boolean data=questionService.remove(new QueryWrapper<Question>()
+                .eq("userId", phone).eq("coursename",coursename)
+        );
+        if(data==false){
+            return CommonReturnType.create("没有该题目或已经被删除");
+        }
+
+        return CommonReturnType.create(null);
+    }
+
+    @PostMapping ("/update/bycoursename")
+    public CommonReturnType changeCoursename(@RequestParam String coursename ,int phone){
+
+        boolean data=questionService.update(new UpdateWrapper<Question>()
+                .eq("userId", phone).set("coursename",coursename)
         );
         if(data==false){
             return CommonReturnType.create("没有该题目或已经被删除");

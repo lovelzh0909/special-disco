@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -40,7 +41,7 @@ public class PapersController {
         // if(p.getPhone()==null){
         //     p.setPhone(phone);
         // }
-        // p.setCreateTime(System.currentTimeMillis());
+         p.setCreateTime(String.valueOf(LocalDateTime.now()));
         if(p.getPhone()==null||p.getPapercontext()==null)
         return CommonReturnType.create(null,"信息不全");
         // if(p.getSource()==null){
@@ -53,12 +54,11 @@ public class PapersController {
         Boolean b = papersService.save(p);
         if(b==false)
         return CommonReturnType.create(null,"添加试卷失败");
-        return CommonReturnType.create(null);
+        return CommonReturnType.create(p.getPaperId());
     }
 
     @PostMapping("/update/{paperId}")
     public CommonReturnType updatePaper(@RequestBody Papers p,@PathVariable("paperId") Integer paperId){
-        System.out.println(paperId);
         // if(p.getPhone()==null){
         //     p.setPhone(phone);
         // }
@@ -75,7 +75,7 @@ public class PapersController {
         }
         Boolean b = papersService.updateById(p);
         if(b==false)
-        return CommonReturnType.create(null,"添加试卷失败");
+        return CommonReturnType.create(null,"修改试卷失败");
         return CommonReturnType.create(null);
     }
 
@@ -118,41 +118,33 @@ public class PapersController {
         return CommonReturnType.create(p);
     }
 
-    @PostMapping("/getpaper")
-    public CommonReturnType getStudentvideo(@RequestParam Integer paperId) {
-        Papers p =papersService.getById(paperId);
-        // String lString =p.getPapercontext();
-        //获取每个题目Id放入lint
-        // List<String> l =stringToList(lString);
-        // List<Integer> lint;
-        // for(String i:l ){
-        //     lint.add(Integer.parseInt(i));
-        // }
-        // List<Question> picture = papersService.getpapersQuestions(paperId);
-        if(p==null){
-            return CommonReturnType.create(null,"改试卷不存在或没有题目");
-        }
-        return CommonReturnType.create(p);
-    }
+    // @PostMapping("/getpaperbyID")
+    // public CommonReturnType getStudentvideo(@RequestParam Integer paperId) {
+    //     Papers p =papersService.getById(paperId);
+    //     if(p==null){
+    //         return CommonReturnType.create(null,"改试卷不存在或没有题目");
+    //     }
+    //     return CommonReturnType.create(p);
+    // }
 
-    @PostMapping("/getPaperQuestion")
-    public CommonReturnType getpaperproblem(@RequestParam Integer paperId) {
-        Papers p =papersService.getById(paperId);
-        String lString =p.getPapercontext();
-        //获取每个题目Id放入lint
-        List<String> l =stringToList(lString);
-        List<Integer> lint =new ArrayList<Integer>();
-        List<Question> lQuestion =new ArrayList<Question>();
-        for(String i:l ){
-            lint.add(Integer.parseInt(i));
-            lQuestion.add(papersService.getQuestions(Integer.parseInt(i)));
-        }
-        // List<Question> picture = papersService.getpapersQuestions(paperId);
-        if(lint.size()==0||lQuestion.size()==0){
-            return CommonReturnType.create(null,"改试卷不存在或没有题目");
-        }
-        return CommonReturnType.create(lQuestion);
-    }
+    // @PostMapping("/getPaperQuestion")
+    // public CommonReturnType getpaperproblem(@RequestParam Integer paperId) {
+    //     Papers p =papersService.getById(paperId);
+    //     String lString =p.getPapercontext();
+    //     //获取每个题目Id放入lint
+    //     List<String> l =stringToList(lString);
+    //     List<Integer> lint =new ArrayList<Integer>();
+    //     List<Question> lQuestion =new ArrayList<Question>();
+    //     for(String i:l ){
+    //         lint.add(Integer.parseInt(i));
+    //         lQuestion.add(papersService.getQuestions(Integer.parseInt(i)));
+    //     }
+    //     // List<Question> picture = papersService.getpapersQuestions(paperId);
+    //     if(lint.size()==0||lQuestion.size()==0){
+    //         return CommonReturnType.create(null,"改试卷不存在或没有题目");
+    //     }
+    //     return CommonReturnType.create(lQuestion);
+    // }
 
 
     @PostMapping("/getteacherallpaper")
