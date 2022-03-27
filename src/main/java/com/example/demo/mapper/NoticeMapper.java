@@ -1,14 +1,14 @@
 package com.example.demo.mapper;
 
 
-import com.example.demo.entity.Notice;
+import java.util.List;
+
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.example.demo.entity.VO.StudentTestNoticeVO;
+import com.example.demo.entity.Notice;
+import com.example.demo.entity.vo.StudentTestNoticeVO;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
-
-import java.util.List;
 
 
 @Mapper

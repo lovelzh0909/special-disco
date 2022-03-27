@@ -12,12 +12,14 @@ import com.example.demo.entity.Question;
 import com.example.demo.service.PapersService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
+
 
 /**
  * <p>
@@ -35,12 +37,16 @@ public class PapersController {
 
     @PostMapping("/save")
     public CommonReturnType saveQuestion(@RequestBody Papers p){
-        if(p.getCreaterPhone()==null||p.getPapercontext()==null)
+        // if(p.getPhone()==null){
+        //     p.setPhone(phone);
+        // }
+        // p.setCreateTime(System.currentTimeMillis());
+        if(p.getPhone()==null||p.getPapercontext()==null)
         return CommonReturnType.create(null,"信息不全");
-        if(p.getPapername()==null){
-            p.setPapername(p.getPaperId()+"");
-        }
-        p.setPaperId(papersService.findOnlyQuestionId());
+        // if(p.getSource()==null){
+        //     p.setSource(p.getPaperId()+"");
+        // }
+//        p.setPaperId(papersService.findOnlyQuestionId());
         if(p.getPapernum()==null){
             p.setPapernum(0);
         }
@@ -50,8 +56,31 @@ public class PapersController {
         return CommonReturnType.create(null);
     }
 
+    @PostMapping("/update/{paperId}")
+    public CommonReturnType updatePaper(@RequestBody Papers p,@PathVariable("paperId") Integer paperId){
+        System.out.println(paperId);
+        // if(p.getPhone()==null){
+        //     p.setPhone(phone);
+        // }
+        // p.setCreateTime(System.currentTimeMillis());
+        p.setPaperId(paperId);
+        if(p.getPhone()==null||p.getPapercontext()==null)
+        return CommonReturnType.create(null,"信息不全");
+        // if(p.getSource()==null){
+        //     p.setSource(p.getPaperId()+"");
+        // }
+//        p.setPaperId(papersService.findOnlyQuestionId());
+        if(p.getPapernum()==null){
+            p.setPapernum(0);
+        }
+        Boolean b = papersService.updateById(p);
+        if(b==false)
+        return CommonReturnType.create(null,"添加试卷失败");
+        return CommonReturnType.create(null);
+    }
+
     @PostMapping("/changenum")
-    public CommonReturnType usePaper(@RequestBody Integer paperId) {
+    public CommonReturnType usePaper(@RequestParam Integer paperId) {
         Papers p =papersService.getById(paperId);
         // String lString =p.getPapercontext();
         //获取每个题目Id放入lint
@@ -70,7 +99,7 @@ public class PapersController {
     }
 
     @PostMapping("/changeStatus")
-    public CommonReturnType changePaperStatus(@RequestBody Integer paperId) {
+    public CommonReturnType changePaperStatus(@RequestParam Integer paperId) {
         Papers p =papersService.getById(paperId);
         // String lString =p.getPapercontext();
         //获取每个题目Id放入lint
@@ -83,14 +112,14 @@ public class PapersController {
         if(p==null){
             return CommonReturnType.create(null,"改试卷不存在或没有题目");
         }
-        if(p.getPaperstatus()=="")
-        p.setPaperstatus("paperstatus");
+        // if(p.getPaperstatus()=="")
+        // p.setPaperstatus("paperstatus");
         papersService.save(p);
         return CommonReturnType.create(p);
     }
 
     @PostMapping("/getpaper")
-    public CommonReturnType getStudentvideo(@RequestBody Integer paperId) {
+    public CommonReturnType getStudentvideo(@RequestParam Integer paperId) {
         Papers p =papersService.getById(paperId);
         // String lString =p.getPapercontext();
         //获取每个题目Id放入lint
@@ -107,7 +136,7 @@ public class PapersController {
     }
 
     @PostMapping("/getPaperQuestion")
-    public CommonReturnType getpaperproblem(@RequestBody Integer paperId) {
+    public CommonReturnType getpaperproblem(@RequestParam Integer paperId) {
         Papers p =papersService.getById(paperId);
         String lString =p.getPapercontext();
         //获取每个题目Id放入lint

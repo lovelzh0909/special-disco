@@ -3,6 +3,7 @@ package com.example.demo.controller;
 
 import com.example.demo.Response.CommonReturnType;
 import com.example.demo.entity.Rule;
+import com.example.demo.entity.Ruleqnum;
 import com.example.demo.service.RuleService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,7 @@ public class RuleController {
     RuleService ruleService;
 
     @PostMapping("/save")
-    public CommonReturnType saveQuestion(@RequestBody Rule rule ){
+    public CommonReturnType saveQuestion(@RequestBody Rule rule){
         // if(rule.ge)
         // return CommonReturnType.create(null,"信息不全");
         if(rule.getDifficulty()==0){

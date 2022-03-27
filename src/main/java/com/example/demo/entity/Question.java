@@ -31,8 +31,8 @@ public class Question implements Serializable {
     @TableId("id")
     private Integer id;
 
-    @TableField("type")
-    private String type;
+    @TableField("typeId")
+    private int typeId;
 
     @TableField("coursename")
     private String coursename;

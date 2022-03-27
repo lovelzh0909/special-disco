@@ -1,12 +1,13 @@
 package com.example.demo.mapper;
 
-import com.example.demo.entity.Studentvideo;
+import java.util.List;
+
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.example.demo.entity.VO.StudentVideoVO;
+import com.example.demo.entity.Studentvideo;
+import com.example.demo.entity.vo.StudentVideoVO;
+
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
-
-import java.util.List;
 
 /**
  * <p>

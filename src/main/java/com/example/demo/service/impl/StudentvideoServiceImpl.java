@@ -1,11 +1,12 @@
 package com.example.demo.service.impl;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.demo.entity.Studentvideo;
-import com.example.demo.entity.VO.StudentVideoVO;
+import com.example.demo.entity.vo.StudentVideoVO;
 import com.example.demo.mapper.StudentvideoMapper;
 import com.example.demo.service.StudentvideoService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+
 import org.springframework.stereotype.Service;
 
 /**

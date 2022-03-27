@@ -1,22 +1,20 @@
 package com.example.demo.controller;
 
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import java.time.LocalDateTime;
+
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.demo.Response.CommonReturnType;
 import com.example.demo.entity.Studentvideo;
-import com.example.demo.entity.VO.StudentVideoVO;
+import com.example.demo.entity.vo.StudentVideoVO;
 import com.example.demo.service.StudentvideoService;
 import com.example.demo.service.UserService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-
-
-import java.time.LocalDateTime;
 
 
 /**
@@ -59,6 +57,11 @@ public class StudentvideoController {
 
         
     }
+    /**
+     * 
+     * @param StudentId
+     * @return
+     */
     @PostMapping("/get")
     public CommonReturnType getStudentvideo(@RequestBody String StudentId) {
         Page<StudentVideoVO> picture = studentvideoService.getStudentPicture(new Page<> (),StudentId);

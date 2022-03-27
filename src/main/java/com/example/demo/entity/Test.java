@@ -28,8 +28,8 @@ public class Test implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @TableId("testid")
-    private Integer testid;
+    @TableId("testId")
+    private Integer testId;
 
     @TableField("testsettingid")
     private Integer testsettingid;
@@ -41,7 +41,7 @@ public class Test implements Serializable {
     private String note;
 
     @TableField("teststatus")
-    private String teststatus;
+    private int teststatus;
 
     @TableField("invigilator")
     private String invigilator;
@@ -52,8 +52,6 @@ public class Test implements Serializable {
     @TableField("coursename")
     private String coursename;
 
-    @TableField("phone")
-    private String phone;
 
     @TableField("createdate")
     private String createdate;

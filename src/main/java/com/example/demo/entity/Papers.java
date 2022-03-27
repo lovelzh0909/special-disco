@@ -3,12 +3,18 @@ package com.example.demo.entity;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+
+
 import java.io.Serializable;
+
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import net.sf.jsqlparser.expression.DateTimeLiteralExpression.DateTime;
+
 
 /**
  * <p>
@@ -30,14 +36,8 @@ public class Papers implements Serializable {
     @TableId("paperId")
     private Integer paperId;
 
-    @TableField("papername")
-    private String papername;
-
     @TableField("createrPhone")
-    private Integer createrPhone;
-
-    @TableField("userphone")
-    private Integer userphone;
+    private Integer Phone;
 
     @TableField("papercontext")
     private String papercontext;
@@ -50,10 +50,24 @@ public class Papers implements Serializable {
     @TableField("papernum")
     private Integer papernum;
 
-    @TableField("paperAnswer")
-    private String paperAnswer;
+    @ApiModelProperty("备注")
+    @TableField("tips")
+    private String tips;
 
+    @ApiModelProperty("试卷名")
+    @TableField("source")
+    private String source;
 
+    @TableField("totalScore")
+    private double totalScore;
 
+    @TableField("totalTime")
+    private String totalTime;
+
+    @TableField("createtime")
+    private String createTime;
+    
+    @TableField("description")
+    private String description;
 
 }

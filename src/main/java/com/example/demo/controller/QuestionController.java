@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.demo.Response.CommonReturnType;
 import com.example.demo.entity.Question;
 import com.example.demo.service.QuestionService;
@@ -33,7 +34,7 @@ public class QuestionController {
     //添加成功
     @PostMapping("/save")
     public CommonReturnType saveQuestion(@RequestBody Question q ){
-        if(q.getStem()==null||q.getAnswer()==null||q.getCoursename()==null||q.getType()==null)
+        if(q.getStem()==null||q.getAnswer()==null||q.getCoursename()==null)
         return CommonReturnType.create(null,"信息不全");
         if(q.getCreateTime()==null){
             //添加时间
@@ -92,14 +93,14 @@ public class QuestionController {
     @PostMapping ("/getCoursename")
     public CommonReturnType getCoursename(@RequestParam String phone){
     
-            List<Question> data=questionService.list(new QueryWrapper<Question>().select("distinct coursename")
-                    .eq("userId", phone) 
-            );
+            // List<Question> data=questionService.list(new QueryWrapper<Question>().select("distinct coursename")
+            //         .eq("userId", phone) 
+            // );
             List<Map<String, Object>> m=
              questionService.listMaps(new QueryWrapper<Question>().select("distinct coursename")
             .eq("userId", phone) );
             //确定这些问题的coursename 集合
-            if(data==null){
+            if(m==null){
                 return CommonReturnType.create("没有该题目或已经被删除");
             }
     
