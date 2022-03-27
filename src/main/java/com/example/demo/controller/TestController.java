@@ -75,14 +75,12 @@ public class TestController {
     public  CommonReturnType listOne(@RequestParam Integer phone,@PathVariable("page") Integer page, @PathVariable("size") Integer size){
         Page<Test> page2 =new Page<Test>(page,size);
         List<Testrelstudent> ts =testrelstudentService.list(new QueryWrapper<Testrelstudent>().eq("studentPhone", phone));
-        List<Test> l=new ArrayList<Test>();
+//        List<Test> l=new ArrayList<Test>();
         List<Integer> ll=new ArrayList<Integer>();
         for(Testrelstudent t:ts){
-            l.add(testService.getById(t.getTestId())) ;
+//            l.add(testService.getById(t.getTestId())) ;
             ll.add(t.getTestId());
         }
-        System.out.println(l);
-        System.out.println(ll);
         if(ll.size()==0){
             return CommonReturnType.create(null,"没有该学生考试信息");
         }
@@ -94,9 +92,9 @@ public class TestController {
         // Page<Test> pipelinePage = new PageImpl<>(l, page2, l.size());
 
     // return new PageInfo<>(pipelinePage);
-        if(l.size()==0){
-            return CommonReturnType.create(null,"没有该学生考试信息");
-        }
+//        if(l.size()==0){
+//            return CommonReturnType.create(null,"没有该学生考试信息");
+//        }
         return CommonReturnType.create(page3);
         // return testService.list(new QueryWrapper<Test>().eq("phone", test.getPhone()));
     }
@@ -105,13 +103,16 @@ public class TestController {
      * @param test
      * @return
      */
-    @PostMapping("/teacherone")
-    public CommonReturnType listteacherOne(@RequestBody Test test){
+    @PostMapping("/getTeachertest/{page}/{size}")
+    public CommonReturnType listteacherOne(@RequestBody Test test,@PathVariable("page") Integer page, @PathVariable("size") Integer size){
         List<Test> l =testService.list(new QueryWrapper<Test>().eq("teacherphone", test.getTeacherphone()));
-        if(l==null){
+        Page<Test> page2 =new Page<Test>(page,size);
+        Page<Test> p =testService.page(page2,new QueryWrapper<Test>().eq("teacherphone", test.getTeacherphone()));
+        p.setTotal(l.size());
+        if(l.size()==0){
             return CommonReturnType.create("没有该老师相关考试信息");
         }
-        return CommonReturnType.create(l);
+        return CommonReturnType.create(p);
         // return testService.list(new QueryWrapper<Test>().eq("teacherphone", test.getTeacherphone()));
     }
 

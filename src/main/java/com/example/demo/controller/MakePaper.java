@@ -5,10 +5,13 @@ import java.util.List;
 import java.util.Random;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.example.demo.Response.CommonReturnType;
+import com.example.demo.entity.Papers;
 import com.example.demo.entity.Question;
 import com.example.demo.entity.Rule;
 import com.example.demo.entity.Ruleqnum;
+import com.example.demo.service.PapersService;
 import com.example.demo.service.QuestionService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +24,10 @@ public class MakePaper {
     @Autowired
     QuestionService questionService;
 
-    @PostMapping("/returnProblem")
+    @Autowired
+    PapersService papersService;
+
+    @PostMapping("/autoProblem")
     public CommonReturnType saveQuestion(@RequestBody Rule rule,@RequestBody List<Ruleqnum> ruleqnum,@PathVariable String coursename){
         List<Integer> list =new ArrayList<Integer>();
         List<Integer> questionnum = new ArrayList<Integer>();
@@ -122,7 +128,18 @@ public class MakePaper {
                 singleArray.set(singleArray.size() - j - 1, singleArray.get(index));
                 singleArray.set(index, tmpQuestion);}
             return list;
-        }        
+        }
+    
+        @PostMapping("/paperProblem/save")
+        public CommonReturnType notice(@RequestParam int paperId, @RequestParam String papercontext) {
+            //new CommonReturnType();
+            boolean b= papersService.update(new UpdateWrapper<Papers>().set("papercontext",papercontext).eq("paperId", paperId));
+            if(b){
+                return CommonReturnType.create(null);
+            }else{
+                return CommonReturnType.create(null,"暂无通知");
+            }
+        }
 
 
 
