@@ -92,6 +92,21 @@ public class QuestionController {
         }
         return CommonReturnType.create(data);
     }
+        //查询该题库的题目
+        @PostMapping ("/get/bycourse/{typeId}/{page}/{size}")
+        public CommonReturnType getCourseandtypeQuesion(@RequestParam String phone,String coursename,@PathVariable int typeId ,int page,int size){
+            Page <Question> p =new Page<Question>(page,size);
+            p=questionService.page(p, new QueryWrapper<Question>()
+            .eq("userId", phone) .eq("coursename", coursename));
+            List<Question> data=questionService.list(new QueryWrapper<Question>()
+                    .eq("userId", phone) .eq("coursename", coursename) .eq("coursename", coursename)
+            );
+            p.setTotal(data.size());
+            if(data.size()==0){
+                return CommonReturnType.create("没有该题目或已经被删除");
+            }
+            return CommonReturnType.create(p);
+        }
     /**
      * 获取该老师的所有题库课程名
      * @param phone
@@ -112,6 +127,8 @@ public class QuestionController {
             }
             return CommonReturnType.create(m);
     }
+
+
     //删除成功
     @PostMapping ("/remove")
     public CommonReturnType removeQuestion(@RequestParam int id){
