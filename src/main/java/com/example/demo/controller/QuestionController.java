@@ -10,6 +10,8 @@ import com.example.demo.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
@@ -26,6 +28,7 @@ import javax.xml.crypto.Data;
  * @author 作者
  * @since 2022-03-12
  */
+@Slf4j
 @RestController
 @RequestMapping("/question")
 public class QuestionController {
@@ -184,9 +187,12 @@ public class QuestionController {
         Question q=new Question();
         q.setCoursename(coursename);
         q.setUserId(phone);
+        log.info("save["+q+"]");
         Boolean data = questionService.save(q);
         if(data==false)
         return CommonReturnType.create(null,"添加失败");
+        log.info("--------------log----------");
+        log.info("save["+q+"]");
         return CommonReturnType.create(null);
     }
 }
