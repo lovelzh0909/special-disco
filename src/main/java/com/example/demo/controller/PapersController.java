@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.demo.Response.CommonReturnType;
 import com.example.demo.entity.Papers;
 import com.example.demo.entity.Question;
@@ -20,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import lombok.extern.slf4j.Slf4j;
+
 
 
 /**
@@ -30,6 +33,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author 作者
  * @since 2022-03-17
  */
+@Slf4j
 @RestController
 @RequestMapping("/papers")
 public class PapersController {
@@ -147,14 +151,21 @@ public class PapersController {
     // }
 
 
-    @PostMapping("/getteacherallpaper")
-    public CommonReturnType getallpaper(@RequestParam String phone) {
+    @PostMapping("/getteacherallpaper/{page}/{size}")
+    public CommonReturnType getallpaper(@RequestParam String phone,@PathVariable int page,@PathVariable int size) {
+        Page <Papers> p =new Page<Papers>(page,size);
+        Page<Papers> page3=papersService.page(p, new QueryWrapper<Papers>()
+        .eq("createrPhone", phone));
         List<Papers> picture = papersService.list(new QueryWrapper<Papers>()
         .eq("createrPhone", phone));
-        if(picture==null){
+        page3.setSize(picture.size());
+        if(picture.size()==0){
+
             return CommonReturnType.create(null,"试卷不存在或没有题目");
         }
-        return CommonReturnType.create(picture);
+        log.info("-------------log---------------");
+        log.info("send["+page3.getTotal()+"条数据]");
+        return CommonReturnType.create(page3);
     }
 
     @PostMapping ("/remove")

@@ -7,7 +7,10 @@ import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import lombok.extern.slf4j.Slf4j;
+
 @RestController
+@Slf4j
 @RequestMapping("/user")
 public class userController {
     @Autowired
@@ -25,11 +28,14 @@ public class userController {
                 new QueryWrapper<User>()
                         .eq("phone", user.getPhone())
                         .eq("password", user.getPassword()));
+                
         if(one!=null){
+            log.info("--------------------logo-------------------");
+            log.info("logon["+one.toString()+"]");
             return CommonReturnType.create(one.getRole(),"success");
-        }else{
-            return CommonReturnType.create(null,"用户名或密码错误");
         }
+        return CommonReturnType.create(null,"用户名或密码错误");
+        
     }
 
 //    @RequestMapping("/register")
@@ -45,6 +51,8 @@ public class userController {
             return CommonReturnType.create(null,"用户名已存在");
         }else{
             userService.save(user);
+            log.info("--------------------logo-------------------");
+            log.info("register["+user.toString()+"]");
             assert false;
             return CommonReturnType.create(user.getRole(),"success");
         }
@@ -54,6 +62,8 @@ public class userController {
         boolean b=userService.remove(new QueryWrapper<User>().eq("phone", user.getPhone()));
         if(b==false)
         return CommonReturnType.create("没有该用户");
+        log.info("--------------------logo-------------------");
+        log.info("delete["+user.toString()+"]");
         return CommonReturnType.create(null,"success");
     }
     @PostMapping("/information")
@@ -64,8 +74,11 @@ public class userController {
                         .eq("phone", phone)
                         );
         if(one!=null){
+            log.info("--------------------logo-------------------");
+            log.info("send["+one.toString()+"]");
             return CommonReturnType.create(one,"success");
-        }else{
+        }
+        else{
             return CommonReturnType.create(null,"用户名错误");
         }
     }

@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,6 +47,7 @@ public class TestController {
         if(t.getCreatedate()==null){
             //添加时间
             // Date d= new Date();
+            t.setCreatedate(String.valueOf(LocalDateTime.now()));
         }
         // if(q.getId()==null){
         //     q.setId(questionService.lastQuestionId()+1);

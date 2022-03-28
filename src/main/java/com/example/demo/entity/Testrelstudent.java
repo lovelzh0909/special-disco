@@ -35,7 +35,7 @@ public class Testrelstudent implements Serializable {
     private Integer testId;
 
     @TableField("studentPhone")
-    private Integer studentPhone;
+    private String studentPhone;
 
 
 }

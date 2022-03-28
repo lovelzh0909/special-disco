@@ -36,9 +36,9 @@ public class PaperJustify implements Serializable {
     @JSONField(format="questionId")
     private Integer questionId;
 
-    @JSONField(format="studentId")
-    @TableField("studentId")
-    private Integer studentId;
+    @JSONField(format="studentphone")
+    @TableField("studentphone")
+    private String studentphone;
 
     @JSONField(format="exmaineAnswer")
     @TableField("studentAnswer")
