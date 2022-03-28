@@ -55,6 +55,7 @@ public class PapersController {
         if(p.getPapernum()==null){
             p.setPapernum(0);
         }
+        p.setCreateTime(String.valueOf(LocalDateTime.now()));
         Boolean b = papersService.save(p);
         if(b==false)
         return CommonReturnType.create(null,"添加试卷失败");
@@ -169,10 +170,10 @@ public class PapersController {
     }
 
     @PostMapping ("/remove")
-    public CommonReturnType removeQuestion(@RequestParam int id){
+    public CommonReturnType removeQuestion(@RequestParam int paperId){
 
         boolean data=papersService.remove(new QueryWrapper<Papers>()
-                .eq("paperId", id)
+                .eq("paperId", paperId)
         );
         if(data==false){
             return CommonReturnType.create(null,"试卷已不存在");

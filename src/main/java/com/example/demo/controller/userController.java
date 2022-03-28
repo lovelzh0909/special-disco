@@ -31,7 +31,7 @@ public class userController {
                 
         if(one!=null){
             log.info("--------------------logo-------------------");
-            log.info("logon["+one.toString()+"]");
+            log.info("logon["+ one +"]");
             return CommonReturnType.create(one.getRole(),"success");
         }
         return CommonReturnType.create(null,"用户名或密码错误");
@@ -52,7 +52,7 @@ public class userController {
         }else{
             userService.save(user);
             log.info("--------------------logo-------------------");
-            log.info("register["+user.toString()+"]");
+            log.info("register["+ user +"]");
             assert false;
             return CommonReturnType.create(user.getRole(),"success");
         }
@@ -60,10 +60,10 @@ public class userController {
     @PostMapping("/delete")
     public CommonReturnType delete(@RequestBody User user) {
         boolean b=userService.remove(new QueryWrapper<User>().eq("phone", user.getPhone()));
-        if(b==false)
+        if(!b)
         return CommonReturnType.create("没有该用户");
         log.info("--------------------logo-------------------");
-        log.info("delete["+user.toString()+"]");
+        log.info("delete["+ user +"]");
         return CommonReturnType.create(null,"success");
     }
     @PostMapping("/information")
@@ -75,7 +75,7 @@ public class userController {
                         );
         if(one!=null){
             log.info("--------------------logo-------------------");
-            log.info("send["+one.toString()+"]");
+            log.info("send["+ one +"]");
             return CommonReturnType.create(one,"success");
         }
         else{

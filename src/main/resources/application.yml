@@ -2,9 +2,9 @@ spring:
   mvc:
     dispatch-options-request: true
   datasource:
-    url: jdbc:mysql://localhost:3306/demo?serverTimezone=GMT%2B8
-    username: root
-    password: 6226476ct
+    url: jdbc:mysql://47.103.94.131:3306/demo?serverTimezone=GMT%2B8
+    username: demo
+    password: 123456
     driver-class-name: com.mysql.cj.jdbc.Driver
     druid:
       aop-patterns: com.example.demo*  #监控SpringBean

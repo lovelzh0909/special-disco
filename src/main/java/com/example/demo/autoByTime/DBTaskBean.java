@@ -25,9 +25,6 @@ public class DBTaskBean {
     NoticeService noticeService;
     @Scheduled(cron = "0 0 5 * * ?")
     public void task() {
-
-
-
         LocalDateTime specialDate;
         long betweenDate;
         LocalDateTime nowDate = LocalDateTime.now(); //Date.getTime() 获得毫秒型日期

@@ -1,29 +1,29 @@
 // package com.example.demo;
-
+//
 // import com.baomidou.mybatisplus.annotation.FieldFill;
 // import com.baomidou.mybatisplus.annotation.IdType;
 // import com.baomidou.mybatisplus.generator.FastAutoGenerator;
 // import com.baomidou.mybatisplus.generator.config.*;
 // import com.baomidou.mybatisplus.generator.fill.Column;
-
+//
 // import java.util.Collections;
-
+//
 // public class GeneratorApplication {
 // 	private static final String projectPath = System.getProperty("user.dir");//获取项目路径
-// 	private static final String url = "jdbc:mysql://localhost:3306/demo?serverTimezone=GMT%2B8";//jdbc 路径
-// 	private static final String username = "root";//数据库账号
-// 	private static final String password = "6226476ct";//数据库密码
+// 	private static final String url = "jdbc:mysql://47.103.94.131:3306/demo?serverTimezone=GMT%2B8";//jdbc 路径
+// 	private static final String username = "demo";//数据库账号
+// 	private static final String password = "123456";//数据库密码
 // 	private static final String parentPackageName = "com.example";// 设置父包名
 // 	private static final String moduleName = "demo";// 设置父包模块名
 // 	//private static final String writer = "xgj";// 设置作者
 // 	private static final String outPath = projectPath + "\\src\\main\\java\\";//输出路径
 // 	private static final String mapperPath = projectPath + "\\src\\main\\resources\\mybatis\\mappers";// 设置mapperXml 模板路径
-
+//
 // 	public static void main(String[] args) {
-// 		String[] tableNames = {"teststatus"};//可生成多个表
+// 		String[] tableNames = {"teacherrelclass"};//可生成多个表
 // 		GeneratorApplication.execute(tableNames);
 // 	}
-
+//
 // 	public static void execute(String[] tableNames) {
 // 		FastAutoGenerator.create(url, username, password)
 // 				.globalConfig(builder -> {
@@ -37,9 +37,9 @@
 // 					builder.parent(parentPackageName) // 设置父包名
 // 							.moduleName(moduleName) // 设置父包模块名
 // 							.pathInfo(Collections.singletonMap(OutputFile.mapperXml, mapperPath)); // 设置mapperXml生成路径
-
+//
 // 				})
-
+//
 // 				.strategyConfig(builder -> {
 // 					builder.addInclude(tableNames)// 设置需要生成的表名
 // 							.addTablePrefix("t_") // 设置过滤表前缀

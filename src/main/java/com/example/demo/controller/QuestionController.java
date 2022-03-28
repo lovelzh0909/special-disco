@@ -49,16 +49,17 @@ public class QuestionController {
         if(q.getId()==null){
             q.setId(questionService.lastQuestionId()+1);
         }
-        Boolean data = questionService.save(q);
-        if(data==false)
+        boolean data = questionService.save(q);
+        if(!data)
         return CommonReturnType.create(null,"添加失败");
         return CommonReturnType.create(null);
     }
     //多条题目保存
     @PostMapping("/saveall")
     public CommonReturnType saveallQuestion(@RequestBody List<Question> q ){
-        Boolean data = questionService.saveBatch(q);
-        if(data==false)
+
+        boolean data = questionService.saveBatch(q);
+        if(!data)
         return CommonReturnType.create("添加失败");
         return CommonReturnType.create(null);
     }
@@ -80,7 +81,7 @@ public class QuestionController {
     //查询该题库的题目
     @PostMapping ("/getbycourse/{page}/{size}")
     public CommonReturnType getCourseQuesion(@RequestParam String phone,String coursename,@PathVariable int page,int size){
-        Page <Question> p =new Page<Question>(page,size);
+        Page <Question> p = new Page<>(page, size);
         p=questionService.page(p, new QueryWrapper<Question>()
         .eq("userId", phone) .eq("coursename", coursename));
         List<Question> data=questionService.list(new QueryWrapper<Question>()
@@ -95,7 +96,7 @@ public class QuestionController {
         //查询该题库的题目
         @PostMapping ("/get/bycourse/{quesTypeId}/{page}/{size}")
         public CommonReturnType getCourseandtypeQuesion(@RequestParam String phone,String coursename,@PathVariable int quesTypeId ,int page,int size){
-            Page <Question> p =new Page<Question>(page,size);
+            Page <Question> p = new Page<>(page, size);
             p=questionService.page(p, new QueryWrapper<Question>()
             .eq("userId", phone) .eq("coursename", coursename).eq("quesTypeId", quesTypeId));
             List<Question> data=questionService.list(new QueryWrapper<Question>()
@@ -136,7 +137,7 @@ public class QuestionController {
         boolean data=questionService.remove(new QueryWrapper<Question>()
                 .eq("id", id)
         );
-        if(data==false){
+        if(!data){
             return CommonReturnType.create("没有该题目或已经被删除");
         }
 
@@ -155,7 +156,7 @@ public class QuestionController {
         boolean data=questionService.remove(new QueryWrapper<Question>()
                 .eq("userId", phone).eq("coursename",coursename)
         );
-        if(data==false){
+        if(!data){
             return CommonReturnType.create("没有该题目或已经被删除");
         }
 
@@ -168,7 +169,7 @@ public class QuestionController {
         boolean data=questionService.update(new UpdateWrapper<Question>()
                 .eq("userId", phone).set("coursename",coursename)
         );
-        if(data==false){
+        if(!data){
             return CommonReturnType.create("没有该题目或已经被删除");
         }
 
@@ -205,8 +206,8 @@ public class QuestionController {
         q.setCoursename(coursename);
         q.setUserId(phone);
         log.info("save["+q+"]");
-        Boolean data = questionService.save(q);
-        if(data==false)
+        boolean data = questionService.save(q);
+        if(!data)
         return CommonReturnType.create(null,"添加失败");
         log.info("--------------log----------");
         log.info("save["+q+"]");
