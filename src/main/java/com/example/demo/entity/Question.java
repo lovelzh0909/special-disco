@@ -31,8 +31,8 @@ public class Question implements Serializable {
     @TableId("id")
     private Integer id;
 
-    @TableField("quesTypeId")
-    private int quesTypeId;
+    @TableField("typeId")
+    private int typeId;
 
     @TableField("coursename")
     private String coursename;
@@ -85,6 +85,4 @@ public class Question implements Serializable {
     @TableField("pointId")
     private String pointId;
 
-    @TableField("content")
-    private String content;
 }

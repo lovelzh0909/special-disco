@@ -10,6 +10,8 @@ import com.example.demo.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
@@ -26,6 +28,7 @@ import javax.xml.crypto.Data;
  * @author 作者
  * @since 2022-03-12
  */
+@Slf4j
 @RestController
 @RequestMapping("/question")
 public class QuestionController {
@@ -89,6 +92,21 @@ public class QuestionController {
         }
         return CommonReturnType.create(data);
     }
+        //查询该题库的题目
+        @PostMapping ("/get/bycourse/{typeId}/{page}/{size}")
+        public CommonReturnType getCourseandtypeQuesion(@RequestParam String phone,String coursename,@PathVariable int typeId ,int page,int size){
+            Page <Question> p =new Page<Question>(page,size);
+            p=questionService.page(p, new QueryWrapper<Question>()
+            .eq("userId", phone) .eq("coursename", coursename));
+            List<Question> data=questionService.list(new QueryWrapper<Question>()
+                    .eq("userId", phone) .eq("coursename", coursename) .eq("coursename", coursename)
+            );
+            p.setTotal(data.size());
+            if(data.size()==0){
+                return CommonReturnType.create("没有该题目或已经被删除");
+            }
+            return CommonReturnType.create(p);
+        }
     /**
      * 获取该老师的所有题库课程名
      * @param phone
@@ -109,6 +127,8 @@ public class QuestionController {
             }
             return CommonReturnType.create(m);
     }
+
+
     //删除成功
     @PostMapping ("/remove")
     public CommonReturnType removeQuestion(@RequestParam int id){
@@ -184,9 +204,12 @@ public class QuestionController {
         Question q=new Question();
         q.setCoursename(coursename);
         q.setUserId(phone);
+        log.info("save["+q+"]");
         Boolean data = questionService.save(q);
         if(data==false)
         return CommonReturnType.create(null,"添加失败");
+        log.info("--------------log----------");
+        log.info("save["+q+"]");
         return CommonReturnType.create(null);
     }
 }
