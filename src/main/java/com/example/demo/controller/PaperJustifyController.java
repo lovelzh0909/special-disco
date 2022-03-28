@@ -49,10 +49,10 @@ public class PaperJustifyController {
     }
     //查询成功
     @PostMapping ("/get")
-    public CommonReturnType getAllQuesion(@RequestParam Integer phone){
+    public CommonReturnType getAllQuesion(@RequestParam String phone){
 
         List<PaperJustify> data=questionService.list(new QueryWrapper<PaperJustify>()
-                .eq("studentId", phone)
+                .eq("studentphone", phone)
         );
         if(data==null){
             return CommonReturnType.create("没有gaixuesheng");
@@ -63,10 +63,10 @@ public class PaperJustifyController {
 
     //删除成功
     @PostMapping ("/remove")
-    public CommonReturnType removeQuestion(@RequestParam int id){
+    public CommonReturnType removeQuestion(@RequestParam String id){
 
         boolean data=questionService.remove(new QueryWrapper<PaperJustify>()
-                .eq("studentId", id)
+                .eq("studentphone", id)
         );
         if(data==false){
             return CommonReturnType.create("没有该题目或已经被删除");

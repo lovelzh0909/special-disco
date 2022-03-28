@@ -37,7 +37,7 @@ public class Papers implements Serializable {
     private Integer paperId;
 
     @TableField("createrPhone")
-    private Integer Phone;
+    private String Phone;
 
     @TableField("papercontext")
     private String papercontext;
