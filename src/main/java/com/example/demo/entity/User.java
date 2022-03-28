@@ -3,6 +3,7 @@ package com.example.demo.entity;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.Version;
 import lombok.Data;
 
 
@@ -34,5 +35,7 @@ public class User implements Serializable {
     @TableField("role")
     private String role;
 
+    @Version
+    private int version;
 
 }

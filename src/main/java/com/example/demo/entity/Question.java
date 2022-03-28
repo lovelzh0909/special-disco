@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -31,8 +33,9 @@ public class Question implements Serializable {
     @TableId("id")
     private Integer id;
 
-    @TableField("typeId")
-    private int typeId;
+    @JsonProperty("quesTypeId")
+    @TableField("quesTypeId")
+    private int quesTypeId;
 
     @TableField("coursename")
     private String coursename;

@@ -33,11 +33,11 @@ public class MakePaper {
         List<Integer> questionnum = new ArrayList<Integer>();
         for(Ruleqnum r:ruleqnum){
             // questionnum.set(r.getTypeId(), (int) questionService.count(new QueryWrapper<Question> ().eq("type",1).eq("coursename", coursename)));
-            questionnum.set(r.getTypeId(), (int) questionService.count(new QueryWrapper<Question> ().eq("typeId",r.getTypeId()).eq("coursename", coursename).in("pointId", rule.getpointIdList())));
+            questionnum.set(r.getTypeId(), (int) questionService.count(new QueryWrapper<Question> ().eq("quesTypeId",r.getTypeId()).eq("coursename", coursename).in("pointId", rule.getpointIdList())));
             if(questionnum.get(r.getTypeId())<r.getNum()){
                 return CommonReturnType.create(null,"题库数目不足");
             }
-            List<Question> qArray = questionService.list(new QueryWrapper<Question> ().eq("typeId",r.getTypeId())
+            List<Question> qArray = questionService.list(new QueryWrapper<Question> ().eq("quesTypeId",r.getTypeId())
             .eq("coursename", coursename)
             .in("pointId", rule.getpointIdList()));
             list.addAll(randquestion(qArray,rule.getSingleNum(),r.getScore()));

@@ -93,13 +93,13 @@ public class QuestionController {
         return CommonReturnType.create(data);
     }
         //查询该题库的题目
-        @PostMapping ("/get/bycourse/{typeId}/{page}/{size}")
-        public CommonReturnType getCourseandtypeQuesion(@RequestParam String phone,String coursename,@PathVariable int typeId ,int page,int size){
+        @PostMapping ("/get/bycourse/{quesTypeId}/{page}/{size}")
+        public CommonReturnType getCourseandtypeQuesion(@RequestParam String phone,String coursename,@PathVariable int quesTypeId ,int page,int size){
             Page <Question> p =new Page<Question>(page,size);
             p=questionService.page(p, new QueryWrapper<Question>()
-            .eq("userId", phone) .eq("coursename", coursename));
+            .eq("userId", phone) .eq("coursename", coursename).eq("quesTypeId", quesTypeId));
             List<Question> data=questionService.list(new QueryWrapper<Question>()
-                    .eq("userId", phone) .eq("coursename", coursename) .eq("coursename", coursename)
+                    .eq("userId", phone) .eq("coursename", coursename) .eq("quesTypeId", quesTypeId)
             );
             p.setTotal(data.size());
             if(data.size()==0){
