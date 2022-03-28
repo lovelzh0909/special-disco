@@ -2,7 +2,7 @@ package com.example.demo.mapper;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.exam.vo.AnswerVO;
+import com.example.demo.vo.AnswerVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
