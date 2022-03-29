@@ -29,7 +29,7 @@ public class DBTaskBean {
         long betweenDate;
         LocalDateTime nowDate = LocalDateTime.now(); //Date.getTime() 获得毫秒型日期
         List<Notice> note = noticeService.list();
-        QueryWrapper<Notice> queryWrapper = new QueryWrapper();
+
 
         for (Notice notice : note) {
             specialDate = notice.getDeadLine();

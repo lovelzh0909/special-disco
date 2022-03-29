@@ -5,10 +5,13 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
@@ -20,6 +23,7 @@ import lombok.experimental.Accessors;
  * @since 2022-03-12
  */
 @Getter
+@ToString
 @Setter
 @Accessors(chain = true)
 @TableName("test")
@@ -73,5 +77,7 @@ public class Test implements Serializable {
 
     @TableField("testtype")
     private String testtype;
+
+    private List<String> studentphone;
 
 }

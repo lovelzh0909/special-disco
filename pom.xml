@@ -62,12 +62,12 @@
     <dependency>
         <groupId>com.baomidou</groupId>
         <artifactId>mybatis-plus-generator</artifactId>
-        <version>3.5.1</version>
+        <version>3.5.2</version>
     </dependency>
     <dependency>
         <groupId>com.alibaba</groupId>
         <artifactId>fastjson</artifactId>
-        <version>1.2.79</version>
+        <version>1.2.80</version>
     </dependency>
     <dependency>
         <groupId>org.apache.velocity</groupId>
@@ -79,10 +79,10 @@
         <artifactId>springfox-boot-starter</artifactId>
         <version>3.0.0</version>
     </dependency>
-    <!-- <dependency>
-    <groupId>org.springframework.boot</groupId>
-    <artifactId>spring-boot-starter-security</artifactId>
-     </dependency> -->
+<!--    <dependency>-->
+<!--    <groupId>org.springframework.boot</groupId>-->
+<!--    <artifactId>spring-boot-starter-security</artifactId>-->
+<!--     </dependency>-->
 </dependencies>
 <!--    <build>-->
 <!--        <plugins>-->

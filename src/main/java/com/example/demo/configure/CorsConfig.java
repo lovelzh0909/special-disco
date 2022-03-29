@@ -8,14 +8,14 @@ import org.springframework.web.filter.CorsFilter;
 
 @Configuration
 public class CorsConfig {
-    // 当前跨域请求最大有效时长。这里默认30天
-    private long maxAge = 30 * 24 * 60 * 60;
 
     private CorsConfiguration buildConfig() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
         corsConfiguration.addAllowedOriginPattern("*"); // 1 设置访问源地址
         corsConfiguration.addAllowedHeader("*"); // 2 设置访问源请求头
         corsConfiguration.addAllowedMethod("*"); // 3 设置访问源请求方法
+        // 当前跨域请求最大有效时长。这里默认30天
+        long maxAge = 30 * 24 * 60 * 60;
         corsConfiguration.setMaxAge(maxAge);
         corsConfiguration.setAllowCredentials(true); //用于 token 跨域
         return corsConfiguration;

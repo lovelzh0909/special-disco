@@ -38,7 +38,7 @@ public class User implements Serializable {
     @TableField("classroom")
     private String classroom;
 
-//    @Version
-//    private int version;
+    @Version
+    private int version;
 
 }

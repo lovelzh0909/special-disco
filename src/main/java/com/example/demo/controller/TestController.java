@@ -9,6 +9,7 @@ import com.example.demo.entity.Testrelstudent;
 import com.example.demo.service.TestService;
 import com.example.demo.service.TestrelstudentService;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.web.bind.annotation.*;
@@ -25,6 +26,7 @@ import java.util.List;
  * @author 作者
  * @since 2022-03-12
  */
+@Slf4j
 @RestController
 @RequestMapping("/test")
 public class TestController {
@@ -42,6 +44,8 @@ public class TestController {
     }
     @PostMapping("/save")
     public CommonReturnType saveTest(@RequestBody Test t ){
+        log.info("------------------log--------------");
+        log.info(t.toString());
         // if(q.getStem()==null||q.getAnswer()==null||q.getCoursename()==null||q.getType()==null)
         // return CommonReturnType.create(null,"信息不全");
         if(t.getCreatedate()==null){
@@ -57,6 +61,37 @@ public class TestController {
         return CommonReturnType.create(null,"添加失败");
         return CommonReturnType.create(null);
     }
+
+    @PostMapping("/saveall")
+    public CommonReturnType saveTest(@RequestBody List<Test> t ){
+        Boolean data =false;
+        for(Test te:t){
+            if(te.getCreatedate()==null){
+
+                te.setCreatedate(String.valueOf(LocalDateTime.now()));
+            }
+            List<Testrelstudent> tsl =new ArrayList<>();
+            List<String> phone =te.getStudentphone();
+            te.setStudentphone(null);
+            testService.save(te);
+            for(String p:phone) {
+                Testrelstudent trs = new Testrelstudent();
+                trs.setTestId(te.getTestId());
+
+                trs.setStudentPhone(p);
+                tsl.add(trs);
+            }
+
+            data = testrelstudentService.saveBatch(tsl);
+        }
+        // if(q.getStem()==null||q.getAnswer()==null||q.getCoursename()==null||q.getType()==null)
+        // return CommonReturnType.create(null,"信息不全");
+
+        if(data==false)
+            return CommonReturnType.create(null,"添加失败");
+        return CommonReturnType.create(null);
+    }
+
     @PostMapping("/changeStatus")
     public  CommonReturnType changeStatus(@RequestBody int id){
         Test t =testService.getById(id);
@@ -70,7 +105,7 @@ public class TestController {
     }
     /**
      * 
-     * @param test
+     * @param
      * @return
      */
     @PostMapping("/getStudenttest/{page}/{size}")
