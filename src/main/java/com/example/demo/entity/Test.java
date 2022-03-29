@@ -78,6 +78,10 @@ public class Test implements Serializable {
     @TableField("testtype")
     private String testtype;
 
+    @TableField("invigilatorId")
+    private String invigilatorId;
+
+    @TableField(exist = false)
     private List<String> studentphone;
 
 }

@@ -6,9 +6,11 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.demo.Response.CommonReturnType;
 import com.example.demo.entity.Test;
 import com.example.demo.entity.Testrelstudent;
+import com.example.demo.entity.User;
 import com.example.demo.service.TestService;
 import com.example.demo.service.TestrelstudentService;
 
+import com.example.demo.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageImpl;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * <p>
@@ -34,6 +37,8 @@ public class TestController {
     TestService testService;
     @Autowired
     TestrelstudentService testrelstudentService;
+    @Autowired
+    UserService userService;
     @PostMapping("/all")
     public CommonReturnType listAll(){
         List<Test> l =testService.list();
@@ -56,15 +61,15 @@ public class TestController {
         // if(q.getId()==null){
         //     q.setId(questionService.lastQuestionId()+1);
         // }
-        Boolean data = testService.save(t);
-        if(data==false)
+        boolean data = testService.save(t);
+        if(!data)
         return CommonReturnType.create(null,"添加失败");
         return CommonReturnType.create(null);
     }
 
     @PostMapping("/saveall")
     public CommonReturnType saveTest(@RequestBody List<Test> t ){
-        Boolean data =false;
+        boolean data =false;
         for(Test te:t){
             if(te.getCreatedate()==null){
 
@@ -73,6 +78,32 @@ public class TestController {
             List<Testrelstudent> tsl =new ArrayList<>();
             List<String> phone =te.getStudentphone();
             te.setStudentphone(null);
+            List<User> userList =new ArrayList<>();
+            if(te.getTesttime()!=null){
+                String sub=te.getTesttime().substring(0,9);
+                List<User> l=userService.list(new QueryWrapper<User>().eq("role","teacher"));
+
+                for(User u:l){
+                    int flag=1;
+                    List<Test> testList =testService.list(new QueryWrapper<Test>().eq("teacherPhone",u.getPhone()));
+                    for(Test tes:testList){
+                        if(tes.getTesttime().substring(0, 9).equals(sub)){
+                            flag=0; break;
+                        }
+                    }
+                    if(flag==1){
+                        userList.add(u);
+                    }
+                }
+            }
+            if(userList.size()==0){
+                return  CommonReturnType.create("没有空余监考老师");
+            }
+            Random r =new Random();
+            int i =r.nextInt(userList.size());
+            //设置监考老师id及姓名
+            te.setInvigilatorId(userList.get(i).getPhone());
+            te.setInvigilator(userList.get(i).getName());
             testService.save(te);
             for(String p:phone) {
                 Testrelstudent trs = new Testrelstudent();
@@ -87,7 +118,7 @@ public class TestController {
         // if(q.getStem()==null||q.getAnswer()==null||q.getCoursename()==null||q.getType()==null)
         // return CommonReturnType.create(null,"信息不全");
 
-        if(data==false)
+        if(!data)
             return CommonReturnType.create(null,"添加失败");
         return CommonReturnType.create(null);
     }
@@ -97,8 +128,8 @@ public class TestController {
         Test t =testService.getById(id);
         t.setPystatus("pystatus");
         t.setTeststatus(1);
-        Boolean data = testService.save(t);
-        if(data==false)
+        boolean data = testService.save(t);
+        if(!data)
         return CommonReturnType.create(null,"添加失败");
         return CommonReturnType.create(null);
         // return testService.list(new QueryWrapper<Test>().eq("phone", test.getPhone()));
@@ -164,7 +195,7 @@ public class TestController {
         boolean data=testService.remove(new QueryWrapper<Test>()
                 .eq("testId", id)
         );
-        if(data==false){
+        if(!data){
             return CommonReturnType.create("没有该测试或已经被删除");
         }
 
