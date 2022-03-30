@@ -83,5 +83,4 @@ public class Test implements Serializable {
 
     @TableField(exist = false)
     private List<String> studentphone;
-
 }

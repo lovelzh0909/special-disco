@@ -107,7 +107,7 @@ public class MakePaper {
                 return CommonReturnType.create(list);
     }  
     /**
-     * 
+     * 非接口
      * @param singleArray 该类型题库
      * @param chosenum 题目数目
      * @param s  题目分数
@@ -129,36 +129,38 @@ public class MakePaper {
                 singleArray.set(index, tmpQuestion);}
             return list;
         }
-    
-        @PostMapping("/paperProblem/save")
-        public CommonReturnType notice(@RequestParam int paperId, @RequestParam String papercontext) {
+     @PostMapping("/paperProblem/save")
+    public CommonReturnType notice(@RequestParam int paperId, @RequestParam String papercontext) {
             //new CommonReturnType();
-            boolean b= papersService.update(new UpdateWrapper<Papers>().set("papercontext",papercontext).eq("paperId", paperId));
-            if(b){
-                return CommonReturnType.create(null);
-            }else{
-                return CommonReturnType.create(null,"暂无通知");
-            }
-        }
+         boolean b= papersService.update(new UpdateWrapper<Papers>().set("papercontext",papercontext).eq("paperId", paperId));
+         if(b){
+             return CommonReturnType.create(null);
+         }else{
+             return CommonReturnType.create(null,"暂无通知");
+         }
+    }
 
     @PostMapping("/paperProblem/save/byListQuestion")
     public CommonReturnType saveProblem(@RequestParam int paperId, @RequestBody List<Question> l) {
         //new CommonReturnType();
-        StringBuilder papercontext = new StringBuilder();
-        for (Question q : l) {
-            papercontext.append(q.getId());
-            if (q == l.get(l.size() - 1)) {
+        String papercontext ="";
+        for (Question q:l){
+            papercontext =papercontext+String.valueOf(q.getId());
+            if(q==l.get(l.size()-1))
+            {
                 break;
             }
-            papercontext.append(",");
+            papercontext =papercontext+",";
         }
-        boolean b = papersService.update(new UpdateWrapper<Papers>().set("papercontext", papercontext.toString()).eq("paperId", paperId));
-        if (b) {
+        boolean b= papersService.update(new UpdateWrapper<Papers>().set("papercontext",papercontext).eq("paperId", paperId));
+        if(b){
             return CommonReturnType.create(null);
-        } else {
-            return CommonReturnType.create(null, "暂无通知");
+        }else{
+            return CommonReturnType.create(null,"暂无通知");
         }
     }
+
+
 
     
 }

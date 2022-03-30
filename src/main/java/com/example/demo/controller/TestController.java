@@ -58,6 +58,10 @@ public class TestController {
             // Date d= new Date();
             t.setCreatedate(String.valueOf(LocalDateTime.now()));
         }
+        if(t.getTesttime()!=null){
+            String sub=t.getTesttime().substring(0,9);
+
+        }
         // if(q.getId()==null){
         //     q.setId(questionService.lastQuestionId()+1);
         // }
