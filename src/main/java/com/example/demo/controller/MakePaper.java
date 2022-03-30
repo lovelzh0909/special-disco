@@ -141,7 +141,24 @@ public class MakePaper {
             }
         }
 
-
+    @PostMapping("/paperProblem/save/byListQuestion")
+    public CommonReturnType saveProblem(@RequestParam int paperId, @RequestBody List<Question> l) {
+        //new CommonReturnType();
+        StringBuilder papercontext = new StringBuilder();
+        for (Question q : l) {
+            papercontext.append(q.getId());
+            if (q == l.get(l.size() - 1)) {
+                break;
+            }
+            papercontext.append(",");
+        }
+        boolean b = papersService.update(new UpdateWrapper<Papers>().set("papercontext", papercontext.toString()).eq("paperId", paperId));
+        if (b) {
+            return CommonReturnType.create(null);
+        } else {
+            return CommonReturnType.create(null, "暂无通知");
+        }
+    }
 
     
 }

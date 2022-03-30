@@ -27,9 +27,10 @@ import lombok.experimental.Accessors;
 public class Notice implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
     @TableField("id")
     private Integer id;
+
+
 
     @TableField("phone")
     private String phone;
@@ -42,6 +43,9 @@ public class Notice implements Serializable {
 
     @TableField("creatTime")
     private LocalDateTime creatTime;
+
+
+
 
 
 }

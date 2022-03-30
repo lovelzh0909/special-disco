@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.demo.Response.CommonReturnType;
 import com.example.demo.entity.Papers;
@@ -194,7 +195,9 @@ public class PapersController {
         return CommonReturnType.create(null);
     }
 
-    private List<String> stringToList(String strs){
+
+
+        private List<String> stringToList(String strs){
         String str[] = strs.split(",");
         return Arrays.asList(str);
    }
