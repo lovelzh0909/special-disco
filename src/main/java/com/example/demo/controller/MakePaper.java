@@ -27,7 +27,7 @@ public class MakePaper {
     @Autowired
     PapersService papersService;
 
-    @PostMapping("/autoProblem")
+    @PostMapping("/autoProblem/{coursename}")
     public CommonReturnType saveQuestion(@RequestBody Rule rule,@RequestBody List<Ruleqnum> ruleqnum,@PathVariable String coursename){
         List<Integer> list =new ArrayList<Integer>();
         List<Integer> questionnum = new ArrayList<Integer>();
@@ -140,8 +140,8 @@ public class MakePaper {
          }
     }
 
-    @PostMapping("/paperProblem/save/byListQuestion")
-    public CommonReturnType saveProblem(@RequestParam int paperId, @RequestBody List<Question> l) {
+    @PostMapping("/paperProblem/save/byListQuestion/{paperId}")
+    public CommonReturnType saveProblem(@PathVariable int paperId, @RequestBody List<Question> l) {
         //new CommonReturnType();
         String papercontext ="";
         for (Question q:l){

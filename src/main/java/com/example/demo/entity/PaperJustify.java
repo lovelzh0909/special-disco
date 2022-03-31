@@ -9,6 +9,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
@@ -21,6 +22,7 @@ import lombok.experimental.Accessors;
  */
 @Getter
 @Setter
+@ToString
 @Accessors(chain = true)
 @TableName("paper_justify")
 @ApiModel(value = "PaperJustify对象", description = "用于存储学生问题答案	")
@@ -55,7 +57,7 @@ public class PaperJustify implements Serializable {
 
     @JSONField(format="totalscore")
     @TableField("score")
-    private Integer totalscore;
+    private Double totalscore;
 
     @JSONField(format="testId")
     @TableField("testId")
