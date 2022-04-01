@@ -10,13 +10,9 @@ import java.util.List;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.demo.Response.CommonReturnType;
-import com.example.demo.entity.Papers;
-import com.example.demo.entity.Question;
-import com.example.demo.entity.Test;
+import com.example.demo.entity.*;
 import com.example.demo.entity.vo.StudentVideoVO;
-import com.example.demo.service.PapersService;
-import com.example.demo.service.QuestionService;
-import com.example.demo.service.TestService;
+import com.example.demo.service.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -43,6 +39,10 @@ public class showpaper {
     QuestionService questionService;
     @Autowired
     TestService testService;
+    @Autowired
+    PaperJustifyService paperJustifyService;
+    @Autowired
+    TestrelstudentService testrelstudentService;
 
     /**
      * 
@@ -56,9 +56,29 @@ public class showpaper {
         List<String> qs=   stringToList(p.getPapercontext());
         List<Question> q=new ArrayList<>();
         for(String s:qs){
-            q.add(questionService.getById(Integer.valueOf(s)));
+            q.add(questionService.getById(Integer.valueOf(s)).setAnswer(null));
         }
 
+        if(q.size()==0){
+            return CommonReturnType.create("没有找到该试卷");
+        }
+        return CommonReturnType.create(q);
+    }
+
+    @PostMapping("/getQuestion/bytestId/grant")
+    public CommonReturnType getpaperforteachergrant(@RequestParam Integer testId) {
+        Test t= testService.getById(testId);
+        Papers p =papersService.getById(t.getPaperId());
+        List<String> qs=   stringToList(p.getPapercontext());
+        List<Question> q=new ArrayList<>();
+        for(String s:qs){
+            Testrelstudent testrelstudent =testrelstudentService.getOne(new QueryWrapper<Testrelstudent>()
+                    .eq("testId",testId).eq("status",1));
+            Question tempq =questionService.getById(Integer.valueOf(s)) ;
+            tempq.setStudentAnswer(paperJustifyService.getOne(new QueryWrapper<PaperJustify>()
+                    .eq("testId",testId).eq("studentphone",testrelstudent.getStudentPhone())).getExmaineAnswer());
+            q.add(tempq);
+        }
         if(q.size()==0){
             return CommonReturnType.create("没有找到该试卷");
         }

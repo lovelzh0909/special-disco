@@ -53,7 +53,7 @@ public class PaperJustify implements Serializable {
     @JSONField(format="score")
     @ApiModelProperty("1 dui 0 cuo")
     @TableField("justify")
-    private Integer score;
+    private Double score;
 
     @JSONField(format="totalscore")
     @TableField("score")

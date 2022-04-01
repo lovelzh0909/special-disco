@@ -48,6 +48,7 @@ public class PaperJustifyController {
     public CommonReturnType saveallQuestion(@RequestBody List<Question> ps , @PathVariable String phone , @PathVariable Integer testId ){
         PaperJustify p = new PaperJustify();
         for(Question q :ps){
+            p.setId(null);
             p.setQuestionId(q.getId());
             p.setExmaineAnswer(q.getAnswer());
             p.setTestId(testId);

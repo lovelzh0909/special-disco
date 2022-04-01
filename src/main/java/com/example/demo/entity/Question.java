@@ -85,4 +85,10 @@ public class Question implements Serializable {
     @TableField("pointId")
     private String pointId;
 
+    @TableField(exist = false)
+    private  String studentAnswer;
+
+    @TableField(exist = false)
+    private  String getScore;
+
 }

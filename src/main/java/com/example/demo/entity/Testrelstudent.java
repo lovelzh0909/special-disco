@@ -37,5 +37,8 @@ public class Testrelstudent implements Serializable {
     @TableField("studentPhone")
     private String studentPhone;
 
+    @TableField("status")
+    private int status;
+
 
 }
