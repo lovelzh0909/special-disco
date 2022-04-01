@@ -3,9 +3,7 @@ package com.example.demo.controller;
 
 
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
@@ -16,6 +14,7 @@ import com.example.demo.entity.vo.StudentVideoVO;
 import com.example.demo.service.*;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.ibatis.annotations.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -72,11 +71,13 @@ public class showpaper {
         Papers p =papersService.getById(t.getPaperId());
         List<String> qs=   stringToList(p.getPapercontext());
         List<Question> q=new ArrayList<>();
+        Map<String,Object> m =new HashMap<>();
         for(String s:qs){
             List<Testrelstudent> testrelstudent =testrelstudentService.list(new QueryWrapper<Testrelstudent>()
                     .eq("testId",testId).eq("status",1));
+            m.put("studentphone",testrelstudent.get(0).getStudentPhone());
             if(testrelstudent.size()==0){
-                return CommonReturnType.create("该测试没有学生参加");
+                return CommonReturnType.create("没有待批阅学生参加");
             }
             Question tempq =questionService.getById(Integer.valueOf(s)) ;
             tempq.setStudentAnswer(paperJustifyService.getOne(new QueryWrapper<PaperJustify>()
@@ -88,7 +89,7 @@ public class showpaper {
         if(q.size()==0){
             return CommonReturnType.create("没有找到该试卷");
         }
-        return CommonReturnType.create(q);
+        return CommonReturnType.create(q,m);
     }
 
     @PostMapping("/getQuestion/bypaperId")

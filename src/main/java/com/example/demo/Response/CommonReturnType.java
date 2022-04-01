@@ -7,6 +7,7 @@ public class CommonReturnType {
     private String msg;
     private Integer status;
     private Object data;
+    private Object data2;
 
     public static CommonReturnType create(Object result)
     {
@@ -25,6 +26,16 @@ public class CommonReturnType {
         {
             commonReturnType.setStatus(0);
         }
+        return commonReturnType;
+    }
+
+    public static CommonReturnType create(Object result,Object result2)
+    {
+        CommonReturnType commonReturnType = new CommonReturnType();
+        commonReturnType.setData(result);
+        commonReturnType.setData2(result2);
+        commonReturnType.setMsg("success");
+        commonReturnType.setStatus(1);
         return commonReturnType;
     }
 }
