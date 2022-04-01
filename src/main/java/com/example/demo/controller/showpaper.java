@@ -76,7 +76,7 @@ public class showpaper {
                     .eq("testId",testId).eq("status",1));
             Question tempq =questionService.getById(Integer.valueOf(s)) ;
             tempq.setStudentAnswer(paperJustifyService.getOne(new QueryWrapper<PaperJustify>()
-                    .eq("testId",testId).eq("studentphone",testrelstudent.get(0).getStudentPhone())).getExmaineAnswer());
+                    .eq("testId",testId).eq("studentphone",testrelstudent.get(0).getStudentPhone()).eq("questionid", tempq.getId())).getExmaineAnswer());
             q.add(tempq);
         }
         if(q.size()==0){
