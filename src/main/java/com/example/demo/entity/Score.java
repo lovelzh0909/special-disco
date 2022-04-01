@@ -14,9 +14,9 @@ public class Score {
     @TableField("subject")
     private String subject;
     @TableField("ptScore")
-    private Integer ptScore;
+    private Double ptScore;
     @TableField("etScore")
-    private Integer etScore;
+    private Double etScore;
     @TableField("score")
     private Double score;
     @TableField("scoreId")

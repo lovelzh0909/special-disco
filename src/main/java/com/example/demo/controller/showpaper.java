@@ -3,6 +3,8 @@ package com.example.demo.controller;
 
 
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -140,11 +142,12 @@ public class showpaper {
             return CommonReturnType.create("没有找到该试卷");
         }
         Score score = new Score();
-        score.setScore(sum);
+        score.setEtScore(sum);
+        score.setAnswerDate(String.valueOf(LocalDate.now()));
+        score.setExamCode(testId);
         score.setSubject(t.getCoursename());
         score.setStudentId(Integer.valueOf(studentphone));
         scoreService.save(score);
-
         return CommonReturnType.create(score);
     }
    @PostMapping("/getpaper/bypaperId")
