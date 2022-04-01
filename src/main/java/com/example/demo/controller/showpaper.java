@@ -123,7 +123,12 @@ public class showpaper {
     public CommonReturnType savescore(@RequestBody List<Question> questionList,@PathVariable String studentphone ,@PathVariable Integer testId) {
         Double sum=0.0;
         for(Question q:questionList) {
-            sum += paperJustifyService.getById(q.getId()).setScore(q.getGetScore()).getScore();
+            PaperJustify paperJustify=paperJustifyService.getOne(new QueryWrapper<PaperJustify>().eq("studentphone", studentphone).eq("testId", testId)
+                    .eq("questionId",q.getId()));
+            if(paperJustify==null){
+                return  CommonReturnType.create("没找到该学生某题目答案");
+            }
+            sum += paperJustify.setScore(q.getGetScore()).getScore();
         }
 //        Testrelstudent stu = testrelstudentService.getOne(new QueryWrapper<Testrelstudent>().eq("studentphone", studentphone).eq("testId", testId));
 //        stu.setStatus(3);
