@@ -72,11 +72,11 @@ public class showpaper {
         List<String> qs=   stringToList(p.getPapercontext());
         List<Question> q=new ArrayList<>();
         for(String s:qs){
-            Testrelstudent testrelstudent =testrelstudentService.getOne(new QueryWrapper<Testrelstudent>()
+            List<Testrelstudent> testrelstudent =testrelstudentService.list(new QueryWrapper<Testrelstudent>()
                     .eq("testId",testId).eq("status",1));
             Question tempq =questionService.getById(Integer.valueOf(s)) ;
             tempq.setStudentAnswer(paperJustifyService.getOne(new QueryWrapper<PaperJustify>()
-                    .eq("testId",testId).eq("studentphone",testrelstudent.getStudentPhone())).getExmaineAnswer());
+                    .eq("testId",testId).eq("studentphone",testrelstudent.get(0).getStudentPhone())).getExmaineAnswer());
             q.add(tempq);
         }
         if(q.size()==0){
