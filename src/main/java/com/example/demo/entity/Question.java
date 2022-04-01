@@ -89,6 +89,6 @@ public class Question implements Serializable {
     private  String studentAnswer;
 
     @TableField(exist = false)
-    private  String getScore;
+    private  Double getScore;
 
 }

@@ -1,24 +1,26 @@
 package com.example.demo.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.Data;
 
 import java.util.Date;
 
 @Data
 public class Score {
+    @TableField("examCode")
     private Integer examCode;
-
+    @TableField("studentId")
     private Integer studentId;
-
+    @TableField("subject")
     private String subject;
-
+    @TableField("ptScore")
     private Integer ptScore;
-
+    @TableField("etScore")
     private Integer etScore;
-
-    private Integer score;
-
+    @TableField("score")
+    private Double score;
+    @TableField("scoreId")
     private Integer scoreId;
-
+    @TableField("answerDate")
     private String answerDate;
 }

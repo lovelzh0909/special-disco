@@ -8,17 +8,16 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.demo.Response.CommonReturnType;
 import com.example.demo.entity.*;
 import com.example.demo.entity.vo.StudentVideoVO;
 import com.example.demo.service.*;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 /**
@@ -31,7 +30,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/showpaper")
-
+@Slf4j
 public class showpaper {
     @Autowired
     PapersService papersService;
@@ -43,6 +42,8 @@ public class showpaper {
     PaperJustifyService paperJustifyService;
     @Autowired
     TestrelstudentService testrelstudentService;
+    @Autowired
+    ScoreService scoreService;
 
     /**
      * 
@@ -74,11 +75,16 @@ public class showpaper {
         for(String s:qs){
             List<Testrelstudent> testrelstudent =testrelstudentService.list(new QueryWrapper<Testrelstudent>()
                     .eq("testId",testId).eq("status",1));
+            if(testrelstudent.size()==0){
+                return CommonReturnType.create("该测试没有学生参加");
+            }
             Question tempq =questionService.getById(Integer.valueOf(s)) ;
             tempq.setStudentAnswer(paperJustifyService.getOne(new QueryWrapper<PaperJustify>()
                     .eq("testId",testId).eq("studentphone",testrelstudent.get(0).getStudentPhone()).eq("questionid", tempq.getId())).getExmaineAnswer());
             q.add(tempq);
         }
+        log.info("-----------------log---------------");
+        log.info(q.toString());
         if(q.size()==0){
             return CommonReturnType.create("没有找到该试卷");
         }
@@ -112,6 +118,29 @@ public class showpaper {
        return CommonReturnType.create(p);
    }
 
+    @PostMapping("/marking/finish/{studentphone}/{testId}")
+    public CommonReturnType savescore(@RequestBody List<Question> questionList,@PathVariable String studentphone ,@PathVariable Integer testId) {
+        Double sum=0.0;
+        for(Question q:questionList) {
+            sum += paperJustifyService.getById(q.getId()).setScore(q.getGetScore()).getScore();
+        }
+//        Testrelstudent stu = testrelstudentService.getOne(new QueryWrapper<Testrelstudent>().eq("studentphone", studentphone).eq("testId", testId));
+//        stu.setStatus(3);
+        testrelstudentService.update(new UpdateWrapper<Testrelstudent>().set("status",3).eq("studentPhone", studentphone).eq("testId", testId));
+
+        Test t= testService.getById(testId);
+        Papers p =papersService.getById(t.getPaperId());
+        if(p==null){
+            return CommonReturnType.create("没有找到该试卷");
+        }
+        Score score = new Score();
+        score.setScore(sum);
+        score.setSubject(t.getCoursename());
+        score.setStudentId(Integer.valueOf(studentphone));
+        scoreService.save(score);
+
+        return CommonReturnType.create(score);
+    }
    @PostMapping("/getpaper/bypaperId")
    public CommonReturnType getpaper(@RequestParam Integer paperId) {
        Papers p =papersService.getById(paperId);

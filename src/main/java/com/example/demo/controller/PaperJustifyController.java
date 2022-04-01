@@ -9,6 +9,7 @@ import com.example.demo.Response.CommonReturnType;
 import com.example.demo.entity.PaperJustify;
 import com.example.demo.entity.Question;
 import com.example.demo.service.PaperJustifyService;
+import com.example.demo.service.QuestionService;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,10 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/paperJustify")
 public class PaperJustifyController {
     @Autowired
-    PaperJustifyService questionService;
+    PaperJustifyService paperJustifyService;
+
+    @Autowired
+    QuestionService questionService;
 
     //fillQuestion
     //添加成功
@@ -37,7 +41,7 @@ public class PaperJustifyController {
     public CommonReturnType saveQuestion(@RequestBody PaperJustify q ){
         log.info("----------------log---------------");
         log.info(q.toString());
-        boolean data= questionService.save(q);
+        boolean data= paperJustifyService.save(q);
         if(data==false){
             return CommonReturnType.create("没有gaixuesheng");
         }
@@ -46,15 +50,41 @@ public class PaperJustifyController {
     //duojiedhou
     @PostMapping("/saveall/{phone}/{testId}")
     public CommonReturnType saveallQuestion(@RequestBody List<Question> ps , @PathVariable String phone , @PathVariable Integer testId ){
+        if(paperJustifyService.getOne(new QueryWrapper<PaperJustify>().eq("studentPhone", phone).eq("testId", testId))!=null){
+            return CommonReturnType.create("你已经交卷");
+        }
         PaperJustify p = new PaperJustify();
         for(Question q :ps){
             p.setId(null);
             p.setQuestionId(q.getId());
+            // p.setExmaineAnswer(q.getAnswer());
+            p.setCorrectAnswer(questionService.getById(q.getId()).getAnswer());
+            p.setCorrectAnswer(q.getAnswer());
             p.setExmaineAnswer(q.getAnswer());
+            if(q.getQuesTypeId()==1){
+                if(p.getCorrectAnswer()==p.getExmaineAnswer()){
+                    p.setScore(q.getScore());
+                }
+            }
+            if(q.getQuesTypeId()==2){
+                if(p.getCorrectAnswer()==p.getExmaineAnswer()){
+                    p.setScore(q.getScore());
+                }
+            }
+            if(q.getQuesTypeId()==3){
+                if(p.getCorrectAnswer()==p.getExmaineAnswer()){
+                    p.setScore(q.getScore());
+                }
+            }
+            if(q.getQuesTypeId()==4){
+                if(p.getCorrectAnswer()==p.getExmaineAnswer()){
+                    p.setScore(q.getScore());
+                }
+            }
             p.setTestId(testId);
             p.setTotalscore(q.getScore());
             p.setStudentphone(phone);
-            boolean data= questionService.save(p);
+            boolean data= paperJustifyService.save(p);
             if(data==false){
                 return CommonReturnType.create("没有gaixuesheng");
             }
@@ -65,7 +95,7 @@ public class PaperJustifyController {
     @PostMapping ("/get")
     public CommonReturnType getAllQuesion(@RequestParam String phone){
 
-        List<PaperJustify> data=questionService.list(new QueryWrapper<PaperJustify>()
+        List<PaperJustify> data=paperJustifyService.list(new QueryWrapper<PaperJustify>()
                 .eq("studentphone", phone)
         );
         if(data==null){
@@ -79,7 +109,7 @@ public class PaperJustifyController {
     @PostMapping ("/remove")
     public CommonReturnType removeQuestion(@RequestParam String id){
 
-        boolean data=questionService.remove(new QueryWrapper<PaperJustify>()
+        boolean data=paperJustifyService.remove(new QueryWrapper<PaperJustify>()
                 .eq("studentphone", id)
         );
         if(data==false){
