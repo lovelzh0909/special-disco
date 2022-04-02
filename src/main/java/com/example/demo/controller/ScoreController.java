@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import java.util.List;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.demo.Response.CommonReturnType;
@@ -9,11 +10,7 @@ import com.example.demo.entity.Score;
 import com.example.demo.service.impl.ScoreServiceImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class ScoreController {
@@ -23,6 +20,13 @@ public class ScoreController {
     @GetMapping("/scores")
     public CommonReturnType findAll() {
         List<Score> res = scoreService.findAll();
+        return CommonReturnType.create(res,"查询所有学生成绩");
+    }
+
+    @GetMapping("/scores/byteachphone")
+    public CommonReturnType findAllbyphone(@RequestParam String teacherphone) {
+
+        List<Score> res = scoreService.list(new QueryWrapper<Score>().eq("teacherPhone",teacherphone));
         return CommonReturnType.create(res,"查询所有学生成绩");
     }
 //    分页
