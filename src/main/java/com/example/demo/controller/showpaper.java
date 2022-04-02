@@ -122,7 +122,7 @@ public class showpaper {
    }
 
     @PostMapping("/marking/finish/{studentphone}/{testId}")
-    public CommonReturnType savescore(@RequestBody List<Question> questionList,@PathVariable String studentphone ,@PathVariable Integer testId) {
+    public CommonReturnType savescore(@RequestBody List<Question> questionList,@PathVariable String studentphone ,@PathVariable Integer testId,@PathVariable String teacherPhone) {
         Double sum=0.0;
         for(Question q:questionList) {
             PaperJustify paperJustify=paperJustifyService.getOne(new QueryWrapper<PaperJustify>().eq("studentphone", studentphone).eq("testId", testId)
@@ -143,6 +143,7 @@ public class showpaper {
         }
         Score score = new Score();
         score.setEtScore(sum);
+        score.setTeacherPhone(teacherPhone);
         score.setAnswerDate(String.valueOf(LocalDate.now()));
         score.setExamCode(testId);
         score.setSubject(t.getCoursename());

@@ -23,4 +23,6 @@ public class Score {
     private Integer scoreId;
     @TableField("answerDate")
     private String answerDate;
+    @TableField("teacherPhone")
+    private String teacherPhone;
 }
