@@ -157,7 +157,7 @@ public class showpaper {
    }
 
    private List<String> stringToList(String strs){
-       String str[] = strs.split(",");
+       String[] str = strs.split(",");
        return Arrays.asList(str);
   }
 }

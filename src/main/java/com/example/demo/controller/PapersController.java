@@ -70,7 +70,7 @@ public class PapersController {
         // }
         // p.setCreateTime(System.currentTimeMillis());
         p.setPaperId(paperId);
-        if(p.getPhone()==null||p.getPapercontext()==null)
+        if(p.getPhone()==null)
         return CommonReturnType.create(null,"信息不全");
         // if(p.getSource()==null){
         //     p.setSource(p.getPaperId()+"");
