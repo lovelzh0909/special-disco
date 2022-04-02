@@ -3,6 +3,7 @@ package com.example.demo.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.example.demo.Response.CommonReturnType;
@@ -42,7 +43,7 @@ public class PaperJustifyController {
         log.info("----------------log---------------");
         log.info(q.toString());
         boolean data= paperJustifyService.save(q);
-        if(data==false){
+        if(!data){
             return CommonReturnType.create("没有gaixuesheng");
         }
         return CommonReturnType.create(null);
@@ -62,22 +63,22 @@ public class PaperJustifyController {
             p.setCorrectAnswer(q.getAnswer());
             p.setExmaineAnswer(q.getAnswer());
             if(q.getQuesTypeId()==1){
-                if(p.getCorrectAnswer()==p.getExmaineAnswer()){
+                if(Objects.equals(p.getCorrectAnswer(), p.getExmaineAnswer())){
                     p.setScore(q.getScore());
                 }
             }
             if(q.getQuesTypeId()==2){
-                if(p.getCorrectAnswer()==p.getExmaineAnswer()){
+                if(Objects.equals(p.getCorrectAnswer(), p.getExmaineAnswer())){
                     p.setScore(q.getScore());
                 }
             }
             if(q.getQuesTypeId()==3){
-                if(p.getCorrectAnswer()==p.getExmaineAnswer()){
+                if(Objects.equals(p.getCorrectAnswer(), p.getExmaineAnswer())){
                     p.setScore(q.getScore());
                 }
             }
             if(q.getQuesTypeId()==4){
-                if(p.getCorrectAnswer()==p.getExmaineAnswer()){
+                if(Objects.equals(p.getCorrectAnswer(), p.getExmaineAnswer())){
                     p.setScore(q.getScore());
                 }
             }
@@ -85,7 +86,7 @@ public class PaperJustifyController {
             p.setTotalscore(q.getScore());
             p.setStudentphone(phone);
             boolean data= paperJustifyService.save(p);
-            if(data==false){
+            if(!data){
                 return CommonReturnType.create("没有gaixuesheng");
             }
         }
@@ -112,11 +113,23 @@ public class PaperJustifyController {
         boolean data=paperJustifyService.remove(new QueryWrapper<PaperJustify>()
                 .eq("studentphone", id)
         );
-        if(data==false){
+        if(!data){
             return CommonReturnType.create("没有该题目或已经被删除");
         }
 
         return CommonReturnType.create(null);
+    }
+    @PostMapping ("/wrongQuestion")
+    public CommonReturnType getWrongQuestion(@RequestParam String phone) {
+
+        List<PaperJustify> list = paperJustifyService.list(new QueryWrapper<PaperJustify>().apply("justify<score").eq("studentphone",phone));
+        List<Question> questionList=new ArrayList<>();
+        for (PaperJustify paperJustify : list) {
+            Question q = questionService.getOne(new QueryWrapper<Question>().eq("id", paperJustify.getQuestionId()));
+            q.setStudentAnswer(paperJustify.getExmaineAnswer());
+            questionList.add(q);
+        }
+        return CommonReturnType.create(questionList);
     }
 
 }
