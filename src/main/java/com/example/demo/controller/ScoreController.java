@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -7,6 +8,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.demo.Response.CommonReturnType;
 import com.example.demo.entity.Score;
+import com.example.demo.entity.ClassScore;
 import com.example.demo.service.impl.ScoreServiceImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,6 +63,16 @@ public class ScoreController {
     @GetMapping("/scores/{examCode}")
     public CommonReturnType findByExamCode(@PathVariable("examCode") Integer examCode) {
         List<Score> scores = scoreService.findByExamCode(examCode);
+        return CommonReturnType.create(scores,"查询成功");
+    }
+
+    @PostMapping("/scores/class/{examCode}")
+    public CommonReturnType findclassscoreByExamCode(@PathVariable("examCode") Integer examCode) {
+
+        List<Score> scores = scoreService.list(new QueryWrapper<Score>().eq("examCode",examCode));
+
+        List<ClassScore> classScoreList =new ArrayList<>();
+
         return CommonReturnType.create(scores,"查询成功");
     }
 }

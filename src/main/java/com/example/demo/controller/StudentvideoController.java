@@ -2,12 +2,20 @@ package com.example.demo.controller;
 
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.demo.Response.CommonReturnType;
 import com.example.demo.entity.Studentvideo;
+import com.example.demo.entity.Test;
+import com.example.demo.entity.Testrelstudent;
+import com.example.demo.entity.User;
 import com.example.demo.entity.vo.StudentVideoVO;
 import com.example.demo.service.StudentvideoService;
+import com.example.demo.service.TestService;
+import com.example.demo.service.TestrelstudentService;
 import com.example.demo.service.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +40,10 @@ public class StudentvideoController {
     StudentvideoService studentvideoService;
     @Autowired
     UserService userService;
+    @Autowired
+    TestrelstudentService testrelstudentService;
+    @Autowired
+    TestService testService;
     @PostMapping("/save")
     public CommonReturnType saveStudentvideo(@RequestBody Studentvideo studentvideo) {
 
@@ -42,7 +54,7 @@ public class StudentvideoController {
             e.printStackTrace();
             return CommonReturnType.create("失败");
         }
-        if(b==true){
+        if(b){
             return CommonReturnType.create(null);
         }
         else
@@ -64,11 +76,25 @@ public class StudentvideoController {
      */
     @PostMapping("/get")
     public CommonReturnType getStudentvideo(@RequestBody String StudentId) {
-        Page<StudentVideoVO> picture = studentvideoService.getStudentPicture(new Page<> (),StudentId);
+        Page<StudentVideoVO> picture = studentvideoService.getStudentPicture(new Page<>(),StudentId);
         if(picture==null){
             return CommonReturnType.create("没有找到相应照片");
         }
         return CommonReturnType.create(picture);
+    }
+    @PostMapping("/invigilate")
+    public CommonReturnType invigilate(@RequestBody String testId) {
+        List<Testrelstudent> testrelstudents = testrelstudentService.list(new QueryWrapper<Testrelstudent>().eq("testId", testId));
+        List<StudentVideoVO> studentintest = new ArrayList<>();
+        for (Testrelstudent testrelstudent : testrelstudents) {
+            StudentVideoVO student = new StudentVideoVO();
+            student.setStudentId(userService.getOne(new QueryWrapper<User>().eq("phone", testrelstudent.getStudentPhone())).getStudentId());
+            student.setName(userService.getOne(new QueryWrapper<User>().eq("phone", testrelstudent.getStudentPhone())).getName());
+            student.setVideo(studentvideoService.getOne(new QueryWrapper<Studentvideo>().eq("phone", testrelstudent.getStudentPhone()).last("limit 1")).getVideo());
+            student.setStatus(testrelstudentService.getOne(new QueryWrapper<Testrelstudent>().eq("testId",testId)).getStatus());
+            studentintest.add(student);
+        }
+        return CommonReturnType.create(studentintest,testService.getOne(new QueryWrapper<Test>().eq("testId",testId)));
     }
 }
 

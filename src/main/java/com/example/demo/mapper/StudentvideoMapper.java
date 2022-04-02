@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.example.demo.entity.Studentvideo;
 import com.example.demo.entity.vo.StudentVideoVO;
 
+
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
@@ -19,6 +20,6 @@ import org.apache.ibatis.annotations.Select;
  */
 @Mapper
 public interface StudentvideoMapper extends BaseMapper<Studentvideo> {
-    @Select("SELECT user.`name`,user.`studentId`,user.`phone`,studentvideo.`video`,studentvideo.`time` FROM studentvideo,user WHERE studentvideo.phone=user.phone and user.studentId ="+"${studentId}")
+    @Select("SELECT user.`name`,user.`studentId`,user.`phone`,studentvideo.`video`,studentvideo.`time` FROM studentvideo,user WHERE studentvideo.phone=user.phone and user.phone ="+"${phone}")
     List<StudentVideoVO> getStudentPicture(/*Page<StudentTestNoticeVO> page*/String studentId);
 }
