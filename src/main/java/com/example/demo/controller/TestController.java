@@ -177,9 +177,9 @@ public class TestController {
      */
     @PostMapping("/getTeachertest/{page}/{size}")
     public CommonReturnType listteacherOne(@RequestBody Test test, @PathVariable("page") Integer page, @PathVariable("size") Integer size) {
-        List<Test> l = testService.list(new QueryWrapper<Test>().eq("teacherphone", test.getTeacherphone()));
-        Page<Test> page2 = new Page<Test>(page, size);
-        Page<Test> p = testService.page(page2, new QueryWrapper<Test>().eq("teacherphone", test.getTeacherphone()));
+        List<Test> l = testService.list(new QueryWrapper<Test>().eq("invigilatorId", test.getInvigilatorId()));
+        Page<Test> page2 = new Page<>(page, size);
+        Page<Test> p = testService.page(page2, new QueryWrapper<Test>().eq("invigilatorId", test.getInvigilatorId()));
         p.setTotal(l.size());
         if (l.size() == 0) {
             return CommonReturnType.create("没有该老师相关考试信息");
