@@ -47,8 +47,8 @@ public class PapersController {
         //     p.setPhone(phone);
         // }
          p.setCreateTime(String.valueOf(LocalDateTime.now()));
-        if(p.getPhone()==null||p.getPapercontext()==null)
-        return CommonReturnType.create(null,"信息不全");
+//        if(p.getPhone()==null||p.getPapercontext()==null)
+//        return CommonReturnType.create(null,"信息不全");
         // if(p.getSource()==null){
         //     p.setSource(p.getPaperId()+"");
         // }
@@ -70,8 +70,8 @@ public class PapersController {
         // }
         // p.setCreateTime(System.currentTimeMillis());
         p.setPaperId(paperId);
-        if(p.getPhone()==null)
-        return CommonReturnType.create(null,"信息不全");
+//        if(p.getPhone()==null)
+//        return CommonReturnType.create(null,"信息不全");
         // if(p.getSource()==null){
         //     p.setSource(p.getPaperId()+"");
         // }

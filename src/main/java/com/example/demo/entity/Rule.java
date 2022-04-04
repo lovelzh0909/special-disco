@@ -65,6 +65,11 @@ public class Rule implements Serializable {
 
     @TableField("pointIds")
     private String pointIds;
+
+    @TableField(exist = false)
+    private String coursename;
+
+
     public String getPointIds() {
         return pointIds;
     }

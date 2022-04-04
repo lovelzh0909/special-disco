@@ -14,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -76,7 +77,7 @@ public class TestController {
         for (Test te : t) {
             if (te.getCreatedate() == null) {
 
-                te.setCreatedate(String.valueOf(LocalDateTime.now()));
+                te.setCreatedate(String.valueOf(LocalDate.now()));
             }
             List<Testrelstudent> tsl = new ArrayList<>();
             List<String> phone = te.getStudentphone();
@@ -112,11 +113,9 @@ public class TestController {
             for (String p : phone) {
                 Testrelstudent trs = new Testrelstudent();
                 trs.setTestId(te.getTestId());
-
                 trs.setStudentPhone(p);
                 tsl.add(trs);
             }
-
             data = testrelstudentService.saveBatch(tsl);
         }
         // if(q.getStem()==null||q.getAnswer()==null||q.getCoursename()==null||q.getType()==null)
