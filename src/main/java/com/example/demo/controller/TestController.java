@@ -79,6 +79,10 @@ public class TestController {
 
                 te.setCreatedate(String.valueOf(LocalDate.now()));
             }
+            if (te.getRoomId() == null) {
+
+                te.setRoomId(te.getTestId());
+            }
             List<Testrelstudent> tsl = new ArrayList<>();
             List<String> phone = te.getStudentphone();
             te.setStudentphone(null);
