@@ -27,7 +27,7 @@ public class MakePaper {
     @Autowired
     PapersService papersService;
 
-    @PostMapping("/autoProblem/")
+    @PostMapping("/autoProblem")
     public CommonReturnType saveQuestion(@RequestBody Rule rule, @RequestBody List<Ruleqnum> ruleqnum) {
         List<Integer> list = new ArrayList<Integer>();
         List<Integer> questionnum = new ArrayList<Integer>();

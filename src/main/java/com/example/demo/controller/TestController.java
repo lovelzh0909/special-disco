@@ -85,8 +85,8 @@ public class TestController {
             List<User> userList = new ArrayList<>();
             if (te.getTesttime() != null) {
                 String sub = te.getTesttime().substring(0, 9);
-                List<User> l = userService.list(new QueryWrapper<User>().eq("role", "teacher"));
-
+//                List<User> l = userService.list(new QueryWrapper<User>().in("role", new String[]{"teacher","admin"}));
+                List<User> l = userService.list(new QueryWrapper<User>().in("role", "teacher","admin"));
                 for (User u : l) {
                     int flag = 1;
                     List<Test> testList = testService.list(new QueryWrapper<Test>().eq("teacherPhone", u.getPhone()));
@@ -185,6 +185,23 @@ public class TestController {
         }
         return CommonReturnType.create(p);
         // return testService.list(new QueryWrapper<Test>().eq("teacherphone", test.getTeacherphone()));
+    }
+
+    /**
+     * @param test
+     * @return
+     */
+    @PostMapping("/getTeachertest/distribute/{page}/{size}")
+    public CommonReturnType listteacherOnereal(@RequestBody Test test, @PathVariable("page") Integer page, @PathVariable("size") Integer size) {
+        List<Test> l = testService.list(new QueryWrapper<Test>().eq("teacherphone", test.getTeacherphone()));
+        Page<Test> page2 = new Page<>(page, size);
+        Page<Test> p = testService.page(page2, new QueryWrapper<Test>().eq("teacherphone", test.getTeacherphone()));
+        p.setTotal(l.size());
+        if (l.size() == 0) {
+            return CommonReturnType.create("没有该老师相关考试信息");
+        }
+        return CommonReturnType.create(p);
+//         return testService.list(new QueryWrapper<Test>().eq("teacherphone", test.getTeacherphone()));
     }
 
     /**
