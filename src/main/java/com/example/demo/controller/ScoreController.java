@@ -27,9 +27,19 @@ public class ScoreController {
 
     @GetMapping("/scores/byteachphone")
     public CommonReturnType findAllbyphone(@RequestParam String teacherphone) {
-
-        List<Score> res = scoreService.list(new QueryWrapper<Score>().eq("teacherPhone",teacherphone));
-        return CommonReturnType.create(res,"查询所有学生成绩");
+        List<Score> scoreLists =new ArrayList<>();
+        List<Score> scoreList =scoreService.list(new QueryWrapper<Score>().select("DISTINCT examCode").eq("teacherPhone",teacherphone));
+        for(Score s:scoreList){
+            List<Score> scores =scoreService.list(new QueryWrapper<Score>().eq("teacherPhone",teacherphone).eq("examCode",s.getExamCode()));
+            Score ss= new Score() ;
+            ss.setExamCode(s.getExamCode());
+            ss.setSubject(scores.get(0).getSubject());
+            ss.setAnswerDate(scores.get(0).getAnswerDate());
+            ss.setNum(scores.size());
+            scoreLists.add(ss);
+        }
+//        List<Score> res = scoreService.list(new QueryWrapper<Score>().eq("teacherPhone",teacherphone));
+        return CommonReturnType.create(scoreLists,"查询所有学生成绩");
     }
 //    分页
     @GetMapping("/score/{page}/{size}/{studentId}")

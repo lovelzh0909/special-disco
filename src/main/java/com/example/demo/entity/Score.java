@@ -25,4 +25,6 @@ public class Score {
     private String answerDate;
     @TableField("teacherPhone")
     private String teacherPhone;
+    @TableField(exist = false)
+    private int num;
 }

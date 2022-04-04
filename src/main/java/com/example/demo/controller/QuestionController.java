@@ -58,6 +58,9 @@ public class QuestionController {
     @PostMapping("/saveall")
     public CommonReturnType saveallQuestion(@RequestBody List<Question> q ){
 
+        for(Question qs:q){
+            qs.setId(null);
+        }
         boolean data = questionService.saveBatch(q);
         if(!data)
         return CommonReturnType.create("添加失败");
@@ -177,7 +180,7 @@ public class QuestionController {
     }
     /**
      * 通过id查询问题
-     * @param List<Integer> id
+     * @param
      * @return
      */
 
