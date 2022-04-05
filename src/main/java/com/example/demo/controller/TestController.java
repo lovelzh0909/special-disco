@@ -79,10 +79,10 @@ public class TestController {
 
                 te.setCreatedate(String.valueOf(LocalDate.now()));
             }
-            if (te.getRoomId() == null) {
-
-                te.setRoomId(te.getTestId());
-            }
+//            if (te.getRoomId() == null) {
+//
+//                te.setRoomId(te.getTestId());
+//            }
             List<Testrelstudent> tsl = new ArrayList<>();
             List<String> phone = te.getStudentphone();
             te.setStudentphone(null);
@@ -114,6 +114,11 @@ public class TestController {
             te.setInvigilatorId(userList.get(i).getPhone());
             te.setInvigilator(userList.get(i).getName());
             testService.save(te);
+            if (te.getRoomId() == null) {
+
+                te.setRoomId(te.getTestId());
+            }
+            testService.saveOrUpdate(te);
             for (String p : phone) {
                 Testrelstudent trs = new Testrelstudent();
                 trs.setTestId(te.getTestId());
@@ -148,10 +153,10 @@ public class TestController {
      */
     @PostMapping("/getStudenttest/{page}/{size}")
     public CommonReturnType listOne(@RequestParam Integer phone, @PathVariable("page") Integer page, @PathVariable("size") Integer size) {
-        Page<Test> page2 = new Page<Test>(page, size);
+        Page<Test> page2 = new Page<>(page, size);
         List<Testrelstudent> ts = testrelstudentService.list(new QueryWrapper<Testrelstudent>().eq("studentPhone", phone));
 //        List<Test> l=new ArrayList<Test>();
-        List<Integer> ll = new ArrayList<Integer>();
+        List<Integer> ll = new ArrayList<>();
         for (Testrelstudent t : ts) {
 //            l.add(testService.getById(t.getTestId())) ;
             ll.add(t.getTestId());
