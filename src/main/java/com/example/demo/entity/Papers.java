@@ -52,8 +52,8 @@ public class Papers implements Serializable {
     private Integer papernum;
 
     @ApiModelProperty("备注")
-    @TableField("tips")
-    private String tips;
+    @TableField("note")
+    private String note;
 
     @ApiModelProperty("试卷名")
     @TableField("source")

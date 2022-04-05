@@ -164,6 +164,7 @@ public class TestController {
         if (ll.size() == 0) {
             return CommonReturnType.create(null, "没有该学生考试信息");
         }
+
         Page<Test> page3 = testService.page(page2, new QueryWrapper<Test>().in("testId", ll));
         page3.setTotal(ll.size());
         // List<Test> l =testService.list(new QueryWrapper<Test>().eq("phone", test.getPhone()));
