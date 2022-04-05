@@ -49,7 +49,7 @@ public class ScoreController {
      * @param teacherphone
      * @return
      */
-    @GetMapping("/scores/byteachphone")
+    @GetMapping("/scores/devidebycourse")
     public CommonReturnType devidebycourse(@RequestParam String teacherphone) {
         List<ClassScore> classScoreList=new ArrayList<>();
         List<Score> stringList =scoreService.list(new QueryWrapper<Score>().select("DISTINCT subject").eq("teacherPhone",teacherphone));
