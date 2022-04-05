@@ -32,8 +32,6 @@ public class Notice implements Serializable {
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
-
-
     @TableField("phone")
     private String phone;
 

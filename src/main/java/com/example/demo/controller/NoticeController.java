@@ -3,6 +3,7 @@ package com.example.demo.controller;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -11,10 +12,14 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.demo.Response.CommonReturnType;
 import com.example.demo.entity.Notice;
 import com.example.demo.entity.Test;
+import com.example.demo.entity.Testrelstudent;
+import com.example.demo.entity.User;
 import com.example.demo.entity.vo.StudentTestNoticeVO;
 import com.example.demo.service.NoticeService;
 import com.example.demo.service.TestService;
 
+import com.example.demo.service.TestrelstudentService;
+import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,6 +41,10 @@ public class NoticeController {
     NoticeService noticeService;
     @Autowired
     TestService testService;
+    @Autowired
+    TestrelstudentService testrelstudentService;
+    @Autowired
+    UserService userService;
 
     @PostMapping("/one")
     public CommonReturnType listOne(@RequestParam String phone){
@@ -64,9 +73,27 @@ public class NoticeController {
     @PostMapping("/getStudentNotice")
     public CommonReturnType getStudentNotice(@RequestParam String phone) {
         // Map<String, Object> map = new HashMap<>();
-        Page<StudentTestNoticeVO> Studentnote = noticeService.getStudentNote(new Page<>(),phone);
-        if(Studentnote!=null&&Studentnote.getRecords().size() != 0){
-            return CommonReturnType.create(Studentnote,"success");
+//        Page<StudentTestNoticeVO> Studentnote =new Page<>();
+        List<StudentTestNoticeVO> note =new ArrayList<>();
+        List<Testrelstudent> testrelstudents =testrelstudentService.list(new QueryWrapper<Testrelstudent>().eq("studentPhone",phone));
+        for(Testrelstudent testrelstudent:testrelstudents){
+            Test test = testService.getById(testrelstudent.getTestId());
+            StudentTestNoticeVO studentTestNoticeVO =new StudentTestNoticeVO();
+            studentTestNoticeVO.setTesttime(test.getTesttime());
+            studentTestNoticeVO.setCoursename(test.getCoursename());
+            studentTestNoticeVO.setInvigilator(test.getInvigilator());
+            studentTestNoticeVO.setTestteacher(test.getTestteacher());
+            studentTestNoticeVO.setTimelast(test.getTimelast());
+//            User user =userService.getById(phone);
+            User user =userService.getOne( new QueryWrapper<User>().eq("phone",phone));
+            studentTestNoticeVO.setName(user.getName());
+            studentTestNoticeVO.setStudentId(user.getStudentId());
+//            Studentnote.addOrder(studentTestNoticeVO);
+            note.add(studentTestNoticeVO);
+        }
+//        Page<StudentTestNoticeVO> Studentnote = noticeService.getStudentNote(new Page<>(),phone);
+        if(note!=null&&note.size() != 0){
+            return CommonReturnType.create(note,"success");
         }
         else{
             return CommonReturnType.create(null,"暂无通知");
@@ -78,7 +105,6 @@ public class NoticeController {
         //     map.put("data", Studentnote);
         // }
         // return map;
-
     }
     /**
      * 
@@ -97,8 +123,13 @@ public class NoticeController {
         long nowDate = calendar.getTime().getTime(); //Date.getTime() 获得毫秒型日期
         QueryWrapper<Test> queryWrapper = new QueryWrapper();
         queryWrapper.select("testtime","coursename","note");
-        List<Test> note = testService.list(queryWrapper.eq("phone", phone));
-
+//        List<Test> note = testService.list(queryWrapper.eq("phone", phone));
+        List<Test> note =new ArrayList<>();
+        List<Testrelstudent> testrelstudents =testrelstudentService.list(new QueryWrapper<Testrelstudent>().eq("studentPhone",phone));
+        for(Testrelstudent testrelstudent:testrelstudents){
+            Test test = testService.getById(testrelstudent.getTestId());
+            note.add(test);
+        }
         for (int i = 0; i < note.size(); i++) {
             try {
                 specialDate = sdf.parse(note.get(i).getTesttime()).getTime();
