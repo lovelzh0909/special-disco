@@ -46,7 +46,8 @@ public class PapersController {
         // if(p.getPhone()==null){
         //     p.setPhone(phone);
         // }
-         p.setCreateTime(String.valueOf(LocalDateTime.now()));
+        p.setPaperId(null);
+        p.setCreateTime(String.valueOf(LocalDateTime.now()));
 //        if(p.getPhone()==null||p.getPapercontext()==null)
 //        return CommonReturnType.create(null,"信息不全");
         // if(p.getSource()==null){
@@ -57,8 +58,8 @@ public class PapersController {
             p.setPapernum(0);
         }
         p.setCreateTime(String.valueOf(LocalDateTime.now()));
-        Boolean b = papersService.save(p);
-        if(b==false)
+        boolean b = papersService.save(p);
+        if(!b)
         return CommonReturnType.create(null,"添加试卷失败");
         return CommonReturnType.create(p.getPaperId());
     }
@@ -79,8 +80,8 @@ public class PapersController {
         if(p.getPapernum()==null){
             p.setPapernum(0);
         }
-        Boolean b = papersService.updateById(p);
-        if(b==false)
+        boolean b = papersService.updateById(p);
+        if(!b)
         return CommonReturnType.create(null,"修改试卷失败");
         return CommonReturnType.create(null);
     }
@@ -155,7 +156,7 @@ public class PapersController {
 
     @PostMapping("/getteacherallpaper/{page}/{size}")
     public CommonReturnType getallpaper(@RequestParam String phone,@PathVariable int page,@PathVariable int size) {
-        Page <Papers> p =new Page<Papers>(page,size);
+        Page <Papers> p = new Page<>(page, size);
         Page<Papers> page3=papersService.page(p, new QueryWrapper<Papers>()
         .eq("createrPhone", phone));
         List<Papers> picture = papersService.list(new QueryWrapper<Papers>()
@@ -176,7 +177,7 @@ public class PapersController {
         boolean data=papersService.remove(new QueryWrapper<Papers>()
                 .eq("paperId", paperId)
         );
-        if(data==false){
+        if(!data){
             return CommonReturnType.create(null,"试卷已不存在");
         }
 
@@ -188,7 +189,7 @@ public class PapersController {
     public CommonReturnType removemoreQuestion(@RequestParam List<Integer> id){
         // papersService.removeBatchByIds(list)
         boolean data=papersService.removeBatchByIds(id);
-        if(data==false){
+        if(!data){
             return CommonReturnType.create(null,"试卷已不存在");
         }
 
@@ -198,7 +199,7 @@ public class PapersController {
 
 
         private List<String> stringToList(String strs){
-        String str[] = strs.split(",");
+        String[] str = strs.split(",");
         return Arrays.asList(str);
    }
     
