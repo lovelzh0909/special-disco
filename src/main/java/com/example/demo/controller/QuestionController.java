@@ -132,6 +132,22 @@ public class QuestionController {
             return CommonReturnType.create(m);
     }
 
+    @PostMapping ("/getPointId")
+    public CommonReturnType getPointId(@RequestParam String coursename){
+
+        // List<Question> data=questionService.list(new QueryWrapper<Question>().select("distinct coursename")
+        //         .eq("userId", phone)
+        // );
+        List<Map<String, Object>> m=
+                questionService.listMaps(new QueryWrapper<Question>().select("distinct pointId")
+                        .eq("coursename", coursename) );
+        //确定这些问题的coursename 集合
+        if(m==null){
+            return CommonReturnType.create("没有该题目或已经被删除");
+        }
+        return CommonReturnType.create(m);
+    }
+
 
     //删除成功
     @PostMapping ("/remove")
