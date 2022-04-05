@@ -46,7 +46,7 @@ public class PapersController {
         // if(p.getPhone()==null){
         //     p.setPhone(phone);
         // }
-        p.setPaperId(null);
+
         p.setCreateTime(String.valueOf(LocalDateTime.now()));
 //        if(p.getPhone()==null||p.getPapercontext()==null)
 //        return CommonReturnType.create(null,"信息不全");

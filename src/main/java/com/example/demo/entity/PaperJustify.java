@@ -1,12 +1,14 @@
 package com.example.demo.entity;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -20,8 +22,7 @@ import lombok.experimental.Accessors;
  * @author 作者
  * @since 2022-03-17
  */
-@Getter
-@Setter
+@Data
 @ToString
 @Accessors(chain = true)
 @TableName("paper_justify")
@@ -30,7 +31,7 @@ public class PaperJustify implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @TableId("Id")
+    @TableId(value = "id", type = IdType.AUTO)
     @JSONField(format="id")
     private Integer id;
 

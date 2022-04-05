@@ -1,5 +1,6 @@
 package com.example.demo.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -10,6 +11,7 @@ import java.io.Serializable;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -24,8 +26,7 @@ import net.sf.jsqlparser.expression.DateTimeLiteralExpression.DateTime;
  * @author 作者
  * @since 2022-03-17
  */
-@Getter
-@Setter
+@Data
 @Accessors(chain = true)
 @TableName("papers")
 @ApiModel(value = "Papers对象", description = "")
@@ -33,7 +34,7 @@ public class Papers implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @TableId("paperId")
+    @TableId(value = "paperId", type = IdType.AUTO)
     private Integer paperId;
 
     @TableField("createrPhone")
