@@ -172,7 +172,10 @@ public class TestController {
         for(Test test:page3.getRecords()){
             Testrelstudent testrelstudent=testrelstudentService.getOne(new QueryWrapper<Testrelstudent>().eq("testId",test.getTestId()));
             LocalDateTime localDateTime=LocalDateTime.now();
-            LocalDateTime localDateTime1 = LocalDateTime.parse(test.getTesttime());
+            String s= test.getTesttime().substring(0,10)+"T"+test.getTesttime().substring(11);
+            log.info("-----------log--------");
+            log.info(s);
+            LocalDateTime localDateTime1 = LocalDateTime.parse(s);
             LocalDateTime localDateTime2 = localDateTime.plusMinutes(test.getTimelast());
             if(localDateTime.isBefore(localDateTime1)){
                 test.setTeststatus(1);
@@ -213,7 +216,10 @@ public class TestController {
         Page<Test> p = testService.page(page2, new QueryWrapper<Test>().eq("invigilatorId", te.getInvigilatorId()));
         for(Test test:p.getRecords()){
             LocalDateTime localDateTime=LocalDateTime.now();
-            LocalDateTime localDateTime1 = LocalDateTime.parse(test.getTesttime());
+            String s= test.getTesttime().substring(0,10)+"T"+test.getTesttime().substring(11);
+            log.info("-----------log--------");
+            log.info(s);
+            LocalDateTime localDateTime1 = LocalDateTime.parse(s);
             LocalDateTime localDateTime2 = localDateTime.plusMinutes(test.getTimelast());
             if(localDateTime.isBefore(localDateTime1)){
                 test.setTeststatus(1);
@@ -246,7 +252,10 @@ public class TestController {
         Page<Test> p = testService.page(page2, new QueryWrapper<Test>().eq("teacherphone", te.getTeacherphone()));
         for(Test test:p.getRecords()){
             LocalDateTime localDateTime=LocalDateTime.now();
-            LocalDateTime localDateTime1 = LocalDateTime.parse(test.getTesttime());
+            String s= test.getTesttime().substring(0,10)+"T"+test.getTesttime().substring(11);
+            log.info("-----------log--------");
+            log.info(s);
+            LocalDateTime localDateTime1 = LocalDateTime.parse(s);
             LocalDateTime localDateTime2 = localDateTime.plusMinutes(test.getTimelast());
             if(localDateTime.isBefore(localDateTime1)){
                 test.setTeststatus(1);
