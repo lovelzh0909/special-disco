@@ -170,7 +170,7 @@ public class TestController {
 
         Page<Test> page3 = testService.page(page2, new QueryWrapper<Test>().in("testId", ll));
         for(Test test:page3.getRecords()){
-            Testrelstudent testrelstudent=testrelstudentService.getOne(new QueryWrapper<Testrelstudent>().eq("testId",test.getTestId()));
+            Testrelstudent testrelstudent=testrelstudentService.getOne(new QueryWrapper<Testrelstudent>().eq("testId",test.getTestId()).eq("studentPhone",phone));
             LocalDateTime localDateTime=LocalDateTime.now();
             String s= test.getTesttime().substring(0,10)+"T"+test.getTesttime().substring(11);
             log.info("-----------log--------");
