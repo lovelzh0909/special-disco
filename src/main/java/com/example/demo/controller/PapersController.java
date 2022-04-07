@@ -202,6 +202,10 @@ public class PapersController {
         String[] str = strs.split(",");
         return Arrays.asList(str);
    }
+   //根据testid获取参加考试的考生信息
+
+
+
     
 //    private List<int[]> stringToIntList(String strs){
 //        int str[];

@@ -176,10 +176,12 @@ public class TestController {
             log.info("-----------log--------");
             log.info(s);
             LocalDateTime localDateTime1 = LocalDateTime.parse(s);
+
             if(test.getTimelast()==null){
                 return CommonReturnType.create("该测试没有测试时间");
             }
             LocalDateTime localDateTime2 = localDateTime.plusMinutes(test.getTimelast());
+
             if(localDateTime.isBefore(localDateTime1)){
                 test.setTeststatus(1);
             }
@@ -190,8 +192,8 @@ public class TestController {
             {
                 test.setTeststatus(3);
             }
-            test.setTeststatus(testrelstudent.getStatus());
             testService.saveOrUpdate(test);
+            test.setTeststatus(testrelstudent.getStatus());
         }
 
         page3.setTotal(ll.size());
