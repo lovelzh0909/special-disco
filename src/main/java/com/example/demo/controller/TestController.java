@@ -11,6 +11,7 @@ import com.example.demo.service.TestService;
 import com.example.demo.service.TestrelstudentService;
 import com.example.demo.service.UserService;
 import lombok.extern.slf4j.Slf4j;
+import net.sf.jsqlparser.expression.DateTimeLiteralExpression;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -79,6 +80,7 @@ public class TestController {
 
                 te.setCreatedate(String.valueOf(LocalDate.now()));
             }
+            te.setTeststatus(1);
 //            if (te.getRoomId() == null) {
 //
 //                te.setRoomId(te.getTestId());
@@ -123,6 +125,7 @@ public class TestController {
                 Testrelstudent trs = new Testrelstudent();
                 trs.setTestId(te.getTestId());
                 trs.setStudentPhone(p);
+                trs.setStatus(1);
                 tsl.add(trs);
             }
             data = testrelstudentService.saveBatch(tsl);
@@ -166,6 +169,25 @@ public class TestController {
         }
 
         Page<Test> page3 = testService.page(page2, new QueryWrapper<Test>().in("testId", ll));
+        for(Test test:page3.getRecords()){
+            Testrelstudent testrelstudent=testrelstudentService.getOne(new QueryWrapper<Testrelstudent>().eq("testId",test.getTestId()));
+            LocalDateTime localDateTime=LocalDateTime.now();
+            LocalDateTime localDateTime1 = LocalDateTime.parse(test.getTesttime());
+            LocalDateTime localDateTime2 = localDateTime.plusMinutes(test.getTimelast());
+            if(localDateTime.isBefore(localDateTime1)){
+                test.setTeststatus(1);
+            }
+            else if(localDateTime.isBefore(localDateTime2)){
+                test.setTeststatus(2);
+            }
+            else
+            {
+                test.setTeststatus(3);
+            }
+            test.setTeststatus(testrelstudent.getStatus());
+            testService.saveOrUpdate(test);
+        }
+
         page3.setTotal(ll.size());
         // List<Test> l =testService.list(new QueryWrapper<Test>().eq("phone", test.getPhone()));
         //     List<Pipeline> subList = newPipelineList.subList(fromIndex, toIndex);
@@ -185,10 +207,26 @@ public class TestController {
      * @return
      */
     @PostMapping("/getTeachertest/{page}/{size}")
-    public CommonReturnType listteacherOne(@RequestBody Test test, @PathVariable("page") Integer page, @PathVariable("size") Integer size) {
-        List<Test> l = testService.list(new QueryWrapper<Test>().eq("invigilatorId", test.getInvigilatorId()));
+    public CommonReturnType listteacherOne(@RequestBody Test te, @PathVariable("page") Integer page, @PathVariable("size") Integer size) {
+        List<Test> l = testService.list(new QueryWrapper<Test>().eq("invigilatorId", te.getInvigilatorId()));
         Page<Test> page2 = new Page<>(page, size);
-        Page<Test> p = testService.page(page2, new QueryWrapper<Test>().eq("invigilatorId", test.getInvigilatorId()));
+        Page<Test> p = testService.page(page2, new QueryWrapper<Test>().eq("invigilatorId", te.getInvigilatorId()));
+        for(Test test:p.getRecords()){
+            LocalDateTime localDateTime=LocalDateTime.now();
+            LocalDateTime localDateTime1 = LocalDateTime.parse(test.getTesttime());
+            LocalDateTime localDateTime2 = localDateTime.plusMinutes(test.getTimelast());
+            if(localDateTime.isBefore(localDateTime1)){
+                test.setTeststatus(1);
+            }
+            else if(localDateTime.isBefore(localDateTime2)){
+                test.setTeststatus(2);
+            }
+            else
+            {
+                test.setTeststatus(3);
+            }
+            testService.saveOrUpdate(test);
+        }
         p.setTotal(l.size());
         if (l.size() == 0) {
             return CommonReturnType.create("没有该老师相关考试信息");
@@ -202,10 +240,26 @@ public class TestController {
      * @return
      */
     @PostMapping("/getTeachertest/distribute/{page}/{size}")
-    public CommonReturnType listteacherOnereal(@RequestBody Test test, @PathVariable("page") Integer page, @PathVariable("size") Integer size) {
-        List<Test> l = testService.list(new QueryWrapper<Test>().eq("teacherphone", test.getTeacherphone()));
+    public CommonReturnType listteacherOnereal(@RequestBody Test te, @PathVariable("page") Integer page, @PathVariable("size") Integer size) {
+        List<Test> l = testService.list(new QueryWrapper<Test>().eq("teacherphone", te.getTeacherphone()));
         Page<Test> page2 = new Page<>(page, size);
-        Page<Test> p = testService.page(page2, new QueryWrapper<Test>().eq("teacherphone", test.getTeacherphone()));
+        Page<Test> p = testService.page(page2, new QueryWrapper<Test>().eq("teacherphone", te.getTeacherphone()));
+        for(Test test:p.getRecords()){
+            LocalDateTime localDateTime=LocalDateTime.now();
+            LocalDateTime localDateTime1 = LocalDateTime.parse(test.getTesttime());
+            LocalDateTime localDateTime2 = localDateTime.plusMinutes(test.getTimelast());
+            if(localDateTime.isBefore(localDateTime1)){
+                test.setTeststatus(1);
+            }
+            else if(localDateTime.isBefore(localDateTime2)){
+                test.setTeststatus(2);
+            }
+            else
+            {
+                test.setTeststatus(3);
+            }
+            testService.saveOrUpdate(test);
+        }
         p.setTotal(l.size());
         if (l.size() == 0) {
             return CommonReturnType.create("没有该老师相关考试信息");

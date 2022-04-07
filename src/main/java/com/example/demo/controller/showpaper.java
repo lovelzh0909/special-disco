@@ -130,8 +130,7 @@ public class showpaper {
         }
 //        Testrelstudent stu = testrelstudentService.getOne(new QueryWrapper<Testrelstudent>().eq("studentphone", studentphone).eq("testId", testId));
 //        stu.setStatus(3);
-        testrelstudentService.update(new UpdateWrapper<Testrelstudent>().set("status",3).eq("studentPhone", studentphone).eq("testId", testId));
-
+        testrelstudentService.update(new UpdateWrapper<Testrelstudent>().set("status",4).eq("studentPhone", studentphone).eq("testId", testId));
         Test t= testService.getById(testId);
         Papers p =papersService.getById(t.getPaperId());
         if(p==null){

@@ -6,12 +6,17 @@ import java.util.List;
 import java.util.Objects;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.example.demo.Response.CommonReturnType;
 import com.example.demo.entity.PaperJustify;
 import com.example.demo.entity.Question;
+import com.example.demo.entity.Test;
+import com.example.demo.entity.Testrelstudent;
 import com.example.demo.service.PaperJustifyService;
 import com.example.demo.service.QuestionService;
 
+import com.example.demo.service.TestService;
+import com.example.demo.service.TestrelstudentService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -36,6 +41,9 @@ public class PaperJustifyController {
     @Autowired
     QuestionService questionService;
 
+    @Autowired
+    TestrelstudentService testrelstudentService;
+
     //fillQuestion
     //添加成功
     @PostMapping("/save")
@@ -49,11 +57,20 @@ public class PaperJustifyController {
         return CommonReturnType.create(null);
     }
     //duojiedhou
+
+    /**
+     * 学生交卷
+     * @param ps
+     * @param phone
+     * @param testId
+     * @return
+     */
     @PostMapping("/saveall/{phone}/{testId}")
     public CommonReturnType saveallQuestion(@RequestBody List<Question> ps , @PathVariable String phone , @PathVariable Integer testId ){
         if(paperJustifyService.getOne(new QueryWrapper<PaperJustify>().eq("studentPhone", phone).eq("testId", testId))!=null){
             return CommonReturnType.create("你已经交卷");
         }
+        testrelstudentService.update(new UpdateWrapper<Testrelstudent>().set("status",3).eq("testId",testId).eq("studentPhone", phone));
         PaperJustify p = new PaperJustify();
         for(Question q :ps){
             p.setId(null);
@@ -95,14 +112,12 @@ public class PaperJustifyController {
     //查询成功
     @PostMapping ("/get")
     public CommonReturnType getAllQuesion(@RequestParam String phone){
-
         List<PaperJustify> data=paperJustifyService.list(new QueryWrapper<PaperJustify>()
                 .eq("studentphone", phone)
         );
         if(data==null){
             return CommonReturnType.create("没有gaixuesheng");
         }
-
         return CommonReturnType.create(data);
     }
 
@@ -119,6 +134,7 @@ public class PaperJustifyController {
 
         return CommonReturnType.create(null);
     }
+
     @PostMapping ("/wrongQuestion")
     public CommonReturnType getWrongQuestion(@RequestParam String phone) {
 

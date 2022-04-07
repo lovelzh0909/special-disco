@@ -45,7 +45,7 @@ public class Test implements Serializable {
     @TableField("note")
     private String note;
 
-    @TableField("teststatus")
+    @TableField("teststatus")/*未开始 考试中 待批阅 考试完成 */
     private int teststatus;
 
     @TableField("invigilator")
@@ -65,7 +65,7 @@ public class Test implements Serializable {
     private String testtime;
 
     @TableField("timelast")
-    private String timelast;
+    private Integer timelast;
 
     @TableField("pystatus")
     private String pystatus;

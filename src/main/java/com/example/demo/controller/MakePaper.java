@@ -28,10 +28,11 @@ public class MakePaper {
     PapersService papersService;
 
     @PostMapping("/autoProblem")
-    public CommonReturnType saveQuestion(@RequestBody Rule rule, @RequestBody List<Ruleqnum> ruleqnum) {
+    public CommonReturnType saveQuestion(@RequestBody Rule rule) {
         List<Integer> list = new ArrayList<Integer>();
         List<Integer> questionnum = new ArrayList<Integer>();
         String coursename = rule.getCoursename();
+        List<Ruleqnum>  ruleqnum =rule.getRuleqnumList();
         for (Ruleqnum r : ruleqnum) {
             // questionnum.set(r.getTypeId(), (int) questionService.count(new QueryWrapper<Question> ().eq("type",1).eq("coursename", coursename)));
             questionnum.set(r.getTypeId(), (int) questionService.count(new QueryWrapper<Question>().eq("quesTypeId", r.getTypeId()).eq("coursename", coursename).in("pointId", rule.getpointIdList())));

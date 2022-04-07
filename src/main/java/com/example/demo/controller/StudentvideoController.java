@@ -19,10 +19,7 @@ import com.example.demo.service.TestrelstudentService;
 import com.example.demo.service.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 /**
@@ -66,8 +63,6 @@ public class StudentvideoController {
         // } catch (ParseException e) {
         //     e.printStackTrace();
         // }
-
-        
     }
     /**
      * 
@@ -83,18 +78,24 @@ public class StudentvideoController {
         return CommonReturnType.create(picture);
     }
     @PostMapping("/invigilate")
-    public CommonReturnType invigilate(@RequestBody String testId) {
+    public CommonReturnType invigilate(@RequestParam Integer testId) {
         List<Testrelstudent> testrelstudents = testrelstudentService.list(new QueryWrapper<Testrelstudent>().eq("testId", testId));
         List<StudentVideoVO> studentintest = new ArrayList<>();
         for (Testrelstudent testrelstudent : testrelstudents) {
             StudentVideoVO student = new StudentVideoVO();
             student.setStudentId(userService.getOne(new QueryWrapper<User>().eq("phone", testrelstudent.getStudentPhone())).getStudentId());
             student.setName(userService.getOne(new QueryWrapper<User>().eq("phone", testrelstudent.getStudentPhone())).getName());
-            student.setVideo(studentvideoService.getOne(new QueryWrapper<Studentvideo>().eq("phone", testrelstudent.getStudentPhone()).last("limit 1")).getVideo());
-            student.setStatus(testrelstudentService.getOne(new QueryWrapper<Testrelstudent>().eq("testId",testId)).getStatus());
+            if(studentvideoService.getOne(new QueryWrapper<Studentvideo>().eq("phone", testrelstudent.getStudentPhone()).last("limit 1"))==null){
+                student.setVideo(null);
+            }
+            else {
+                student.setVideo(studentvideoService.getOne(new QueryWrapper<Studentvideo>().eq("phone", testrelstudent.getStudentPhone()).last("limit 1")).getVideo());
+            }
+//            student.setStatus(testrelstudentService.getOne(new QueryWrapper<Testrelstudent>().eq("testId",testId)).getStatus());
+            student.setStatus(testService.getOne(new QueryWrapper<Test>().eq("testId",testId)).getTeststatus());
             studentintest.add(student);
         }
-        return CommonReturnType.create(studentintest,testService.getOne(new QueryWrapper<Test>().eq("testId",testId)));
+        return CommonReturnType.create(studentintest);
     }
 }
 

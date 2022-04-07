@@ -83,7 +83,7 @@ public class NoticeController {
             studentTestNoticeVO.setCoursename(test.getCoursename());
             studentTestNoticeVO.setInvigilator(test.getInvigilator());
             studentTestNoticeVO.setTestteacher(test.getTestteacher());
-            studentTestNoticeVO.setTimelast(test.getTimelast());
+            studentTestNoticeVO.setTimelast(test.getTimelast()+"分钟");
 //            User user =userService.getById(phone);
             User user =userService.getOne( new QueryWrapper<User>().eq("phone",phone));
             studentTestNoticeVO.setName(user.getName());

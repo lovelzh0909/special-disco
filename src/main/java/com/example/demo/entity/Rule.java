@@ -70,6 +70,9 @@ public class Rule implements Serializable {
     @TableField(exist = false)
     private String coursename;
 
+    @TableField(exist = false)
+    private List<Ruleqnum> ruleqnumList;
+
 
     public String getPointIds() {
         return pointIds;
