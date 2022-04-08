@@ -7,16 +7,11 @@ import java.util.Objects;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.example.demo.GA.Paper;
 import com.example.demo.Response.CommonReturnType;
-import com.example.demo.entity.PaperJustify;
-import com.example.demo.entity.Question;
-import com.example.demo.entity.Test;
-import com.example.demo.entity.Testrelstudent;
-import com.example.demo.service.PaperJustifyService;
-import com.example.demo.service.QuestionService;
+import com.example.demo.entity.*;
+import com.example.demo.service.*;
 
-import com.example.demo.service.TestService;
-import com.example.demo.service.TestrelstudentService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -43,6 +38,12 @@ public class PaperJustifyController {
 
     @Autowired
     TestrelstudentService testrelstudentService;
+
+    @Autowired
+    QuestionrelscoreService questionrelscoreService;
+
+    @Autowired
+    TestService testService;
 
     //fillQuestion
     //添加成功
@@ -71,37 +72,45 @@ public class PaperJustifyController {
             testrelstudentService.update(new UpdateWrapper<Testrelstudent>().set("status",3).eq("testId",testId).eq("studentPhone", phone));
             return CommonReturnType.create(null,"你已经交卷");
         }
+        Test test =testService.getOne(new QueryWrapper<Test>().eq("testId",testId));
+        if(test==null){
+            return CommonReturnType.create(null,"该测试不存在");
+        }
         testrelstudentService.update(new UpdateWrapper<Testrelstudent>().set("status",3).eq("testId",testId).eq("studentPhone", phone));
         PaperJustify p = new PaperJustify();
         for(Question q :ps){
+            Questionrelscore questionrelscore = questionrelscoreService.getOne(new QueryWrapper<Questionrelscore>().eq("questionId",q.getId()).eq("paperId",test.getPaperId() ));
+            if(questionrelscore==null){
+                return CommonReturnType.create(null,q.getId()+":没有存储该题目与试卷关系");
+            }
             p.setId(null);
             p.setQuestionId(q.getId());
             // p.setExmaineAnswer(q.getAnswer());
             p.setCorrectAnswer(questionService.getById(q.getId()).getAnswer());
-            p.setCorrectAnswer(q.getAnswer());
+//            p.setCorrectAnswer(q.getAnswer());
             p.setExmaineAnswer(q.getAnswer());
             if(q.getQuesTypeId()==1){
                 if(Objects.equals(p.getCorrectAnswer(), p.getExmaineAnswer())){
-                    p.setScore(q.getScore());
+                    p.setScore(questionrelscore.getScore());
                 }
             }
             if(q.getQuesTypeId()==2){
                 if(Objects.equals(p.getCorrectAnswer(), p.getExmaineAnswer())){
-                    p.setScore(q.getScore());
+                    p.setScore(questionrelscore.getScore());
                 }
             }
             if(q.getQuesTypeId()==3){
                 if(Objects.equals(p.getCorrectAnswer(), p.getExmaineAnswer())){
-                    p.setScore(q.getScore());
+                    p.setScore(questionrelscore.getScore());
                 }
             }
             if(q.getQuesTypeId()==4){
                 if(Objects.equals(p.getCorrectAnswer(), p.getExmaineAnswer())){
-                    p.setScore(q.getScore());
+                    p.setScore(questionrelscore.getScore());
                 }
             }
             p.setTestId(testId);
-            p.setTotalscore(q.getScore());
+            p.setTotalscore(questionrelscore.getScore());
             p.setStudentphone(phone);
             boolean data= paperJustifyService.save(p);
             if(!data){
