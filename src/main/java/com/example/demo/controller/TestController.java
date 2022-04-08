@@ -200,7 +200,10 @@ public class TestController {
             test.setNote(p.getNote());
             testService.saveOrUpdate(test);
             if(testrelstudent.getStatus()==3||testrelstudent.getStatus()==4)
-            test.setTeststatus(testrelstudent.getStatus());
+               test.setTeststatus(testrelstudent.getStatus());
+            else
+                testrelstudent.setStatus(test.getTeststatus());
+            testrelstudentService.saveOrUpdate(testrelstudent);
         }
 
         page3.setTotal(ll.size());
@@ -218,7 +221,7 @@ public class TestController {
     }
 
     /**
-     * @param test
+     * @param
      * @return
      */
     @PostMapping("/getTeachertest/{page}/{size}")
@@ -255,7 +258,7 @@ public class TestController {
     }
 
     /**
-     * @param test
+     * @param
      * @return
      */
     @PostMapping("/getTeachertest/distribute/{page}/{size}")
