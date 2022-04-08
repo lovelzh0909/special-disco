@@ -193,6 +193,7 @@ public class TestController {
                 test.setTeststatus(3);
             }
             testService.saveOrUpdate(test);
+            if(testrelstudent.getStatus()==3||testrelstudent.getStatus()==4)
             test.setTeststatus(testrelstudent.getStatus());
         }
 
