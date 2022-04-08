@@ -131,15 +131,15 @@ public class TestrelstudentController {
      * @return
      */
     @PostMapping("/saveall")
-    public CommonReturnType saveallTest(@RequestBody List<Testrelstudent> t ){
+    public CommonReturnType saveallTest(@RequestBody List<Testrelstudent> t ) {
         // if(q.getStem()==null||q.getAnswer()==null||q.getCoursename()==null||q.getType()==null)
         // return CommonReturnType.create(null,"信息不全");
         // if(q.getId()==null){
         //     q.setId(questionService.lastQuestionId()+1);
         // }
-        Boolean data = testrelstudentService.saveBatch(t);
-        if(data==false)
-        return CommonReturnType.create(null,"添加失败");
+        boolean data = testrelstudentService.saveBatch(t);
+        if (!data)
+            return CommonReturnType.create(null, "添加失败");
         return CommonReturnType.create(null);
     }
 }

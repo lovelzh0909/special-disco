@@ -202,6 +202,21 @@ public class PapersController {
         String[] str = strs.split(",");
         return Arrays.asList(str);
    }
+//复制试卷
+    @PostMapping("/copy")
+    public CommonReturnType copy(@RequestParam int paperId){
+        Papers p =papersService.getById(paperId);
+        if(p==null){
+            return CommonReturnType.create(null,"改试卷不存在或没有题目");
+        }
+        p.setPaperId(null);
+        p.setCreateTime(String.valueOf(LocalDateTime.now()));
+        papersService.save(p);
+        return CommonReturnType.create(p);
+    }
+
+
+
     
 //    private List<int[]> stringToIntList(String strs){
 //        int str[];

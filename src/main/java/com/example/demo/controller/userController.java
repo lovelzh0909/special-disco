@@ -24,6 +24,7 @@ public class userController {
     @PostMapping("/logon")
     public CommonReturnType logon(@RequestBody User user) {
         //new CommonReturnType();
+
         User one = userService.getOne(
                 new QueryWrapper<User>()
                         .eq("phone", user.getPhone())
@@ -77,6 +78,25 @@ public class userController {
             log.info("--------------------logo-------------------");
             log.info("send["+ one +"]");
             return CommonReturnType.create(one,"success");
+        }
+        else{
+            return CommonReturnType.create(null,"用户名错误");
+        }
+    }
+    @PostMapping("/update")
+    public CommonReturnType update(@RequestBody User user) {
+        User one = userService.getOne(
+                new QueryWrapper<User>()
+                        .eq("phone", user.getPhone())
+        );
+        if(one!=null){
+            one.setPassword(user.getPassword());
+            one.setName(user.getName());
+            one.setRole(user.getRole());
+            userService.updateById(one);
+            log.info("--------------------logo-------------------");
+            log.info("update["+ one +"]");
+            return CommonReturnType.create(one.getRole(),"success");
         }
         else{
             return CommonReturnType.create(null,"用户名错误");

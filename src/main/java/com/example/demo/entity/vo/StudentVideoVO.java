@@ -7,7 +7,7 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 @Data
-@ApiModel(value = "StudentVideoVO对象", description = "")
+@ApiModel(value = "StudentVideoVO对象", description = "学生照片")
 public class StudentVideoVO {
     private static final long serialVersionUID = 1L;
 
