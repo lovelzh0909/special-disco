@@ -20,7 +20,7 @@
 // 	private static final String mapperPath = projectPath + "\\src\\main\\resources\\mybatis\\mappers";// 设置mapperXml 模板路径
 //
 // 	public static void main(String[] args) {
-// 		String[] tableNames = {"teacherrelclass"};//可生成多个表
+// 		String[] tableNames = {"studenttestflag"};//可生成多个表
 // 		GeneratorApplication.execute(tableNames);
 // 	}
 //
@@ -36,7 +36,7 @@
 // 				.packageConfig(builder -> {
 // 					builder.parent(parentPackageName) // 设置父包名
 // 							.moduleName(moduleName) // 设置父包模块名
-// 							.pathInfo(Collections.singletonMap(OutputFile.mapperXml, mapperPath)); // 设置mapperXml生成路径
+//                            .pathInfo(Collections.singletonMap(OutputFile.mapperXml,mapperPath)); // 设置mapperXml生成路径
 //
 // 				})
 //

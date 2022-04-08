@@ -180,7 +180,7 @@ public class TestController {
             if(test.getTimelast()==null){
                 return CommonReturnType.create("该测试没有测试时间");
             }
-            LocalDateTime localDateTime2 = localDateTime.plusMinutes(test.getTimelast());
+            LocalDateTime localDateTime2 = localDateTime1.plusMinutes(test.getTimelast());
 
             if(localDateTime.isBefore(localDateTime1)){
                 test.setTeststatus(1);
@@ -225,7 +225,7 @@ public class TestController {
             log.info("-----------log--------");
             log.info(s);
             LocalDateTime localDateTime1 = LocalDateTime.parse(s);
-            LocalDateTime localDateTime2 = localDateTime.plusMinutes(test.getTimelast());
+            LocalDateTime localDateTime2 = localDateTime1.plusMinutes(test.getTimelast());
             if(localDateTime.isBefore(localDateTime1)){
                 test.setTeststatus(1);
             }
@@ -256,12 +256,15 @@ public class TestController {
         Page<Test> page2 = new Page<>(page, size);
         Page<Test> p = testService.page(page2, new QueryWrapper<Test>().eq("teacherphone", te.getTeacherphone()));
         for(Test test:p.getRecords()){
+            //现在时间
             LocalDateTime localDateTime=LocalDateTime.now();
             String s= test.getTesttime().substring(0,10)+"T"+test.getTesttime().substring(11);
             log.info("-----------log--------");
             log.info(s);
             LocalDateTime localDateTime1 = LocalDateTime.parse(s);
-            LocalDateTime localDateTime2 = localDateTime.plusMinutes(test.getTimelast());
+            LocalDateTime localDateTime2 = localDateTime1.plusMinutes(test.getTimelast());
+            log.info("-------------log--------");
+            log.info(String.valueOf(localDateTime2));
             if(localDateTime.isBefore(localDateTime1)){
                 test.setTeststatus(1);
             }
