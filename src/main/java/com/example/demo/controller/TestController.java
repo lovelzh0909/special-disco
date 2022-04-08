@@ -4,9 +4,11 @@ package com.example.demo.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.demo.Response.CommonReturnType;
+import com.example.demo.entity.Papers;
 import com.example.demo.entity.Test;
 import com.example.demo.entity.Testrelstudent;
 import com.example.demo.entity.User;
+import com.example.demo.service.PapersService;
 import com.example.demo.service.TestService;
 import com.example.demo.service.TestrelstudentService;
 import com.example.demo.service.UserService;
@@ -39,6 +41,8 @@ public class TestController {
     TestrelstudentService testrelstudentService;
     @Autowired
     UserService userService;
+    @Autowired
+    PapersService papersService;
 
     @PostMapping("/all")
     public CommonReturnType listAll() {
@@ -192,6 +196,8 @@ public class TestController {
             {
                 test.setTeststatus(3);
             }
+            Papers p=papersService.getById(test.getPaperId());
+            test.setNote(p.getNote());
             testService.saveOrUpdate(test);
             if(testrelstudent.getStatus()==3||testrelstudent.getStatus()==4)
             test.setTeststatus(testrelstudent.getStatus());
