@@ -14,6 +14,9 @@ public class StudentVideoVO {
     @TableField("status")
     private Integer status;
 
+    @TableField("phone")
+    private String phone;
+
     @TableField("video")
     private String video;
 

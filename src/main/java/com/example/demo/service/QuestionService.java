@@ -11,7 +11,7 @@ import com.example.demo.GA.Paper;
 import com.example.demo.entity.Question;
 import com.example.demo.entity.Rule;
 import com.example.demo.entity.Ruleqnum;
-import jdk.incubator.jpackage.internal.Log;
+
 
 /**
  * <p>

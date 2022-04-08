@@ -9,7 +9,8 @@ import com.example.demo.entity.Ruleqnum;
 import com.example.demo.mapper.QuestionMapper;
 import com.example.demo.service.QuestionService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import jdk.incubator.jpackage.internal.Log;
+
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -24,6 +25,7 @@ import java.util.Random;
  * @author 作者
  * @since 2022-03-12
  */
+@Slf4j
 @Service
 public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, Question> implements QuestionService {
 
@@ -67,8 +69,8 @@ public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, Question> i
                     .eq("coursename", coursename)
                     .in("pointId", rule.getpointIdList())));
             if (questionnum.get(r.getTypeId()) < r.getNum()) {
-                Log.info("----------log----------");
-                Log.info("***题目不足***");
+                log.info("----------log----------");
+                log.info("***题目不足***");
                 return null;
             }
             /***

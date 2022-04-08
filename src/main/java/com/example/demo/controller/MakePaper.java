@@ -18,12 +18,13 @@ import com.example.demo.entity.Ruleqnum;
 import com.example.demo.service.PapersService;
 import com.example.demo.service.QuestionService;
 
-import jdk.incubator.jpackage.internal.Log;
+
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.xml.transform.Result;
-
+@Slf4j
 @RestController
 @RequestMapping("/MakePaper")
 public class MakePaper {
@@ -55,7 +56,7 @@ public class MakePaper {
         if (rule != null) {
             // 初始化种群
             Population population = new Population(5 , rule);
-            Log.info("初次适应度  " + population.getFitness().getAdaptationDegree());
+            log.info("初次适应度  " + population.getFitness().getAdaptationDegree());
             while (count < runCount) {
                 count++;
                 population = GA.evolvePopulation(population, rule);
@@ -95,8 +96,8 @@ public class MakePaper {
                     .eq("coursename", coursename)
                     .in("pointId", rule.getpointIdList())));
             if (questionnum.get(r.getTypeId()) < r.getNum()) {
-                Log.info("----------log----------");
-                Log.info("***题目不足***");
+                log.info("----------log----------");
+                log.info("***题目不足***");
                 return null;
             }
             /***
