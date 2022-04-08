@@ -70,28 +70,28 @@ public class showpaper {
         List<String> qs=   stringToList(p.getPapercontext());
         List<Question> q=new ArrayList<>();
         Map<String,Object> m =new HashMap<>();
+        List<Testrelstudent> testrelstudent =testrelstudentService.list(new QueryWrapper<Testrelstudent>()
+                .eq("testId",testId).eq("status",3));
+        if(testrelstudent.size()==0||testrelstudent==null){
+            testService.update(new UpdateWrapper<Test>().set("teststatus",4).eq("testId",testId));
+            return CommonReturnType.create(null,"没有待批阅学生");
+        }
         for(String s:qs){
-            List<Testrelstudent> testrelstudent =testrelstudentService.list(new QueryWrapper<Testrelstudent>()
-                    .eq("testId",testId).eq("status",3));
-            if(testrelstudent.size()==0||testrelstudent==null){
-                testService.update(new UpdateWrapper<Test>().set("teststatus",4).eq("testId",testId));
-                return CommonReturnType.create(null,"没有待批阅学生");
-            }
             m.put("studentphone",testrelstudent.get(0).getStudentPhone());
             Question tempq =questionService.getById(Integer.valueOf(s)) ;
             PaperJustify paperJustify = paperJustifyService.getOne(new QueryWrapper<PaperJustify>()
                     .eq("testId",testId)
                     .eq("studentphone",testrelstudent.get(0).getStudentPhone())
                     .eq("questionid", tempq.getId()));
-            testrelstudentService.update(new UpdateWrapper<Testrelstudent>().set("status",4)
-                    .eq("testId",testId)
-                    .eq("studentphone",testrelstudent.get(0).getStudentPhone()));
             if(paperJustify==null){
                 return  CommonReturnType.create(null,"没有该测试的答卷信息");
             }
             tempq.setStudentAnswer(paperJustify.getExmaineAnswer());
             q.add(tempq);
         }
+//        testrelstudentService.update(new UpdateWrapper<Testrelstudent>().set("status",4)
+//                .eq("testId",testId)
+//                .eq("studentphone",testrelstudent.get(0).getStudentPhone()));
         log.info("-----------------log---------------");
         log.info(q.toString());
 
