@@ -108,7 +108,7 @@ public class TestController {
                 }
             }
             if (userList.size() == 0) {
-                return CommonReturnType.create("没有空余监考老师");
+                return CommonReturnType.create(null, "没有空余监考老师");
             }
             Random r = new Random();
             int i = r.nextInt(userList.size());

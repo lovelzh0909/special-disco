@@ -1,5 +1,6 @@
 package com.example.demo.GA;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.example.demo.entity.Question;
 import com.example.demo.entity.Rule;
 import com.example.demo.service.QuestionService;
@@ -92,45 +93,54 @@ public class GA {
             if (!child.containsQuestion(parent2.getQuestion(i))) {
                 child.saveQuestion(i, parent2.getQuestion(i));
             } else {
-                int type = getTypeByIndex(i, rule);
+//                int type = getTypeByIndex(i, rule);
+                int type=child.getQuestion(i).getQuesTypeId();
+                String coursename =child.getQuestion(i).getCoursename();
                 // getQuestionArray()用来选择指定类型和知识点的试题数组
-                Question[] singleArray = 
+                List<Question> singleArray = questionService.list(new QueryWrapper<Question>().eq("quesTypeId", type)
+                        .eq("coursename", coursename)
+                        .in("pointId", rule.getpointIdList()));
                 // questionService.getQuestionArray(type, idString.substring(1, idString
                 //         .indexOf("]")));
-                null;
-                child.saveQuestion(i, singleArray[(int) (Math.random() * singleArray.length)]);
+//                null;
+
+                child.saveQuestion(i, singleArray.get((int) (Math.random() * singleArray.size())));
             }
         }
         for (int i = endPos; i < parent2.getQuestionSize(); i++) {
             if (!child.containsQuestion(parent2.getQuestion(i))) {
                 child.saveQuestion(i, parent2.getQuestion(i));
             } else {
-                int type = getTypeByIndex(i, rule);
-                Question[] singleArray =
+//                int type = getTypeByIndex(i, rule);
+                int type=child.getQuestion(i).getQuesTypeId();
+                String coursename =child.getQuestion(i).getCoursename();
+                List<Question> singleArray = questionService.list(new QueryWrapper<Question>().eq("quesTypeId", type)
+                        .eq("coursename", coursename)
+                        .in("pointId", rule.getpointIdList()));
                 //  questionService.getQuestionArray(type, idString.substring(1, idString
                         // .indexOf("]")));
-                        null;
-                child.saveQuestion(i, singleArray[(int) (Math.random() * singleArray.length)]);
+//                        null;
+                child.saveQuestion(i, singleArray.get((int) (Math.random() * singleArray.size())));
             }
         }
 
         return child;
     }
 
-    private static int getTypeByIndex(int index, Rule rule) {
-        int type = 0;
-        // 单选
-        if (index < rule.getSingleNum()) {
-            type = 1;
-        } else if (index < rule.getSingleNum() + rule.getCompleteNum()) {
-            // 填空
-            type = 2;
-        } else {
-            // 主观
-            type = 3;
-        }
-        return type;
-    }
+//    private static int getTypeByIndex(int index, Rule rule) {
+//        int type = 0;
+//        // 单选
+//        if (index < rule.getSingleNum()) {
+//            type = 1;
+//        } else if (index < rule.getSingleNum() + rule.getCompleteNum()) {
+//            // 填空
+//            type = 2;
+//        } else {
+//            // 主观
+//            type = 3;
+//        }
+//        return type;
+//    }
 
     /**
      * 突变算子 每个个体的每个基因都有可能突变
@@ -148,9 +158,11 @@ public class GA {
                 tmpQuestion = paper.getQuestion(i);
 
                 // 从题库中获取和变异的题目类型一样分数相同的题目（不包含变异题目）
-                list = 
+                list = questionService.list(new QueryWrapper<Question>().eq("quesTypeId", tmpQuestion.getQuesTypeId())
+                        .eq("coursename", tmpQuestion.getCoursename())
+                        .in("pointId", rule.getpointIdList()));
                 // QuestionService.getQuestionListWithOutSId(idString.substring(1, idString.indexOf(']')),paper.getidString(),tmpQuestion.getType());
-                null;
+//                null;
                 if (list.size() > 0) {
                     // 随机获取一道
                     index = (int) (Math.random() * list.size());

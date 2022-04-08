@@ -44,7 +44,7 @@ public class showpaper {
 
     /**
      * 
-     * @param StudentId
+     * @param
      * @return
      */
     @PostMapping("/getQuestion/bytestId")
@@ -78,6 +78,12 @@ public class showpaper {
                 return CommonReturnType.create("没有待批阅学生参加");
             }
             Question tempq =questionService.getById(Integer.valueOf(s)) ;
+            PaperJustify paperJustify = paperJustifyService.getOne(new QueryWrapper<PaperJustify>()
+                    .eq("testId",testId).eq("studentphone",testrelstudent.get(0).getStudentPhone()).eq("questionid", tempq.getId()));
+            if(paperJustify==null){
+                return  CommonReturnType.create("没有该测试的答卷信息");
+            }
+
             tempq.setStudentAnswer(paperJustifyService.getOne(new QueryWrapper<PaperJustify>()
                     .eq("testId",testId).eq("studentphone",testrelstudent.get(0).getStudentPhone()).eq("questionid", tempq.getId())).getExmaineAnswer());
             q.add(tempq);

@@ -52,7 +52,7 @@ public class PaperJustifyController {
         log.info(q.toString());
         boolean data= paperJustifyService.save(q);
         if(!data){
-            return CommonReturnType.create("没有gaixuesheng");
+            return CommonReturnType.create(null, "没有gaixuesheng");
         }
         return CommonReturnType.create(null);
     }
@@ -104,7 +104,7 @@ public class PaperJustifyController {
             p.setStudentphone(phone);
             boolean data= paperJustifyService.save(p);
             if(!data){
-                return CommonReturnType.create("没有gaixuesheng");
+                return CommonReturnType.create(null, "没有gaixuesheng");
             }
         }
         return CommonReturnType.create(p);
@@ -116,7 +116,7 @@ public class PaperJustifyController {
                 .eq("studentphone", phone)
         );
         if(data==null){
-            return CommonReturnType.create("没有gaixuesheng");
+            return CommonReturnType.create(null, "没有gaixuesheng");
         }
         return CommonReturnType.create(data);
     }
@@ -129,7 +129,7 @@ public class PaperJustifyController {
                 .eq("studentphone", id)
         );
         if(!data){
-            return CommonReturnType.create("没有该题目或已经被删除");
+            return CommonReturnType.create(null, "没有该题目或已经被删除");
         }
 
         return CommonReturnType.create(null);
