@@ -202,7 +202,17 @@ public class PapersController {
         String[] str = strs.split(",");
         return Arrays.asList(str);
    }
-   //根据testid获取参加考试的考生信息
+//复制试卷
+    @PostMapping("/copy")
+    public CommonReturnType copy(@RequestParam int paperId){
+        Papers p =papersService.getById(paperId);
+        if(p==null){
+            return CommonReturnType.create(null,"改试卷不存在或没有题目");
+        }
+        p.setPaperId(null);
+        papersService.save(p);
+        return CommonReturnType.create(p);
+    }
 
 
 
