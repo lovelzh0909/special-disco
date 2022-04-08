@@ -210,6 +210,7 @@ public class PapersController {
             return CommonReturnType.create(null,"改试卷不存在或没有题目");
         }
         p.setPaperId(null);
+        p.setCreateTime(String.valueOf(LocalDateTime.now()));
         papersService.save(p);
         return CommonReturnType.create(p);
     }
