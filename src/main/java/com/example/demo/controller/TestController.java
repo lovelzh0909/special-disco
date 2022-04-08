@@ -227,6 +227,7 @@ public class TestController {
             log.info(s);
             LocalDateTime localDateTime1 = LocalDateTime.parse(s);
             LocalDateTime localDateTime2 = localDateTime1.plusMinutes(test.getTimelast());
+
             if(localDateTime.isBefore(localDateTime1)){
                 test.setTeststatus(1);
             }

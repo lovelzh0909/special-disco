@@ -92,6 +92,10 @@ public class MakePaper {
         List<Ruleqnum>  ruleqnum =rule.getRuleqnumList();
         for (Ruleqnum r : ruleqnum) {
             // questionnum.set(r.getTypeId(), (int) questionService.count(new QueryWrapper<Question> ().eq("type",1).eq("coursename", coursename)));
+            long l = questionService.count(new QueryWrapper<Question>().eq("quesTypeId", r.getTypeId())
+                    .eq("coursename", coursename)
+                    .in("pointId", rule.getpointIdList()));
+            log.info("l"+l);
             questionnum.set(r.getTypeId(), (int) questionService.count(new QueryWrapper<Question>().eq("quesTypeId", r.getTypeId())
                     .eq("coursename", coursename)
                     .in("pointId", rule.getpointIdList())));
@@ -169,15 +173,15 @@ public class MakePaper {
     @PostMapping("/paperProblem/save/byListQuestion/{paperId}")
     public CommonReturnType saveProblem(@PathVariable int paperId, @RequestBody List<Question> l) {
         //new CommonReturnType();
-        String papercontext = "";
+        StringBuilder papercontext = new StringBuilder();
         for (Question q : l) {
-            papercontext = papercontext + String.valueOf(q.getId());
+            papercontext.append(q.getId());
             if (q == l.get(l.size() - 1)) {
                 break;
             }
-            papercontext = papercontext + ",";
+            papercontext.append(",");
         }
-        boolean b = papersService.update(new UpdateWrapper<Papers>().set("papercontext", papercontext).eq("paperId", paperId));
+        boolean b = papersService.update(new UpdateWrapper<Papers>().set("papercontext", papercontext.toString()).eq("paperId", paperId));
         if (b) {
             return CommonReturnType.create(null);
         } else {

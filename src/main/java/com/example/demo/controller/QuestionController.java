@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.demo.Response.CommonReturnType;
 import com.example.demo.entity.Question;
 import com.example.demo.service.QuestionService;
+import com.example.demo.service.QuestionrelscoreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,7 +35,8 @@ import javax.xml.crypto.Data;
 public class QuestionController {
     @Autowired
     QuestionService questionService;
-
+    @Autowired
+    QuestionrelscoreService questionrelscoreService;
     //fillQuestion
     //添加成功
     @PostMapping("/save")

@@ -73,6 +73,7 @@ public class showpaper {
         for(String s:qs){
             List<Testrelstudent> testrelstudent =testrelstudentService.list(new QueryWrapper<Testrelstudent>()
                     .eq("testId",testId).eq("status",3));
+            log.info(testrelstudent.toString());
             if(testrelstudent.size()==0||testrelstudent==null){
                 testService.update(new UpdateWrapper<Test>().set("teststatus",4).eq("testId",testId));
                 return CommonReturnType.create(null,"没有待批阅学生");
