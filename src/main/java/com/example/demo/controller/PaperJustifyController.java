@@ -68,7 +68,8 @@ public class PaperJustifyController {
     @PostMapping("/saveall/{phone}/{testId}")
     public CommonReturnType saveallQuestion(@RequestBody List<Question> ps , @PathVariable String phone , @PathVariable Integer testId ){
         if(paperJustifyService.getOne(new QueryWrapper<PaperJustify>().eq("studentPhone", phone).eq("testId", testId))!=null){
-            return CommonReturnType.create("你已经交卷");
+            testrelstudentService.update(new UpdateWrapper<Testrelstudent>().set("status",3).eq("testId",testId).eq("studentPhone", phone));
+            return CommonReturnType.create(null,"你已经交卷");
         }
         testrelstudentService.update(new UpdateWrapper<Testrelstudent>().set("status",3).eq("testId",testId).eq("studentPhone", phone));
         PaperJustify p = new PaperJustify();

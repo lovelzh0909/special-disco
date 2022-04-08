@@ -72,24 +72,29 @@ public class showpaper {
         Map<String,Object> m =new HashMap<>();
         for(String s:qs){
             List<Testrelstudent> testrelstudent =testrelstudentService.list(new QueryWrapper<Testrelstudent>()
-                    .eq("testId",testId).eq("status",1));
+                    .eq("testId",testId).eq("status",3));
             m.put("studentphone",testrelstudent.get(0).getStudentPhone());
             if(testrelstudent.size()==0){
+                testService.update(new UpdateWrapper<Test>().set("teststatus",4).eq("testId",testId));
                 return CommonReturnType.create("没有待批阅学生参加");
             }
             Question tempq =questionService.getById(Integer.valueOf(s)) ;
             PaperJustify paperJustify = paperJustifyService.getOne(new QueryWrapper<PaperJustify>()
-                    .eq("testId",testId).eq("studentphone",testrelstudent.get(0).getStudentPhone()).eq("questionid", tempq.getId()));
+                    .eq("testId",testId)
+                    .eq("studentphone",testrelstudent.get(0).getStudentPhone())
+                    .eq("questionid", tempq.getId()));
+            testrelstudentService.update(new UpdateWrapper<Testrelstudent>().set("status",4)
+                    .eq("testId",testId)
+                    .eq("studentphone",testrelstudent.get(0).getStudentPhone()));
             if(paperJustify==null){
                 return  CommonReturnType.create("没有该测试的答卷信息");
             }
-
-            tempq.setStudentAnswer(paperJustifyService.getOne(new QueryWrapper<PaperJustify>()
-                    .eq("testId",testId).eq("studentphone",testrelstudent.get(0).getStudentPhone()).eq("questionid", tempq.getId())).getExmaineAnswer());
+            tempq.setStudentAnswer(paperJustify.getExmaineAnswer());
             q.add(tempq);
         }
         log.info("-----------------log---------------");
         log.info(q.toString());
+
         if(q.size()==0){
             return CommonReturnType.create("没有找到该试卷");
         }
