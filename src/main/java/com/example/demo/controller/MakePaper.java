@@ -11,14 +11,12 @@ import com.example.demo.GA.Global;
 import com.example.demo.GA.Paper;
 import com.example.demo.GA.Population;
 import com.example.demo.Response.CommonReturnType;
-import com.example.demo.entity.Papers;
-import com.example.demo.entity.Question;
-import com.example.demo.entity.Rule;
-import com.example.demo.entity.Ruleqnum;
+import com.example.demo.entity.*;
 import com.example.demo.service.PapersService;
 import com.example.demo.service.QuestionService;
 
 
+import com.example.demo.service.QuestionrelscoreService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -35,6 +33,8 @@ public class MakePaper {
     @Autowired
     PapersService papersService;
 
+    @Autowired
+    QuestionrelscoreService questionrelscoreService;
     /**
      * 返回问题id
      * @param rule
@@ -176,12 +176,20 @@ public class MakePaper {
         StringBuilder papercontext = new StringBuilder();
         for (Question q : l) {
             papercontext.append(q.getId());
+            Questionrelscore qrs = new Questionrelscore();
+            qrs.setPaperId(paperId);
+            qrs.setQuestionId(q.getId());
+            qrs.setScore(q.getScore());
+            log.info("qrs" + qrs);
+            boolean b1 = questionrelscoreService.save(qrs);
             if (q == l.get(l.size() - 1)) {
                 break;
             }
             papercontext.append(",");
+
         }
         boolean b = papersService.update(new UpdateWrapper<Papers>().set("papercontext", papercontext.toString()).eq("paperId", paperId));
+
         if (b) {
             return CommonReturnType.create(null);
         } else {

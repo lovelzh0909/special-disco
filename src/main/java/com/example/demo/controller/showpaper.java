@@ -41,6 +41,8 @@ public class showpaper {
     TestrelstudentService testrelstudentService;
     @Autowired
     ScoreService scoreService;
+    @Autowired
+    QuestionrelscoreService questionrelscoreService;
 
     /**
      * 
@@ -79,6 +81,8 @@ public class showpaper {
         for(String s:qs){
             m.put("studentphone",testrelstudent.get(0).getStudentPhone());
             Question tempq =questionService.getById(Integer.valueOf(s)) ;
+            tempq.setScore(questionrelscoreService.getOne(new QueryWrapper<Questionrelscore>().eq("questionId",tempq.getId()).eq("paperId",t.getPaperId())).getScore());
+
             PaperJustify paperJustify = paperJustifyService.getOne(new QueryWrapper<PaperJustify>()
                     .eq("testId",testId)
                     .eq("studentphone",testrelstudent.get(0).getStudentPhone())
@@ -128,7 +132,7 @@ public class showpaper {
        return CommonReturnType.create(p);
    }
 
-    @PostMapping("/marking/finish/{studentphone}/{testId}")
+    @PostMapping("/marking/finish/{studentphone}/{teacherPhone}/{testId}")
     public CommonReturnType savescore(@RequestBody List<Question> questionList,@PathVariable String studentphone ,@PathVariable Integer testId,@PathVariable String teacherPhone) {
         Double sum=0.0;
         for(Question q:questionList) {
