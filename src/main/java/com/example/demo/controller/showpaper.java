@@ -52,7 +52,14 @@ public class showpaper {
         List<String> qs=   stringToList(p.getPapercontext());
         List<Question> q=new ArrayList<>();
         for(String s:qs){
-            q.add(questionService.getById(Integer.valueOf(s)).setAnswer(null));
+            Question question =questionService.getById(Integer.valueOf(s));
+            if(question ==null){
+                return CommonReturnType.create(null,"某题目已被删除");
+            }
+            question.setAnswer(null);
+            Questionrelscore questionrelscore =questionrelscoreService.getOne(new QueryWrapper<Questionrelscore>().eq("questionId",question.getId()).eq("paperId",p.getPaperId()));
+            question.setScore(questionrelscore.getScore());
+            q.add(question);
         }
 
         if(q.size()==0){
@@ -107,7 +114,13 @@ public class showpaper {
         List<String> qs=   stringToList(p.getPapercontext());
         List<Question> q=new ArrayList<>();
         for(String s:qs){
-            q.add(questionService.getById(Integer.valueOf(s)));
+            Question question =questionService.getById(Integer.valueOf(s));
+            if(question ==null){
+                return CommonReturnType.create(null,"某题目已被删除");
+            }
+            Questionrelscore questionrelscore =questionrelscoreService.getOne(new QueryWrapper<Questionrelscore>().eq("questionId",question.getId()).eq("paperId",p.getPaperId()));
+            question.setScore(questionrelscore.getScore());
+            q.add(question);
         }
         for(Question qq:q){
             qq.setScore(questionrelscoreService.getOne(new QueryWrapper<Questionrelscore>().eq("questionId",qq.getId()).eq("paperId",paperId)).getScore());
