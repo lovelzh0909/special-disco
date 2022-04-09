@@ -36,7 +36,7 @@ public class MakePaper {
     @Autowired
     QuestionrelscoreService questionrelscoreService;
 
-    int typenum;
+    int typenum =20;
     /**
      * 返回问题id
      * @param rule
@@ -44,14 +44,18 @@ public class MakePaper {
      */
     @PostMapping("/autoProblem")
     public CommonReturnType saveQuestion(@RequestBody Rule rule) {
+        log.info("-----------log---------");
+        log.info("l"+rule);
         List<Question> list = randpaper(rule);
-        if (list.size() == 0||list==null)
+        if (list==null||list.size() == 0)
             return CommonReturnType.create(null, "题目不足");
         return CommonReturnType.create(list);
     }
 
     @PostMapping("/autoProblem/intelligence")
     public CommonReturnType makepaper(@RequestBody Rule rule) {
+        log.info("-----------log---------");
+        log.info("l"+rule);
         Paper resultPaper =new Paper();
         int runCount =2;
         int count=0;
@@ -89,17 +93,25 @@ public class MakePaper {
 
     private  List<Question> randpaper(Rule rule){
         List<Question> list = new ArrayList<>();
-        List<Integer> questionnum = new ArrayList<Integer>(typenum);
+//        List<Integer> questionnum = new ArrayList<Integer>(typenum);
         String coursename = rule.getCoursename();
+        int[] questionnnum  =new int[typenum];
         List<Ruleqnum>  ruleqnum =rule.getRuleqnumList();
+        log.info("l"+ruleqnum);
+        log.info("l"+rule.getpointIdList());
+        log.info("l"+coursename);
         for (Ruleqnum r : ruleqnum) {
+            log.info("l"+r);
             // questionnum.set(r.getTypeId(), (int) questionService.count(new QueryWrapper<Question> ().eq("type",1).eq("coursename", coursename)));
             long l = questionService.count(new QueryWrapper<Question>().eq("quesTypeId", r.getTypeId())
                     .eq("coursename", coursename)
                     .in("pointId", rule.getpointIdList()));
             log.info("l"+l);
-            questionnum.set(r.getTypeId(), (int) l);
-            if (questionnum.get(r.getTypeId()) < r.getNum()) {
+            log.info("l"+r.getTypeId());
+            questionnnum[r.getTypeId()] =(int) l;
+//            questionnum.set(r.getTypeId(), (int) l);
+//            if (questionnum.get(r.getTypeId()) < r.getNum()) {
+            if (questionnnum[r.getTypeId()] < r.getNum()) {
                 log.info("----------log----------");
                 log.info("***题目不足***");
                 return null;
@@ -110,9 +122,12 @@ public class MakePaper {
             List<Question> qArray = questionService.list(new QueryWrapper<Question>().eq("quesTypeId", r.getTypeId())
                     .eq("coursename", coursename)
                     .in("pointId", rule.getpointIdList()));
-            list.addAll(randsquestion(qArray, rule.getSingleNum(), r.getScore()));
+            log.info("l:"+qArray+rule.getSingleNum()+r.getScore());
+            list.addAll(randsquestion(qArray, r.getNum(), r.getScore()));
 
         }
+        log.info("--------------log-------------");
+        log.info("l"+list);
         return list;
     }
     /**

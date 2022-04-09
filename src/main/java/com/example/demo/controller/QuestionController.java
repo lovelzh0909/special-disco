@@ -59,7 +59,7 @@ public class QuestionController {
     //多条题目保存
     @PostMapping("/saveall")
     public CommonReturnType saveallQuestion(@RequestBody List<Question> q ){
-
+        log.info("l"+q);
         for(Question qs:q){
             qs.setId(null);
         }
