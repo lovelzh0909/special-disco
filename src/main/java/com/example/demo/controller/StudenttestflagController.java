@@ -6,6 +6,7 @@ import com.example.demo.Response.CommonReturnType;
 import com.example.demo.entity.Studenttestflag;
 import com.example.demo.service.StudenttestflagService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -25,27 +26,32 @@ public class StudenttestflagController {
     @Autowired
     private StudenttestflagService studenttestflagService;
     //保存
-    @RequestMapping("/save")
+    @PostMapping("/save")
     public CommonReturnType save(@RequestBody Studenttestflag studenttestflag){
+        studenttestflag.setFlag(1);
         studenttestflagService.save(studenttestflag);
         return CommonReturnType.create(null);
     }
     //删除
-    @RequestMapping("/delete")
+    @PostMapping("/delete")
     public CommonReturnType delete(@RequestBody Studenttestflag studenttestflag){
-        studenttestflagService.remove(new QueryWrapper<>(studenttestflag));
+        studenttestflagService.removeById(studenttestflag.getId());
         return CommonReturnType.create(null);
     }
     //更新
-    @RequestMapping("/update")
+    @PostMapping("/update")
     public CommonReturnType update(@RequestBody Studenttestflag studenttestflag){
         studenttestflagService.updateById(studenttestflag);
         return CommonReturnType.create(null);
     }
     //查询
-    @RequestMapping("/select")
-    public CommonReturnType select(@RequestBody Studenttestflag studenttestflag){
-        return CommonReturnType.create(studenttestflagService.getById(studenttestflag.getPhone()));
+    @PostMapping("/find")
+    public CommonReturnType find(@RequestBody Studenttestflag studenttestflag){
+        QueryWrapper<Studenttestflag> queryWrapper=new QueryWrapper<>();
+        queryWrapper.eq("phone",studenttestflag.getPhone());
+        queryWrapper.eq("testid",studenttestflag.getTestId());
+        Studenttestflag studenttestflag1=studenttestflagService.getOne(queryWrapper);
+        return CommonReturnType.create(studenttestflag1);
     }
 }
 
