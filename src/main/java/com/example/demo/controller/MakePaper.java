@@ -35,6 +35,8 @@ public class MakePaper {
 
     @Autowired
     QuestionrelscoreService questionrelscoreService;
+
+    int typenum;
     /**
      * 返回问题id
      * @param rule
@@ -87,7 +89,7 @@ public class MakePaper {
 
     private  List<Question> randpaper(Rule rule){
         List<Question> list = new ArrayList<>();
-        List<Integer> questionnum = new ArrayList<Integer>();
+        List<Integer> questionnum = new ArrayList<Integer>(typenum);
         String coursename = rule.getCoursename();
         List<Ruleqnum>  ruleqnum =rule.getRuleqnumList();
         for (Ruleqnum r : ruleqnum) {
@@ -96,9 +98,7 @@ public class MakePaper {
                     .eq("coursename", coursename)
                     .in("pointId", rule.getpointIdList()));
             log.info("l"+l);
-            questionnum.set(r.getTypeId(), (int) questionService.count(new QueryWrapper<Question>().eq("quesTypeId", r.getTypeId())
-                    .eq("coursename", coursename)
-                    .in("pointId", rule.getpointIdList())));
+            questionnum.set(r.getTypeId(), (int) l);
             if (questionnum.get(r.getTypeId()) < r.getNum()) {
                 log.info("----------log----------");
                 log.info("***题目不足***");
