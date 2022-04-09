@@ -68,7 +68,8 @@ public class PaperJustifyController {
      */
     @PostMapping("/saveall/{phone}/{testId}")
     public CommonReturnType saveallQuestion(@RequestBody List<Question> ps , @PathVariable String phone , @PathVariable Integer testId ){
-        if(paperJustifyService.getOne(new QueryWrapper<PaperJustify>().eq("studentPhone", phone).eq("testId", testId))!=null){
+        List<PaperJustify> paperJustify =paperJustifyService.list(new QueryWrapper<PaperJustify>().eq("studentPhone", phone).eq("testId", testId));
+        if(paperJustify!=null&&paperJustify.size()!=0){
             testrelstudentService.update(new UpdateWrapper<Testrelstudent>().set("status",3).eq("testId",testId).eq("studentPhone", phone));
             return CommonReturnType.create(null,"你已经交卷");
         }
@@ -87,6 +88,10 @@ public class PaperJustifyController {
             p.setQuestionId(q.getId());
             // p.setExmaineAnswer(q.getAnswer());
             p.setCorrectAnswer(questionService.getById(q.getId()).getAnswer());
+//            p.setCorrectAnswer(String.join(",",p.getCorrectAnswer()));
+            p.setCorrectAnswer(p.getCorrectAnswer().substring(1,p.getCorrectAnswer().indexOf("]")));
+            log.info(p.getCorrectAnswer());
+            log.info(p.getExmaineAnswer());
 //            p.setCorrectAnswer(q.getAnswer());
             p.setExmaineAnswer(q.getAnswer());
             if(q.getQuesTypeId()==1){
