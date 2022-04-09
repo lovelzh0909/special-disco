@@ -189,6 +189,7 @@ public class MakePaper {
     @PostMapping("/paperProblem/save/byListQuestion/{paperId}")
     public CommonReturnType saveProblem(@PathVariable int paperId, @RequestBody List<Question> l) {
         //new CommonReturnType();
+        questionrelscoreService.remove(new QueryWrapper<Questionrelscore>().eq("paperId",paperId));
         StringBuilder papercontext = new StringBuilder();
         for (Question q : l) {
             papercontext.append(q.getId());
@@ -202,7 +203,6 @@ public class MakePaper {
                 break;
             }
             papercontext.append(",");
-
         }
         boolean b = papersService.update(new UpdateWrapper<Papers>().set("papercontext", papercontext.toString()).eq("paperId", paperId));
 
