@@ -44,11 +44,7 @@ public class showpaper {
     @Autowired
     QuestionrelscoreService questionrelscoreService;
 
-    /**
-     * 
-     * @param
-     * @return
-     */
+
     @PostMapping("/getQuestion/bytestId")
     public CommonReturnType getStudentvideo(@RequestParam Integer testId) {
         Test t= testService.getById(testId);
@@ -113,6 +109,9 @@ public class showpaper {
         for(String s:qs){
             q.add(questionService.getById(Integer.valueOf(s)));
         }
+        for(Question qq:q){
+            qq.setScore(questionrelscoreService.getOne(new QueryWrapper<Questionrelscore>().eq("questionId",qq.getId()).eq("paperId",paperId)).getScore());
+        }
 
         if(q.size()==0){
             return CommonReturnType.create("没有找到该试卷");
@@ -164,6 +163,7 @@ public class showpaper {
    @PostMapping("/getpaper/bypaperId")
    public CommonReturnType getpaper(@RequestParam Integer paperId) {
        Papers p =papersService.getById(paperId);
+
        if(p==null){
            return CommonReturnType.create("没有找到该试卷");
        }
