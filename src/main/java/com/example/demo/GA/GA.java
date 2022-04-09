@@ -1,9 +1,12 @@
 package com.example.demo.GA;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.example.demo.configure.SpringUtil;
 import com.example.demo.entity.Question;
 import com.example.demo.entity.Rule;
 import com.example.demo.service.QuestionService;
+import com.example.demo.service.impl.QuestionServiceImpl;
+import org.springframework.context.ApplicationContext;
 
 
 import java.util.List;
@@ -16,7 +19,8 @@ import java.util.List;
  * @version: 1.0
  */
 public class GA {
-    static QuestionService questionService;
+    static ApplicationContext applicationContext = SpringUtil.getApplicationContext();
+     static QuestionService questionService = applicationContext.getBean(QuestionServiceImpl.class);//获取Spring注解管理的类对象
     /**
      * 变异概率
      */
@@ -147,7 +151,7 @@ public class GA {
      *
      * @param paper
      */
-    public static void mutate(Paper paper,Rule rule) {
+    public static void mutate(Paper paper, Rule rule) {
         Question tmpQuestion;
         int index;
         List<Question> list;

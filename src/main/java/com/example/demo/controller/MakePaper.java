@@ -61,9 +61,10 @@ public class MakePaper {
         int count=0;
         if (rule != null) {
             // 初始化种群
-            Population population = new Population(5 , rule);
+            Population population = new Population(2 , rule);
             log.info("初次适应度  " + population.getFitness().getAdaptationDegree());
             while (count < runCount) {
+
                 count++;
                 population = GA.evolvePopulation(population, rule);
                 System.out.println("第 " + count + " 次进化，适应度为： " + population.getFitness().getAdaptationDegree());

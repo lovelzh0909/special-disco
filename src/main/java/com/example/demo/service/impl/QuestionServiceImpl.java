@@ -42,7 +42,7 @@ public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, Question> i
     }
 
     @Override
-    public List<Paper> randpapers(int num, Rule rule){
+    public  List<Paper> randpapers(int num,Rule rule){
         List<Paper> papers =new ArrayList<>();
         for(int i=1;i<=num;i++){
             Paper paper =new Paper();
@@ -60,15 +60,25 @@ public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, Question> i
     @Override
     public  List<Question> randpaper(Rule rule){
         List<Question> list = new ArrayList<>();
-        List<Integer> questionnum = new ArrayList<Integer>();
+//        List<Integer> questionnum = new ArrayList<Integer>(typenum);
         String coursename = rule.getCoursename();
+        int[] questionnnum  =new int[10];
         List<Ruleqnum>  ruleqnum =rule.getRuleqnumList();
+        log.info("l"+ruleqnum);
+        log.info("l"+rule.getpointIdList());
+        log.info("l"+coursename);
         for (Ruleqnum r : ruleqnum) {
+            log.info("l"+r);
             // questionnum.set(r.getTypeId(), (int) questionService.count(new QueryWrapper<Question> ().eq("type",1).eq("coursename", coursename)));
-            questionnum.set(r.getTypeId(), (int) count(new QueryWrapper<Question>().eq("quesTypeId", r.getTypeId())
+            long l = count(new QueryWrapper<Question>().eq("quesTypeId", r.getTypeId())
                     .eq("coursename", coursename)
-                    .in("pointId", rule.getpointIdList())));
-            if (questionnum.get(r.getTypeId()) < r.getNum()) {
+                    .in("pointId", rule.getpointIdList()));
+            log.info("l"+l);
+            log.info("l"+r.getTypeId());
+            questionnnum[r.getTypeId()] =(int) l;
+//            questionnum.set(r.getTypeId(), (int) l);
+//            if (questionnum.get(r.getTypeId()) < r.getNum()) {
+            if (questionnnum[r.getTypeId()] < r.getNum()) {
                 log.info("----------log----------");
                 log.info("***题目不足***");
                 return null;
@@ -79,9 +89,12 @@ public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, Question> i
             List<Question> qArray = list(new QueryWrapper<Question>().eq("quesTypeId", r.getTypeId())
                     .eq("coursename", coursename)
                     .in("pointId", rule.getpointIdList()));
-            list.addAll(randsquestion(qArray, rule.getSingleNum(), r.getScore()));
+            log.info("l:"+qArray+rule.getSingleNum()+r.getScore());
+            list.addAll(randsquestion(qArray, r.getNum(), r.getScore()));
 
         }
+        log.info("--------------log-------------");
+        log.info("l"+list);
         return list;
     }
     /**
