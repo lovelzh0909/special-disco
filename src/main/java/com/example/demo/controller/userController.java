@@ -107,9 +107,7 @@ public class userController {
         );
         if(one!=null){
             one.setPassword(user.getPassword());
-            one.setName(user.getName());
-            one.setRole(user.getRole());
-            userService.updateById(one);
+            userService.update(one,new QueryWrapper<User>().eq("phone", user.getPhone()));
             log.info("--------------------logo-------------------");
             log.info("update["+ one +"]");
             return CommonReturnType.create(one.getRole(),"success");
