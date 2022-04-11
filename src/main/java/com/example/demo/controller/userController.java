@@ -2,12 +2,18 @@ package com.example.demo.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.example.demo.Response.CommonReturnType;
+import com.example.demo.entity.Teacherrelclass;
 import com.example.demo.entity.User;
+import com.example.demo.service.TeacherrelclassService;
+import com.example.demo.service.TestrelstudentService;
 import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import lombok.extern.slf4j.Slf4j;
+
+import java.util.List;
+import java.util.Objects;
 
 @RestController
 @Slf4j
@@ -15,6 +21,9 @@ import lombok.extern.slf4j.Slf4j;
 public class userController {
     @Autowired
     UserService userService;
+
+    @Autowired
+    TeacherrelclassService teacherrelclassService;
     //@ResponseBody
 //    @GetMapping("/user")
 //    public User getById(@RequestParam("id") int id){
@@ -51,6 +60,13 @@ public class userController {
         if(one!=null){
             return CommonReturnType.create(null,"用户名已存在");
         }else{
+            if (Objects.equals(user.getRole(), "admin") || Objects.equals(user.getRole(), "teacher")){
+                Teacherrelclass teacherrelclass=new Teacherrelclass();
+                teacherrelclass.setTeacher(user.getPhone());
+                teacherrelclass.setClassroom(user.getClassroom());
+                teacherrelclassService.save(teacherrelclass);
+            }
+
             userService.save(user);
             log.info("--------------------logo-------------------");
             log.info("register["+ user +"]");
@@ -101,5 +117,13 @@ public class userController {
         else{
             return CommonReturnType.create(null,"用户名错误");
         }
+    }
+
+    @GetMapping("/all")
+    public CommonReturnType all() {
+        List<User> all = userService.list();
+        log.info("--------------------logo-------------------");
+        log.info("all["+ all +"]");
+        return CommonReturnType.create(all,"success");
     }
 }
