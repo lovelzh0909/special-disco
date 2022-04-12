@@ -48,7 +48,7 @@ public class TeacherrelclassController {
     @PostMapping("/getStudent/byclass")
     public CommonReturnType getStudentbyclass(@RequestParam List<String> t) {
 
-        List<User> student = userService.list(new QueryWrapper<User>().in("classroom", t));
+        List<User> student = userService.list(new QueryWrapper<User>().in("classroom", t).eq("role", "student"));
         System.out.println(student);
 //        for (Teacherrelclass teacherrelclass : teacher) {
 //            list.add(userService.list(new QueryWrapper<User>().eq("class", teacherrelclass.getClassroom()))
