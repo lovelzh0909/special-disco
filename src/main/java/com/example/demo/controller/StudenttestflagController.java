@@ -48,7 +48,7 @@ public class StudenttestflagController {
     @PostMapping("/find")
     public CommonReturnType find(@RequestBody Studenttestflag studenttestflag){
         QueryWrapper<Studenttestflag> queryWrapper=new QueryWrapper<>();
-        queryWrapper.eq("phone",studenttestflag.getPhone());
+        queryWrapper.eq("studentId",studenttestflag.getStudentId());
         queryWrapper.eq("testid",studenttestflag.getTestId());
         Studenttestflag studenttestflag1=studenttestflagService.getOne(queryWrapper);
         return CommonReturnType.create(studenttestflag1);
