@@ -106,7 +106,24 @@ public class userController {
                         .eq("phone", user.getPhone())
         );
         if(one!=null){
+            if (user.getPassword()!=null){
             one.setPassword(user.getPassword());
+            }
+            if (user.getClassroom()!=null){
+                one.setClassroom(user.getClassroom());
+            }
+            if (user.getName()!=null){
+                one.setName(user.getName());
+            }
+            if (user.getRole()!=null){
+                one.setRole(user.getRole());
+            }
+            if (user.getSchool()!=null){
+                one.setSchool(user.getSchool());
+            }
+            if (user.getStudentId()!=null){
+                one.setStudentId(user.getStudentId());
+            }
             userService.update(one,new QueryWrapper<User>().eq("phone", user.getPhone()));
             log.info("--------------------logo-------------------");
             log.info("update["+ one +"]");
