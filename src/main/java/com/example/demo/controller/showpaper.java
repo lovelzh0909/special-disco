@@ -90,6 +90,7 @@ public class showpaper {
                     .eq("testId",testId)
                     .eq("studentphone",testrelstudent.get(0).getStudentPhone())
                     .eq("questionid", tempq.getId()));
+            tempq.setGetScore(paperJustify.getScore());
             if(paperJustify==null){
                 return  CommonReturnType.create(null,"没有该测试的答卷信息");
             }
@@ -101,7 +102,6 @@ public class showpaper {
 //                .eq("studentphone",testrelstudent.get(0).getStudentPhone()));
         log.info("-----------------log---------------");
         log.info(q.toString());
-
         if(q.size()==0){
             return CommonReturnType.create("没有找到该试卷");
         }
