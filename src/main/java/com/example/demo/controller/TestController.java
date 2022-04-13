@@ -94,14 +94,14 @@ public class TestController {
             te.setStudentphone(null);
             List<User> userList = new ArrayList<>();
             if (te.getTesttime() != null) {
-                String sub = te.getTesttime().substring(0, 9);
+                String sub = te.getTesttime().substring(0, 10);
 //                List<User> l = userService.list(new QueryWrapper<User>().in("role", new String[]{"teacher","admin"}));
                 List<User> l = userService.list(new QueryWrapper<User>().in("role", "teacher","admin"));
                 for (User u : l) {
                     int flag = 1;
                     List<Test> testList = testService.list(new QueryWrapper<Test>().eq("teacherPhone", u.getPhone()));
                     for (Test tes : testList) {
-                        if (tes.getTesttime().substring(0, 9).equals(sub)) {
+                        if (tes.getTesttime().substring(0, 10).equals(sub)) {
                             flag = 0;
                             break;
                         }
