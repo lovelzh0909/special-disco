@@ -310,8 +310,10 @@ public class TestController {
         boolean data = testService.remove(new QueryWrapper<Test>()
                 .eq("testId", id)
         );
+        boolean data2 =testrelstudentService.remove(new QueryWrapper<Testrelstudent>()
+                .eq("testId", id));
         if (!data) {
-            return CommonReturnType.create("没有该测试或已经被删除");
+            return CommonReturnType.create(null,"没有该测试或已经被删除");
         }
 
         return CommonReturnType.create(null);
