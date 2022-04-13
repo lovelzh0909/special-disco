@@ -2,8 +2,10 @@ package com.example.demo.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.example.demo.Response.CommonReturnType;
+import com.example.demo.entity.School;
 import com.example.demo.entity.Teacherrelclass;
 import com.example.demo.entity.User;
+import com.example.demo.service.SchoolService;
 import com.example.demo.service.TeacherrelclassService;
 import com.example.demo.service.TestrelstudentService;
 import com.example.demo.service.UserService;
@@ -21,6 +23,9 @@ import java.util.Objects;
 public class userController {
     @Autowired
     UserService userService;
+
+    @Autowired
+    SchoolService schoolService;
 
     @Autowired
     TeacherrelclassService teacherrelclassService;
@@ -68,6 +73,13 @@ public class userController {
             }
 
             userService.save(user);
+            //查找学生所在学校
+            School school=schoolService.getOne(new QueryWrapper<School>().eq("school", user.getSchool()));
+            long count = userService.count(new QueryWrapper<User>().eq("role", "student").eq("school", school.getSchool()));
+            long count1 = userService.count(new QueryWrapper<User>().eq("role", "teacher").eq("school", school.getSchool()));
+            school.setStudentnum(Math.toIntExact(count));
+            school.setTeachernum(Math.toIntExact(count1));
+            schoolService.updateById(school);
             log.info("--------------------logo-------------------");
             log.info("register["+ user +"]");
             assert false;
