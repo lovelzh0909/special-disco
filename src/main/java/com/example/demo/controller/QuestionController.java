@@ -228,7 +228,7 @@ public class QuestionController {
         log.info(coursename);
         for(Question qs:m){
             log.info(qs.getCoursename());
-            if(qs.getCoursename()==coursename){
+            if(qs.getCoursename().contentEquals(coursename)){
                 return  CommonReturnType.create(null,"题库名重复");
             }
         }
