@@ -90,14 +90,14 @@ public class PaperJustifyController {
             p.setCorrectAnswer(questionService.getById(q.getId()).getAnswer());
 //            p.setCorrectAnswer(String.join(",",p.getCorrectAnswer()));
             p.setCorrectAnswer(p.getCorrectAnswer().substring(1,p.getCorrectAnswer().indexOf("]")));
-            if(q.getQuesTypeId()==1||q.getQuesTypeId()==2){
-                q.setAnswer(q.getAnswer().substring(1,p.getCorrectAnswer().indexOf("]")));
+            if(q.getQuesTypeId()==1||q.getQuesTypeId()==2||q.getQuesTypeId()==5){
+                q.setAnswer(q.getAnswer().substring(1,q.getAnswer().indexOf("]")));
             }
             p.setExmaineAnswer(q.getAnswer());
             log.info(p.getCorrectAnswer());
             log.info(p.getExmaineAnswer());
 //            p.setCorrectAnswer(q.getAnswer());
-
+            p.setScore(0.0);
             if(q.getQuesTypeId()==1){
                 if(Objects.equals(p.getCorrectAnswer(), p.getExmaineAnswer())){
                     p.setScore(questionrelscore.getScore());
@@ -108,12 +108,17 @@ public class PaperJustifyController {
                     p.setScore(questionrelscore.getScore());
                 }
             }
-            if(q.getQuesTypeId()==3){
-                if(Objects.equals(p.getCorrectAnswer(), p.getExmaineAnswer())){
-                    p.setScore(questionrelscore.getScore());
-                }
-            }
-            if(q.getQuesTypeId()==4){
+//            if(q.getQuesTypeId()==3){
+//                if(Objects.equals(p.getCorrectAnswer(), p.getExmaineAnswer())){
+//                    p.setScore(questionrelscore.getScore());
+//                }
+//            }
+//            if(q.getQuesTypeId()==4){
+//                if(Objects.equals(p.getCorrectAnswer(), p.getExmaineAnswer())){
+//                    p.setScore(questionrelscore.getScore());
+//                }
+//            }
+            if(q.getQuesTypeId()==5){
                 if(Objects.equals(p.getCorrectAnswer(), p.getExmaineAnswer())){
                     p.setScore(questionrelscore.getScore());
                 }
