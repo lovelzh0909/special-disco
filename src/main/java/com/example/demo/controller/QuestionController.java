@@ -14,12 +14,8 @@ import org.springframework.web.bind.annotation.*;
 import lombok.extern.slf4j.Slf4j;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-
-import javax.xml.crypto.Data;
 
 /**
  * <p>
@@ -224,6 +220,14 @@ public class QuestionController {
     @PostMapping("/coursename/save")
     public CommonReturnType saveQuestion(@RequestParam String coursename ,String phone ){
         Question q=new Question();
+        List<Question> m=
+                questionService.list(new QueryWrapper<Question>().select("distinct coursename")
+                        .eq("userId", phone) );
+        for(Question qs:m){
+            if(qs.getCoursename()==coursename){
+                return  CommonReturnType.create(null,"题库名重复");
+            }
+        }
         q.setCoursename(coursename);
         q.setUserId(phone);
         log.info("save["+q+"]");
