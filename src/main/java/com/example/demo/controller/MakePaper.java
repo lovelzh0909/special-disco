@@ -67,10 +67,10 @@ public class MakePaper {
 
                 count++;
                 population = GA.evolvePopulation(population, rule);
-                System.out.println("第 " + count + " 次进化，适应度为： " + population.getFitness().getAdaptationDegree());
+                log.info("第 " + count + " 次进化，适应度为： " + population.getFitness().getAdaptationDegree());
             }
-            System.out.println("进化次数： " + count);
-            System.out.println(population.getFitness().getAdaptationDegree());
+            log.info("进化次数： " + count);
+            log.info(String.valueOf(population.getFitness().getAdaptationDegree()));
             resultPaper = population.getFitness();
         }
 //        System.out.println(resultPaper);

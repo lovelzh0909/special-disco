@@ -90,10 +90,14 @@ public class PaperJustifyController {
             p.setCorrectAnswer(questionService.getById(q.getId()).getAnswer());
 //            p.setCorrectAnswer(String.join(",",p.getCorrectAnswer()));
             p.setCorrectAnswer(p.getCorrectAnswer().substring(1,p.getCorrectAnswer().indexOf("]")));
+            if(q.getQuesTypeId()==1||q.getQuesTypeId()==2){
+                q.setAnswer(q.getAnswer().substring(1,p.getCorrectAnswer().indexOf("]")));
+            }
+            p.setExmaineAnswer(q.getAnswer());
             log.info(p.getCorrectAnswer());
             log.info(p.getExmaineAnswer());
 //            p.setCorrectAnswer(q.getAnswer());
-            p.setExmaineAnswer(q.getAnswer());
+
             if(q.getQuesTypeId()==1){
                 if(Objects.equals(p.getCorrectAnswer(), p.getExmaineAnswer())){
                     p.setScore(questionrelscore.getScore());
