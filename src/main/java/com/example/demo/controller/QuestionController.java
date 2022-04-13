@@ -223,6 +223,8 @@ public class QuestionController {
         List<Question> m=
                 questionService.list(new QueryWrapper<Question>().select("distinct coursename")
                         .eq("userId", phone) );
+        log.info("--------------log----------");
+        log.info(String.valueOf(m));
         for(Question qs:m){
             if(qs.getCoursename()==coursename){
                 return  CommonReturnType.create(null,"题库名重复");
