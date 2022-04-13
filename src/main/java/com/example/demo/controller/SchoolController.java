@@ -4,7 +4,9 @@ package com.example.demo.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.example.demo.Response.CommonReturnType;
 import com.example.demo.entity.School;
+import com.example.demo.entity.User;
 import com.example.demo.service.SchoolService;
+import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,10 +27,22 @@ import org.springframework.web.bind.annotation.RestController;
 public class SchoolController {
     @Autowired
     SchoolService schoolService;
+    @Autowired
+    UserService userService;
 
 
     @PostMapping("/save")
     public CommonReturnType save(@RequestBody School school){
+        //查询user中学生人数
+        QueryWrapper<User> studentwrapper = new QueryWrapper<>();
+        studentwrapper.eq("role","student");
+        int countstudent = Math.toIntExact(userService.count(studentwrapper));
+        //查询user中老师人数
+        QueryWrapper<User> teacherwrapper = new QueryWrapper<>();
+        teacherwrapper.eq("role","teacher");
+        int countteacher = Math.toIntExact(userService.count(teacherwrapper));
+        school.setStudentnum(countstudent);
+        school.setTeachernum(countteacher);
         schoolService.save(school);
         return CommonReturnType.create(null);
     }
