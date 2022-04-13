@@ -225,7 +225,9 @@ public class QuestionController {
                         .eq("userId", phone) );
         log.info("--------------log----------");
         log.info(String.valueOf(m));
+        log.info(coursename);
         for(Question qs:m){
+            log.info(qs.getCoursename());
             if(qs.getCoursename()==coursename){
                 return  CommonReturnType.create(null,"题库名重复");
             }
