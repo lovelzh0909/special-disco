@@ -68,30 +68,31 @@ public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, Question> i
         log.info("l"+rule.getpointIdList());
         log.info("l"+coursename);
         for (Ruleqnum r : ruleqnum) {
-            log.info("l"+r);
-            // questionnum.set(r.getTypeId(), (int) questionService.count(new QueryWrapper<Question> ().eq("type",1).eq("coursename", coursename)));
-            long l = count(new QueryWrapper<Question>().eq("quesTypeId", r.getTypeId())
-                    .eq("coursename", coursename)
-                    .in("pointId", rule.getpointIdList()));
-            log.info("l"+l);
-            log.info("l"+r.getTypeId());
-            questionnnum[r.getTypeId()] =(int) l;
+            if(r.getTypeId()!=null) {
+                log.info("l" + r);
+                // questionnum.set(r.getTypeId(), (int) questionService.count(new QueryWrapper<Question> ().eq("type",1).eq("coursename", coursename)));
+                long l = count(new QueryWrapper<Question>().eq("quesTypeId", r.getTypeId())
+                        .eq("coursename", coursename)
+                        .in("pointId", rule.getpointIdList()));
+                log.info("l" + l);
+                log.info("l" + r.getTypeId());
+                questionnnum[r.getTypeId()] = (int) l;
 //            questionnum.set(r.getTypeId(), (int) l);
 //            if (questionnum.get(r.getTypeId()) < r.getNum()) {
-            if (questionnnum[r.getTypeId()] < r.getNum()) {
-                log.info("----------log----------");
-                log.info("***题目不足***");
-                return null;
+                if (questionnnum[r.getTypeId()] < r.getNum()) {
+                    log.info("----------log----------");
+                    log.info("***题目不足***");
+                    return null;
+                }
+                /***
+                 *   获取 该类型题目
+                 */
+                List<Question> qArray = list(new QueryWrapper<Question>().eq("quesTypeId", r.getTypeId())
+                        .eq("coursename", coursename)
+                        .in("pointId", rule.getpointIdList()));
+                log.info("l:" + qArray + rule.getSingleNum() + r.getScore());
+                list.addAll(randsquestion(qArray, r.getNum(), r.getScore()));
             }
-            /***
-             *   获取 该类型题目
-             */
-            List<Question> qArray = list(new QueryWrapper<Question>().eq("quesTypeId", r.getTypeId())
-                    .eq("coursename", coursename)
-                    .in("pointId", rule.getpointIdList()));
-            log.info("l:"+qArray+rule.getSingleNum()+r.getScore());
-            list.addAll(randsquestion(qArray, r.getNum(), r.getScore()));
-
         }
         log.info("--------------log-------------");
         log.info("l"+list);

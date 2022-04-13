@@ -102,6 +102,7 @@ public class MakePaper {
         log.info("l"+rule.getpointIdList());
         log.info("l"+coursename);
         for (Ruleqnum r : ruleqnum) {
+            if(r.getTypeId()!=null){
             log.info("l"+r);
             // questionnum.set(r.getTypeId(), (int) questionService.count(new QueryWrapper<Question> ().eq("type",1).eq("coursename", coursename)));
             long l = questionService.count(new QueryWrapper<Question>().eq("quesTypeId", r.getTypeId())
@@ -125,7 +126,7 @@ public class MakePaper {
                     .in("pointId", rule.getpointIdList()));
             log.info("l:"+qArray+rule.getSingleNum()+r.getScore());
             list.addAll(randsquestion(qArray, r.getNum(), r.getScore()));
-
+            }
         }
         log.info("--------------log-------------");
         log.info("l"+list);
