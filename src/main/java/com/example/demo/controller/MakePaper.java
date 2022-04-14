@@ -44,8 +44,8 @@ public class MakePaper {
      */
     @PostMapping("/autoProblem")
     public CommonReturnType saveQuestion(@RequestBody Rule rule) {
-        log.info("-----------log---------");
-        log.info("l"+rule);
+        log.info("执行随机组卷");
+        log.info("前端发送："+rule);
         List<Question> list = randpaper(rule);
         if (list==null||list.size() == 0)
             return CommonReturnType.create(null, "题目不足");
@@ -54,8 +54,8 @@ public class MakePaper {
 
     @PostMapping("/autoProblem/intelligence")
     public CommonReturnType makepaper(@RequestBody Rule rule) {
-        log.info("-----------log---------");
-        log.info("l"+rule);
+        log.info("执行智能组卷");
+        log.info("前端发送："+rule);
         Paper resultPaper =new Paper();
         int runCount =2;
         int populationsize =2;
@@ -84,6 +84,7 @@ public class MakePaper {
             log.info(String.valueOf(population.getFitness().getAdaptationDegree()));
             resultPaper = population.getFitness();
         }
+        log.info("后端发送："+resultPaper);
 //        System.out.println(resultPaper);
         return  CommonReturnType.create(resultPaper);
     }
@@ -187,8 +188,11 @@ public class MakePaper {
 
     @PostMapping("/paperProblem/save")
     public CommonReturnType notice(@RequestParam int paperId, @RequestParam String papercontext) {
+        log.info("添加题目(字符串ID形式)");
+        log.info("前端发送："+paperId+": "+papercontext);
         //new CommonReturnType();
         boolean b = papersService.update(new UpdateWrapper<Papers>().set("papercontext", papercontext).eq("paperId", paperId));
+        log.info("后端发送：success");
         if (b) {
             return CommonReturnType.create(null);
         } else {
@@ -198,6 +202,8 @@ public class MakePaper {
 
     @PostMapping("/paperProblem/save/byListQuestion/{paperId}")
     public CommonReturnType saveProblem(@PathVariable int paperId, @RequestBody List<Question> l) {
+        log.info("添加题目(list(question))");
+        log.info("前端发送："+paperId+": "+l);
         //new CommonReturnType();
         questionrelscoreService.remove(new QueryWrapper<Questionrelscore>().eq("paperId",paperId));
         StringBuilder papercontext = new StringBuilder();
@@ -215,7 +221,7 @@ public class MakePaper {
             papercontext.append(",");
         }
         boolean b = papersService.update(new UpdateWrapper<Papers>().set("papercontext", papercontext.toString()).eq("paperId", paperId));
-
+        log.info("后端发送：success");
         if (b) {
             return CommonReturnType.create(null);
         }

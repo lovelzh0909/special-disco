@@ -68,6 +68,8 @@ public class PaperJustifyController {
      */
     @PostMapping("/saveall/{phone}/{testId}")
     public CommonReturnType saveallQuestion(@RequestBody List<Question> ps , @PathVariable String phone , @PathVariable Integer testId ){
+        log.info("学生交卷");
+        log.info("前端发送:"+phone+":"+testId+":"+ps);
         List<PaperJustify> paperJustify =paperJustifyService.list(new QueryWrapper<PaperJustify>().eq("studentPhone", phone).eq("testId", testId));
         if(paperJustify!=null&&paperJustify.size()!=0){
             testrelstudentService.update(new UpdateWrapper<Testrelstudent>().set("status",3).eq("testId",testId).eq("studentPhone", phone));
@@ -127,8 +129,9 @@ public class PaperJustifyController {
             p.setTotalscore(questionrelscore.getScore());
             p.setStudentphone(phone);
             boolean data= paperJustifyService.save(p);
+            log.info("后端发送:"+data);
             if(!data){
-                return CommonReturnType.create(null, "没有gaixuesheng");
+                return CommonReturnType.create(null, "没有该学生");
             }
         }
         return CommonReturnType.create(p);
@@ -140,7 +143,7 @@ public class PaperJustifyController {
                 .eq("studentphone", phone)
         );
         if(data==null){
-            return CommonReturnType.create(null, "没有gaixuesheng");
+            return CommonReturnType.create(null, "没有该学生");
         }
         return CommonReturnType.create(data);
     }
@@ -148,20 +151,19 @@ public class PaperJustifyController {
     //删除成功
     @PostMapping ("/remove")
     public CommonReturnType removeQuestion(@RequestParam String id){
-
         boolean data=paperJustifyService.remove(new QueryWrapper<PaperJustify>()
                 .eq("studentphone", id)
         );
         if(!data){
             return CommonReturnType.create(null, "没有该题目或已经被删除");
         }
-
         return CommonReturnType.create(null);
     }
 
     @PostMapping ("/wrongQuestion")
     public CommonReturnType getWrongQuestion(@RequestParam String phone) {
-
+        log.info("获取错题集");
+        log.info("前端发送:"+phone);
         List<PaperJustify> list = paperJustifyService.list(new QueryWrapper<PaperJustify>().apply("justify<score").eq("studentphone",phone));
         List<Question> questionList=new ArrayList<>();
         for (PaperJustify paperJustify : list) {
@@ -169,6 +171,7 @@ public class PaperJustifyController {
             q.setStudentAnswer(paperJustify.getExmaineAnswer());
             questionList.add(q);
         }
+        log.info("后端发送:"+questionList);
         return CommonReturnType.create(questionList);
     }
 

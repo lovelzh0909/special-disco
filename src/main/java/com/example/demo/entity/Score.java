@@ -1,6 +1,7 @@
 package com.example.demo.entity;
 
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.Version;
 import lombok.Data;
 
 import java.util.Date;
@@ -27,4 +28,6 @@ public class Score {
     private String teacherPhone;
     @TableField(exist = false)
     private int num;
+    @Version
+    private int version;
 }

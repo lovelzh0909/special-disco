@@ -61,7 +61,7 @@ public class QuestionController {
         }
         boolean data = questionService.saveBatch(q);
         if(!data)
-        return CommonReturnType.create("添加失败");
+        return CommonReturnType.create(null,"添加失败");
         return CommonReturnType.create(null);
     }
     //查询成功
@@ -73,7 +73,7 @@ public class QuestionController {
         );
 
         if(data==null){
-            return CommonReturnType.create("没有该题目或已经被删除");
+            return CommonReturnType.create(null,"没有该题目或已经被删除");
         }
 
         return CommonReturnType.create(data);
@@ -82,6 +82,8 @@ public class QuestionController {
     //查询该题库的题目
     @PostMapping ("/getbycourse/{page}/{size}")
     public CommonReturnType getCourseQuesion(@RequestParam String phone,String coursename,@PathVariable int page,int size){
+        log.info("获取题库题目数据");
+        log.info("前端发送:"+phone+":"+coursename);
         Page <Question> p = new Page<>(page, size);
         p=questionService.page(p, new QueryWrapper<Question>()
         .eq("userId", phone) .eq("coursename", coursename));
@@ -89,23 +91,27 @@ public class QuestionController {
                 .eq("userId", phone) .eq("coursename", coursename)
         );
         p.setSize(data.size());
+        log.info("后端发送:"+data);
         if(data.size()==0){
-            return CommonReturnType.create("没有该题目或已经被删除");
+            return CommonReturnType.create(null,"没有该题目或已经被删除");
         }
         return CommonReturnType.create(data);
     }
         //查询该题库的题目
         @PostMapping ("/get/bycourse/{quesTypeId}/{page}/{size}")
         public CommonReturnType getCourseandtypeQuesion(@RequestParam String phone,String coursename,@PathVariable int quesTypeId ,int page,int size){
-            Page <Question> p = new Page<>(page, size);
+            log.info("获取题库题目数据");
+            log.info("前端发送:"+phone+":"+coursename+":"+quesTypeId);
+        Page <Question> p = new Page<>(page, size);
             p=questionService.page(p, new QueryWrapper<Question>()
             .eq("userId", phone) .eq("coursename", coursename).eq("quesTypeId", quesTypeId));
             List<Question> data=questionService.list(new QueryWrapper<Question>()
                     .eq("userId", phone) .eq("coursename", coursename) .eq("quesTypeId", quesTypeId)
             );
             p.setTotal(data.size());
+            log.info("后端发送:"+data);
             if(data.size()==0){
-                return CommonReturnType.create("没有该题目或已经被删除");
+                return CommonReturnType.create(null,"没有该题目或已经被删除");
             }
             return CommonReturnType.create(p);
         }
@@ -116,7 +122,8 @@ public class QuestionController {
      */
     @PostMapping ("/getCoursename")
     public CommonReturnType getCoursename(@RequestParam String phone){
-    
+        log.info("获取题库名称");
+        log.info("前端发送:"+phone);
             // List<Question> data=questionService.list(new QueryWrapper<Question>().select("distinct coursename")
             //         .eq("userId", phone) 
             // );
@@ -125,8 +132,9 @@ public class QuestionController {
             .eq("userId", phone) );
             //确定这些问题的coursename 集合
             if(m==null){
-                return CommonReturnType.create("没有该题目或已经被删除");
+                return CommonReturnType.create(null,"没有该题目或已经被删除");
             }
+        log.info("后端发送:"+m);
             return CommonReturnType.create(m);
     }
 
@@ -141,7 +149,7 @@ public class QuestionController {
                         .eq("coursename", coursename) );
         //确定这些问题的coursename 集合
         if(m==null){
-            return CommonReturnType.create("没有该题目或已经被删除");
+            return CommonReturnType.create(null,"没有该题目或已经被删除");
         }
         return CommonReturnType.create(m);
     }
@@ -155,7 +163,7 @@ public class QuestionController {
                 .eq("id", id)
         );
         if(!data){
-            return CommonReturnType.create("没有该题目或已经被删除");
+            return CommonReturnType.create(null,"没有该题目或已经被删除");
         }
 
         return CommonReturnType.create(null);
@@ -174,7 +182,7 @@ public class QuestionController {
                 .eq("userId", phone).eq("coursename",coursename)
         );
         if(!data){
-            return CommonReturnType.create("没有该题目或已经被删除");
+            return CommonReturnType.create(null,"没有该题目或已经被删除");
         }
 
         return CommonReturnType.create(null);
@@ -187,7 +195,7 @@ public class QuestionController {
                 .eq("userId", phone).set("coursename",coursename)
         );
         if(!data){
-            return CommonReturnType.create("没有该题目或已经被删除");
+            return CommonReturnType.create(null,"没有该题目或已经被删除");
         }
 
         return CommonReturnType.create(null);
@@ -219,11 +227,12 @@ public class QuestionController {
      */
     @PostMapping("/coursename/save")
     public CommonReturnType saveQuestion(@RequestParam String coursename ,String phone ){
+        log.info("添加题库");
+        log.info("前端发送:"+phone+":"+coursename);
         Question q=new Question();
         List<Question> m=
                 questionService.list(new QueryWrapper<Question>().select("distinct coursename")
                         .eq("userId", phone) );
-        log.info("--------------log----------");
         log.info(String.valueOf(m));
         log.info(coursename);
         for(Question qs:m){
@@ -240,6 +249,7 @@ public class QuestionController {
         return CommonReturnType.create(null,"添加失败");
         log.info("--------------log----------");
         log.info("save["+q+"]");
+        log.info("后端发送:success");
         return CommonReturnType.create(null);
     }
 }

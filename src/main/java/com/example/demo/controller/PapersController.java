@@ -43,10 +43,6 @@ public class PapersController {
 
     @PostMapping("/save")
     public CommonReturnType saveQuestion(@RequestBody Papers p){
-        // if(p.getPhone()==null){
-        //     p.setPhone(phone);
-        // }
-
         p.setCreateTime(String.valueOf(LocalDateTime.now()));
 //        if(p.getPhone()==null||p.getPapercontext()==null)
 //        return CommonReturnType.create(null,"信息不全");
@@ -66,20 +62,13 @@ public class PapersController {
 
     @PostMapping("/update/{paperId}")
     public CommonReturnType updatePaper(@RequestBody Papers p,@PathVariable("paperId") Integer paperId){
-        // if(p.getPhone()==null){
-        //     p.setPhone(phone);
-        // }
-        // p.setCreateTime(System.currentTimeMillis());
+        log.info("更新试卷数据");
+        log.info("前端发送:"+paperId+":"+p);
         p.setPaperId(paperId);
-//        if(p.getPhone()==null)
-//        return CommonReturnType.create(null,"信息不全");
-        // if(p.getSource()==null){
-        //     p.setSource(p.getPaperId()+"");
-        // }
-//        p.setPaperId(papersService.findOnlyQuestionId());
         if(p.getPapernum()==null){
             p.setPapernum(0);
         }
+        log.info("后端发送: success");
         boolean b = papersService.updateById(p);
         if(!b)
         return CommonReturnType.create(null,"修改试卷失败");
@@ -89,14 +78,6 @@ public class PapersController {
     @PostMapping("/changenum")
     public CommonReturnType usePaper(@RequestParam Integer paperId) {
         Papers p =papersService.getById(paperId);
-        // String lString =p.getPapercontext();
-        //获取每个题目Id放入lint
-        // List<String> l =stringToList(lString);
-        // List<Integer> lint;
-        // for(String i:l ){
-        //     lint.add(Integer.parseInt(i));
-        // }
-        // List<Question> picture = papersService.getpapersQuestions(paperId);
         if(p==null){
             return CommonReturnType.create(null,"改试卷不存在或没有题目");
         }

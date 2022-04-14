@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.demo.Response.CommonReturnType;
 import com.example.demo.entity.Papers;
@@ -12,6 +13,7 @@ import com.example.demo.service.PapersService;
 import com.example.demo.service.TestService;
 import com.example.demo.service.TestrelstudentService;
 import com.example.demo.service.UserService;
+import com.sun.net.httpserver.Authenticator;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.jsqlparser.expression.DateTimeLiteralExpression;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,6 +80,8 @@ public class TestController {
 
     @PostMapping("/saveall")
     public CommonReturnType saveTest(@RequestBody List<Test> t) {
+        log.info("发布考试");
+        log.info("前端发送："+t);
         boolean data = false;
         for (Test te : t) {
             if (te.getCreatedate() == null) {
@@ -95,14 +99,12 @@ public class TestController {
             List<User> userList = new ArrayList<>();
             if (te.getTesttime() != null) {
                 String sub = te.getTesttime().substring(0, 10);
-                log.info("======================");
                 log.info(sub);
 //                List<User> l = userService.list(new QueryWrapper<User>().in("role", new String[]{"teacher","admin"}));
                 List<User> l = userService.list(new QueryWrapper<User>().in("role", "teacher","admin"));
                 for (User u : l) {
                     int flag = 1;
                     List<Test> testList = testService.list(new QueryWrapper<Test>().eq("invigilatorId", u.getPhone()));
-                    log.info("======================");
                     log.info(testList.toString());
                     for (Test tes : testList) {
                         if (tes.getTesttime().substring(0, 10).equals(sub)) {
@@ -124,8 +126,10 @@ public class TestController {
             te.setInvigilatorId(userList.get(i).getPhone());
             te.setInvigilator(userList.get(i).getName());
             testService.save(te);
+            Papers papers =papersService.getOne(new QueryWrapper<Papers>().eq("paperId",te.getPaperId()));
+            papers.setPapernum(papers.getPapernum()+1);
+            papersService.updateById(papers);
             if (te.getRoomId() == null) {
-
                 te.setRoomId(te.getTestId());
             }
             testService.saveOrUpdate(te);
@@ -140,7 +144,7 @@ public class TestController {
         }
         // if(q.getStem()==null||q.getAnswer()==null||q.getCoursename()==null||q.getType()==null)
         // return CommonReturnType.create(null,"信息不全");
-
+        log.info("后端发送:success");
         if (!data)
             return CommonReturnType.create(null, "添加失败");
         return CommonReturnType.create(null);
@@ -164,6 +168,8 @@ public class TestController {
      */
     @PostMapping("/getStudenttest/{page}/{size}")
     public CommonReturnType listOne(@RequestParam Integer phone, @PathVariable("page") Integer page, @PathVariable("size") Integer size) {
+        log.info("获取考试列表（学生）");
+        log.info("前端发送："+phone);
         Page<Test> page2 = new Page<>(page, size);
         List<Testrelstudent> ts = testrelstudentService.list(new QueryWrapper<Testrelstudent>().eq("studentPhone", phone));
 //        List<Test> l=new ArrayList<Test>();
@@ -220,6 +226,7 @@ public class TestController {
 //        if(l.size()==0){
 //            return CommonReturnType.create(null,"没有该学生考试信息");
 //        }
+        log.info("后端发送："+page3);
         return CommonReturnType.create(page3);
         // return testService.list(new QueryWrapper<Test>().eq("phone", test.getPhone()));
     }
@@ -230,6 +237,8 @@ public class TestController {
      */
     @PostMapping("/getTeachertest/{page}/{size}")
     public CommonReturnType listteacherOne(@RequestBody Test te, @PathVariable("page") Integer page, @PathVariable("size") Integer size) {
+        log.info("获取监考考试列表（教师）");
+        log.info("前端发送："+te);
         List<Test> l = testService.list(new QueryWrapper<Test>().eq("invigilatorId", te.getInvigilatorId()));
         Page<Test> page2 = new Page<>(page, size);
         Page<Test> p = testService.page(page2, new QueryWrapper<Test>().eq("invigilatorId", te.getInvigilatorId()));
@@ -253,6 +262,7 @@ public class TestController {
             }
             testService.saveOrUpdate(test);
         }
+        log.info("后端发送:"+l);
         p.setTotal(l.size());
         if (l.size() == 0) {
             return CommonReturnType.create("没有该老师相关考试信息");
@@ -267,6 +277,8 @@ public class TestController {
      */
     @PostMapping("/getTeachertest/distribute/{page}/{size}")
     public CommonReturnType listteacherOnereal(@RequestBody Test te, @PathVariable("page") Integer page, @PathVariable("size") Integer size) {
+        log.info("获取考试列表（老师）");
+        log.info("前端发送："+te);
         List<Test> l = testService.list(new QueryWrapper<Test>().eq("teacherphone", te.getTeacherphone()));
         Page<Test> page2 = new Page<>(page, size);
         Page<Test> p = testService.page(page2, new QueryWrapper<Test>().eq("teacherphone", te.getTeacherphone()));
@@ -293,6 +305,7 @@ public class TestController {
             testService.saveOrUpdate(test);
         }
         p.setTotal(l.size());
+        log.info("后端发送:"+l);
         if (l.size() == 0) {
             return CommonReturnType.create("没有该老师相关考试信息");
         }
@@ -306,12 +319,14 @@ public class TestController {
      */
     @PostMapping("/remove")
     public CommonReturnType removeQuestion(@RequestBody int id) {
-
+        log.info("删除考试");
+        log.info("前端发送:"+id);
         boolean data = testService.remove(new QueryWrapper<Test>()
                 .eq("testId", id)
         );
         boolean data2 =testrelstudentService.remove(new QueryWrapper<Testrelstudent>()
                 .eq("testId", id));
+        log.info("后端发送: success");
         if (!data) {
             return CommonReturnType.create(null,"没有该测试或已经被删除");
         }

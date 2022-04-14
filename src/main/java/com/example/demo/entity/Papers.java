@@ -1,9 +1,6 @@
 package com.example.demo.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 
 
 import java.io.Serializable;
@@ -70,5 +67,8 @@ public class Papers implements Serializable {
     
     @TableField("description")
     private String description;
+
+    @Version
+    private int version;
 
 }

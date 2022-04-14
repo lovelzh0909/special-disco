@@ -109,7 +109,6 @@ public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, Question> i
     public  Double sumb(Rule rule){
         Double sum=1.0;
         String coursename = rule.getCoursename();
-        int[] questionnnum  =new int[10];
         List<Ruleqnum>  ruleqnum =rule.getRuleqnumList();
         for (Ruleqnum r : ruleqnum) {
             if(r.getTypeId()!=null) {

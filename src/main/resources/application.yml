@@ -36,3 +36,6 @@ mybatis:
   mapper-locations: classpath:mybatis/mappers/*.xml
   configuration:
     map-underscore-to-camel-case: true
+servlet:
+  multipart:
+    enabled: true

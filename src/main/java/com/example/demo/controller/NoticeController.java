@@ -20,6 +20,7 @@ import com.example.demo.service.TestService;
 
 import com.example.demo.service.TestrelstudentService;
 import com.example.demo.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,6 +35,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author 作者
  * @since 2022-03-08
  */
+@Slf4j
 @RestController
 @RequestMapping("/notice")
 public class NoticeController {
@@ -46,24 +48,16 @@ public class NoticeController {
     @Autowired
     UserService userService;
 
-    @PostMapping("/one")
-    public CommonReturnType listOne(@RequestParam String phone){
-        // QueryWrapper<Notice> queryWrapper= new QueryWrapper();
-        // queryWrapper.select("notice");
-        List<Test> l=testService.list(new QueryWrapper<Test>().eq("phone",phone));
-        if(l!=null&&l.size() != 0){
-            return CommonReturnType.create(l,"success");
-        }
-        else{
-            return CommonReturnType.create(null,"没有考试信息");
-        }
-    }
+
     @PostMapping
     public CommonReturnType notice(@RequestParam String phone) {
+        log.info("获取基本通知信息");
+        log.info("前端发送:"+phone);
         //new CommonReturnType();
         QueryWrapper<Notice> queryWrapper= new QueryWrapper();
         queryWrapper.select("notice");
         List<Notice> note =noticeService.list(queryWrapper.eq("phone", phone));
+        log.info("后端发送:"+note);
         if(note!=null&&note.size() != 0){
             return CommonReturnType.create(note,"success");
         }else{
@@ -72,6 +66,8 @@ public class NoticeController {
     }
     @PostMapping("/getStudentNotice")
     public CommonReturnType getStudentNotice(@RequestParam String phone) {
+        log.info("获取考试通知信息");
+        log.info("前端发送:"+phone);
         // Map<String, Object> map = new HashMap<>();
 //        Page<StudentTestNoticeVO> Studentnote =new Page<>();
         List<StudentTestNoticeVO> note =new ArrayList<>();
@@ -91,6 +87,7 @@ public class NoticeController {
 //            Studentnote.addOrder(studentTestNoticeVO);
             note.add(studentTestNoticeVO);
         }
+        log.info("后端发送:"+note);
 //        Page<StudentTestNoticeVO> Studentnote = noticeService.getStudentNote(new Page<>(),phone);
         if(note!=null&&note.size() != 0){
             return CommonReturnType.create(note,"success");
@@ -115,6 +112,8 @@ public class NoticeController {
     public CommonReturnType closenotice(@RequestParam String phone) {
         // Map<String, Object> map = new HashMap<>();
         //new CommonReturnType();
+        log.info("返回7天内考试信息");
+        log.info("前端发送"+phone);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         // String dateString = "2017-01-01 11:11:11";
         Calendar calendar = Calendar.getInstance();
@@ -151,6 +150,7 @@ public class NoticeController {
         //     map.put("data", note);
         // }
         // return map;
+        log.info("后端发送:"+note);
         if(note!=null&&note.size() != 0){
             return CommonReturnType.create(note,"success");
         }
