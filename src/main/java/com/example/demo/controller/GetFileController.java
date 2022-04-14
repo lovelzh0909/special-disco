@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.Response.CommonReturnType;
 import com.example.demo.entity.Score;
 import com.example.demo.service.PapersService;
 import com.example.demo.service.ScoreService;
@@ -24,6 +25,8 @@ import jxl.Workbook;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Slf4j
 @RestController
@@ -32,18 +35,23 @@ public class GetFileController {
     @Autowired
     ScoreService scoreService;
     @SneakyThrows
-    @PostMapping("/excel")
-    public  int savefile(@RequestBody MultipartFile file){
+    @PostMapping("/excel/{phone}/{subject}/{examcode}")
+    public CommonReturnType savefile(@RequestBody MultipartFile file,@PathVariable String phone,@PathVariable String subject,@PathVariable Integer examcode){
         log.info(String.valueOf(file));
         File tfile = new File(file.getOriginalFilename());
         XSSFWorkbook workbook=new XSSFWorkbook(FileUtils.openInputStream(tfile));
-//        Workbook workbook=Workbook.getWorkbook(tfile);
-        //两种方式读取工作表
-        //  HSSFSheet sheet=workbook.getSheet("Sheet0");
         XSSFSheet sheet=workbook.getSheetAt(0);
         //获取sheet中最后一行行号
         int lastRowNum=sheet.getLastRowNum();
         log.info(String.valueOf(lastRowNum));
+        if(lastRowNum==0){
+            return CommonReturnType.create(null,"excel为空");
+        }
+        Score score=new Score();
+        score.setTeacherPhone(phone);
+        score.setSubject(subject);
+        score.setExamCode(examcode);
+        score.setAnswerDate(String.valueOf(LocalDate.now()));
         for (int i=0;i<=lastRowNum;i++){
             XSSFRow row=sheet.getRow(i);
             //获取当前行最后单元格列号
@@ -54,14 +62,14 @@ public class GetFileController {
                 log.info(String.valueOf(cell));
                 Integer value =(int) Double.parseDouble(String.valueOf(cell));
                 log.info(value+"");
-//                else{
-//                    cell.SetCellType(CellType.String);
-//                }
-
-//                System.out.print(value+" ");
+                if(j==0)
+                score.setStudentId(value);
+                if(j==1)
+                score.setEtScore((double) value);
             }
-            System.out.println();}
-        return 1;
+            scoreService.save(score);
+        }
+        return CommonReturnType.create(null);
     }
 //    public static File MultipartFileToFile(MultipartFile multipartFile) {
 //
