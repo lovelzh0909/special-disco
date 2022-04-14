@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.entity.Score;
 import com.example.demo.service.PapersService;
 import com.example.demo.service.ScoreService;
+import jxl.CellType;
 import jxl.read.biff.BiffException;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -32,7 +33,7 @@ public class GetFileController {
     ScoreService scoreService;
     @SneakyThrows
     @PostMapping("/excel")
-    public  int savefile(@RequestParam("file") MultipartFile file){
+    public  int savefile(@RequestBody MultipartFile file){
         log.info(String.valueOf(file));
         File tfile = new File(file.getOriginalFilename());
         XSSFWorkbook workbook=new XSSFWorkbook(FileUtils.openInputStream(tfile));
@@ -42,14 +43,22 @@ public class GetFileController {
         XSSFSheet sheet=workbook.getSheetAt(0);
         //获取sheet中最后一行行号
         int lastRowNum=sheet.getLastRowNum();
+        log.info(String.valueOf(lastRowNum));
         for (int i=0;i<=lastRowNum;i++){
             XSSFRow row=sheet.getRow(i);
             //获取当前行最后单元格列号
             int lastCellNum=row.getLastCellNum();
+            log.info(String.valueOf(lastCellNum));
             for (int j=0;j<lastCellNum;j++){
                 XSSFCell cell=row.getCell(j);
-                String value=cell.getStringCellValue();
-                System.out.print(value+" ");
+                log.info(String.valueOf(cell));
+                Integer value =(int) Double.parseDouble(String.valueOf(cell));
+                log.info(value+"");
+//                else{
+//                    cell.SetCellType(CellType.String);
+//                }
+
+//                System.out.print(value+" ");
             }
             System.out.println();}
         return 1;
