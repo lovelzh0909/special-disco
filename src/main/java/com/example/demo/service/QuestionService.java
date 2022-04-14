@@ -42,4 +42,6 @@ public interface QuestionService extends IService<Question> {
     List<Integer> randquestion(List<Question> singleArray, long chosenum, Double s);
 
     List<Question> randsquestion(List<Question> singleArray, long chosenum, Double s);
+
+    Double sumb(Rule rule);
 }

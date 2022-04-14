@@ -44,7 +44,7 @@ public class DBTaskBean {
 //            noticeService.saveOrUpdateBatch(note);
 //
         }
-        System.out.println("Thread Name : "
+        log.info("Thread Name : "
                 + Thread.currentThread().getName() + "  i am a task : date ->  "
                 + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
 

@@ -58,10 +58,21 @@ public class MakePaper {
         log.info("l"+rule);
         Paper resultPaper =new Paper();
         int runCount =2;
+        int populationsize =2;
+        int exceptpapernum =7;
+        double actualpapernum =questionService.sumb(rule);
+        if(exceptpapernum>actualpapernum){
+             runCount =1;
+            populationsize =1;
+        }
+        else {
+            populationsize=(int) Math.sqrt(actualpapernum/2.5);
+            runCount = (int) (2*populationsize);
+        }
         int count=0;
         if (rule != null) {
             // 初始化种群
-            Population population = new Population(2 , rule);
+            Population population = new Population(populationsize , rule);
             log.info("初次适应度  " + population.getFitness().getAdaptationDegree());
             while (count < runCount) {
 
@@ -141,7 +152,6 @@ public class MakePaper {
      * @return
      */
     private List<Integer> randquestion(List<Question> singleArray, long chosenum, Double s) {
-        Question tmpQuestion;
         List<Integer> list = new ArrayList<Integer>();
         Random r = new Random();
         for (int j = 0; j < chosenum; j++) {
@@ -151,7 +161,7 @@ public class MakePaper {
             list.add(singleArray.get(index).getId());
             // paper.addQuestion(singleArray[index]);
             // 保证不会重复添加试题，把最后一位拿来覆盖，并减少随机长度
-            tmpQuestion = singleArray.get(singleArray.size() - j - 1);
+            Question tmpQuestion = singleArray.get(singleArray.size() - j - 1);
             singleArray.set(singleArray.size() - j - 1, singleArray.get(index));
             singleArray.set(index, tmpQuestion);
         }
@@ -159,7 +169,6 @@ public class MakePaper {
     }
 
     private List<Question> randsquestion(List<Question> singleArray, long chosenum, Double s) {
-        Question tmpQuestion;
         List<Question> list = new ArrayList<>();
         Random r = new Random();
         for (int j = 0; j < chosenum; j++) {
@@ -169,7 +178,7 @@ public class MakePaper {
             list.add(singleArray.get(index));
             // paper.addQuestion(singleArray[index]);
             // 保证不会重复添加试题，把最后一位拿来覆盖，并减少随机长度
-            tmpQuestion = singleArray.get(singleArray.size() - j - 1);
+            Question tmpQuestion = singleArray.get(singleArray.size() - j - 1);
             singleArray.set(singleArray.size() - j - 1, singleArray.get(index));
             singleArray.set(index, tmpQuestion);
         }
@@ -209,7 +218,8 @@ public class MakePaper {
 
         if (b) {
             return CommonReturnType.create(null);
-        } else {
+        }
+        else {
             return CommonReturnType.create(null, "暂无通知");
         }
     }

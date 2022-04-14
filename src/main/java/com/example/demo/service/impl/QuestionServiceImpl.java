@@ -11,6 +11,7 @@ import com.example.demo.service.QuestionService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -97,6 +98,35 @@ public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, Question> i
         log.info("--------------log-------------");
         log.info("l"+list);
         return list;
+    }
+
+    /**
+     * 需求占比（题库）
+     * @param rule
+     * @return
+     */
+    @Override
+    public  Double sumb(Rule rule){
+        Double sum=1.0;
+        String coursename = rule.getCoursename();
+        int[] questionnnum  =new int[10];
+        List<Ruleqnum>  ruleqnum =rule.getRuleqnumList();
+        for (Ruleqnum r : ruleqnum) {
+            if(r.getTypeId()!=null) {
+                log.info("l" + r);
+                // questionnum.set(r.getTypeId(), (int) questionService.count(new QueryWrapper<Question> ().eq("type",1).eq("coursename", coursename)));
+                long l = count(new QueryWrapper<Question>().eq("quesTypeId", r.getTypeId())
+                        .eq("coursename", coursename)
+                        .in("pointId", rule.getpointIdList()));
+                sum =sum*(l/r.getNum());
+                if (l < r.getNum()) {
+                    log.info("----------log----------");
+                    log.info("***题目不足***");
+                    return null;
+                }
+            }
+        }
+        return sum;
     }
     /**
      * 非接口
