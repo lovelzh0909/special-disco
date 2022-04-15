@@ -214,7 +214,7 @@ public class MakePaper {
             qrs.setQuestionId(q.getId());
             qrs.setScore(q.getScore());
             log.info("qrs" + qrs);
-            boolean b1 = questionrelscoreService.save(qrs);
+            boolean b1 = questionrelscoreService.saveOrUpdate(qrs);
             if (q == l.get(l.size() - 1)) {
                 break;
             }
