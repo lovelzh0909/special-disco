@@ -85,7 +85,9 @@ public class CompareFaceController {
             System.out.println("初始化引擎失败");
         }
         //人脸检测
-//        ImageInfo imageInfo = ImageFactory.getRGBData(bytes1);
+//        ImageInfo imageInfo = ImageFactory.getRGBData(bytes1)
+//
+//        ;
         ImageInfo imageInfo = getRGBData(new File("C:\\Users\\laptop ct\\Desktop\\temp\\01c41457b6f04d0000018c1b286c04.jpg@1280w_1l_2o_100sh.jpg"));
         List<FaceInfo> faceInfoList = new ArrayList<FaceInfo>();
         errorCode = faceEngine.detectFaces(imageInfo.getImageData(), imageInfo.getWidth(), imageInfo.getHeight(), imageInfo.getImageFormat(), faceInfoList);

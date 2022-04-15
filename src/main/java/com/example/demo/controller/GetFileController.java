@@ -42,6 +42,10 @@ public class GetFileController {
         File tfile =MultipartFileToFile(file);
         XSSFWorkbook workbook=new XSSFWorkbook(FileUtils.openInputStream(tfile));
         XSSFSheet sheet=workbook.getSheetAt(0);
+        if(sheet==null){
+            return CommonReturnType.create(null,"excel为空");
+        }
+
         //获取sheet中最后一行行号
         int lastRowNum=sheet.getLastRowNum();
         log.info(String.valueOf(lastRowNum));
