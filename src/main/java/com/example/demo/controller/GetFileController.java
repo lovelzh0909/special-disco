@@ -1,9 +1,12 @@
 package com.example.demo.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.example.demo.Response.CommonReturnType;
 import com.example.demo.entity.Score;
+import com.example.demo.entity.User;
 import com.example.demo.service.PapersService;
 import com.example.demo.service.ScoreService;
+import com.example.demo.service.UserService;
 import jxl.CellType;
 import jxl.read.biff.BiffException;
 import lombok.SneakyThrows;
@@ -34,6 +37,8 @@ import java.time.LocalDateTime;
 public class GetFileController {
     @Autowired
     ScoreService scoreService;
+    @Autowired
+    UserService userService;
     @SneakyThrows
     @PostMapping("/excel/{phone}/{subject}/{examcode}")
     public CommonReturnType savefile(@RequestBody MultipartFile file,@PathVariable String phone,@PathVariable String subject,@PathVariable Integer examcode){
@@ -67,8 +72,11 @@ public class GetFileController {
                 log.info(String.valueOf(cell));
                 Integer value =(int) Double.parseDouble(String.valueOf(cell));
                 log.info(value+"");
-                if(j==0)
-                score.setStudentId(value);
+                if(j==0){
+                    User user =userService.getOne(new QueryWrapper<User>().eq("studentId",value));
+                    score.setStudentId(Integer.valueOf(user.getPhone()));
+                }
+
                 if(j==1)
                 score.setEtScore((double) value);
             }

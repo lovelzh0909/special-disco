@@ -9,7 +9,9 @@ import com.arcsoft.face.toolkit.ImageInfo;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.example.demo.Response.CommonReturnType;
 import com.example.demo.entity.Studentvideo;
+import com.example.demo.entity.User;
 import com.example.demo.service.StudentvideoService;
+import com.example.demo.service.UserService;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,10 +34,13 @@ import static com.arcsoft.face.toolkit.ImageFactory.getRGBData;
 public class CompareFaceController {
     @Autowired
     StudentvideoService studentvideoService;
+    @Autowired
+    UserService userService;
     @SneakyThrows
     @RequestMapping(value = "/compareFaces", method = RequestMethod.POST)
-    public CommonReturnType compareFaces(@RequestParam String phone,@RequestParam String testid) {
-        List<Studentvideo> studentvideoList =studentvideoService.list(new QueryWrapper<Studentvideo>().eq("phone",phone));
+    public CommonReturnType compareFaces(@RequestParam String studentID,@RequestParam String testid) {
+        User user =userService.getOne(new QueryWrapper<User>().eq("studentId",studentID));
+        List<Studentvideo> studentvideoList =studentvideoService.list(new QueryWrapper<Studentvideo>().eq("phone",user.getPhone()));
         byte[] bytes1 =null;
         byte[] bytes2 =null;
 //        Studentvideo studentvideo1 = new Studentvideo();
