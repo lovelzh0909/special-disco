@@ -168,7 +168,7 @@ public class showpaper {
         score.setAnswerDate(String.valueOf(LocalDate.now()));
         score.setExamCode(testId);
         score.setSubject(t.getCoursename());
-        score.setStudentId(Integer.valueOf(studentphone));
+        score.setStudentId(studentphone);
         scoreService.save(score);
         return CommonReturnType.create(score);
     }

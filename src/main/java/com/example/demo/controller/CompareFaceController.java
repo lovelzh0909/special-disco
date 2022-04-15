@@ -40,6 +40,9 @@ public class CompareFaceController {
     @RequestMapping(value = "/compareFaces", method = RequestMethod.POST)
     public CommonReturnType compareFaces(@RequestParam String studentID,@RequestParam String testid) {
         User user =userService.getOne(new QueryWrapper<User>().eq("studentId",studentID));
+        if(user ==null){
+            return  CommonReturnType.create(null,"没有该学生ID");
+        }
         List<Studentvideo> studentvideoList =studentvideoService.list(new QueryWrapper<Studentvideo>().eq("phone",user.getPhone()));
         byte[] bytes1 =null;
         byte[] bytes2 =null;

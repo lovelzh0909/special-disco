@@ -11,7 +11,7 @@ public class Score {
     @TableField("examCode")
     private Integer examCode;
     @TableField("studentId")
-    private Integer studentId;
+    private String studentId;
     @TableField("subject")
     private String subject;
     @TableField("ptScore")

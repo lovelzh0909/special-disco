@@ -70,6 +70,7 @@ public class GetFileController {
             log.info(String.valueOf(lastCellNum));
             for (int j=0;j<lastCellNum;j++){
                 XSSFCell cell=row.getCell(j);
+                cell.setCellType(1);
                 log.info(String.valueOf(cell));
                 String value =String.valueOf(cell);
                 log.info(value+"");
@@ -78,7 +79,7 @@ public class GetFileController {
                     if(user==null){
                         return CommonReturnType.create(null,"excel 里的学生id 不存在");
                     }
-                    score.setStudentId(Integer.valueOf(user.getPhone()));
+                    score.setStudentId(user.getPhone());
                 }
                 if(j==1)
                 score.setEtScore((double)  Integer.valueOf(value) );
