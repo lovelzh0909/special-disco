@@ -3,6 +3,7 @@ package com.example.demo.controller;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -60,9 +61,32 @@ public class NoticeController {
         log.info("后端发送:"+note);
         if(note!=null&&note.size() != 0){
             return CommonReturnType.create(note,"success");
-        }else{
+        }
+        else{
             return CommonReturnType.create(null,"暂无通知");
         }
+    }
+
+    @PostMapping("/save")
+    public CommonReturnType notice(@RequestParam int testId,@RequestParam String text,@RequestParam String deadline) {
+        log.info("获取基本通知信息");
+        log.info("前端发送:"+testId);
+        List<Testrelstudent> testrelstudent = testrelstudentService.list(new QueryWrapper<Testrelstudent>().eq("testId",testId));
+        //new CommonReturnType();
+        if(testrelstudent ==null){
+            return CommonReturnType.create(null,"该测试没有学生参加");
+        }
+        for(Testrelstudent t:testrelstudent){
+            Notice notice = new Notice();
+            notice.setNotice(text);
+            notice.setPhone(t.getStudentPhone());
+            notice.setCreatTime(String.valueOf(LocalDateTime.now()));
+            log.info(deadline);
+            notice.setDeadLine(deadline);
+            noticeService.save(notice);
+        }
+        log.info("后端发送:success");
+        return CommonReturnType.create(null);
     }
     @PostMapping("/getStudentNotice")
     public CommonReturnType getStudentNotice(@RequestParam String phone) {

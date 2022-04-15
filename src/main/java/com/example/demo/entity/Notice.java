@@ -37,10 +37,10 @@ public class Notice implements Serializable {
     private String notice;
 
     @TableField("deadLine")
-    private LocalDateTime deadLine;
+    private String deadLine;
 
     @TableField("creatTime")
-    private LocalDateTime creatTime;
+    private String creatTime;
 
     @Version
     private int version;
