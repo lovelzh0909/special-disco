@@ -11,6 +11,7 @@ import jxl.CellType;
 import jxl.read.biff.BiffException;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import net.bytebuddy.asm.Advice;
 import org.apache.commons.io.FileUtils;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
@@ -70,15 +71,17 @@ public class GetFileController {
             for (int j=0;j<lastCellNum;j++){
                 XSSFCell cell=row.getCell(j);
                 log.info(String.valueOf(cell));
-                Integer value =(int) Double.parseDouble(String.valueOf(cell));
+                String value =String.valueOf(cell);
                 log.info(value+"");
                 if(j==0){
                     User user =userService.getOne(new QueryWrapper<User>().eq("studentId",value));
+                    if(user==null){
+                        return CommonReturnType.create(null,"excel 里的学生id 不存在");
+                    }
                     score.setStudentId(Integer.valueOf(user.getPhone()));
                 }
-
                 if(j==1)
-                score.setEtScore((double) value);
+                score.setEtScore((double)  Integer.valueOf(value) );
             }
             scoreService.save(score);
         }
