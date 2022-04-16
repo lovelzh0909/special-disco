@@ -31,11 +31,12 @@ public class ScoreServiceImpl extends ServiceImpl<ScoreMapper, Score> implements
 
     @Override
     public IPage<Score> findById(Page page, String studentId) {
-        return scoreMapper.findById(page, studentId);
+        page.setRecords(scoreMapper.findById( studentId)) ;
+        return page;
     }
 
     @Override
-    public List<Score> findById(Integer studentId) {
+    public List<Score> findById(String studentId) {
         return scoreMapper.findById(studentId);
     }
 

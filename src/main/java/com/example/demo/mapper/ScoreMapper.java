@@ -3,8 +3,6 @@ package com.example.demo.mapper;
 import java.util.List;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.demo.entity.Score;
 
 import org.apache.ibatis.annotations.Insert;
@@ -25,13 +23,13 @@ public interface ScoreMapper extends BaseMapper<Score> {
     @Select("select scoreId,examCode,studentId,subject,ptScore,etScore,score,answerDate from score order by scoreId desc")
     List<Score> findAll();
 
-    // 分页
-    @Select("select scoreId,examCode,studentId,subject,ptScore,etScore,score,answerDate from score where studentId = ${studentId} order by scoreId desc")
-    IPage<Score> findById(Page<?> page, String studentId);
+//    // 分页
+//    @Select("select scoreId,examCode,studentId,subject,ptScore,etScore,score,answerDate from score where studentId = ${studentId} order by scoreId desc")
+//    List findById( String studentId);
 
     // 不分页
     @Select("select scoreId,examCode,studentId,subject,ptScore,etScore,score,answerDate from score where studentId = #{studentId}")
-    List<Score> findById(Integer studentId);
+    List<Score> findById(String studentId);
 
     /**
      *

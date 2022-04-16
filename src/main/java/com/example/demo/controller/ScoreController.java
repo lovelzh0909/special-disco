@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class ScoreController {
     @Autowired
-    private ScoreServiceImpl scoreService;
+    ScoreServiceImpl scoreService;
 
     @GetMapping("/scores")
     public CommonReturnType findAll() {
@@ -82,12 +82,13 @@ public class ScoreController {
     public CommonReturnType findById(@PathVariable("page") Integer page, @PathVariable("size") Integer size, @PathVariable("studentId") String studentId) {
         Page<Score> scorePage = new Page<>(page, size);
         IPage<Score> res = scoreService.findById(scorePage, studentId);
+//        Page<Score> res = scoreService.page(new QueryWrapper<Score>().eq("studentId",studentId));
         return CommonReturnType.create(res,"ID查询学生成绩");
     }
 
 //    不分页
     @GetMapping("/score/{studentId}")
-        public CommonReturnType findById(@PathVariable("studentId") Integer studentId) {
+        public CommonReturnType findById(@PathVariable("studentId") String studentId) {
         List<Score> res = scoreService.findById(studentId);
         if (!res.isEmpty()) {
             return CommonReturnType.create( res, "根据ID查询成绩");
