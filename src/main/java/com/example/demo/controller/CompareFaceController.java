@@ -126,6 +126,9 @@ public class CompareFaceController {
         List<FaceInfo> faceInfoList = new ArrayList<FaceInfo>();
         errorCode = faceEngine.detectFaces(imageInfo.getImageData(), imageInfo.getWidth(), imageInfo.getHeight(), imageInfo.getImageFormat(), faceInfoList);
         System.out.println(faceInfoList);
+        if(faceInfoList==null||faceInfoList.size()==0){
+            return  CommonReturnType.create(null,"抓拍时你没有出现在摄像头前");
+        }
 
         //特征提取
         FaceFeature faceFeature = new FaceFeature();
@@ -139,6 +142,9 @@ public class CompareFaceController {
         List<FaceInfo> faceInfoList2 = new ArrayList<FaceInfo>();
         errorCode = faceEngine.detectFaces(imageInfo2.getImageData(), imageInfo2.getWidth(), imageInfo2.getHeight(),imageInfo.getImageFormat(), faceInfoList2);
         System.out.println(faceInfoList);
+        if(faceInfoList==null||faceInfoList.size()==0){
+            return  CommonReturnType.create(null,"抓拍时你没有出现在摄像头前");
+        }
 
         //特征提取2
         FaceFeature faceFeature2 = new FaceFeature();
