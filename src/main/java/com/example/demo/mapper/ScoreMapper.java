@@ -26,7 +26,7 @@ public interface ScoreMapper extends BaseMapper<Score> {
     List<Score> findAll();
 
     // 分页
-    @Select("select scoreId,examCode,studentId,subject,ptScore,etScore,score,answerDate from score where studentId = #{studentId} order by scoreId desc")
+    @Select("select scoreId,examCode,studentId,subject,ptScore,etScore,score,answerDate from score where studentId = ${studentId} order by scoreId desc")
     IPage<Score> findById(Page<?> page, String studentId);
 
     // 不分页
