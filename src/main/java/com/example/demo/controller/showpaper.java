@@ -88,15 +88,20 @@ public class showpaper {
             m.put("studentphone", testrelstudent.get(0).getStudentPhone());
             Question tempq = questionService.getById(Integer.valueOf(s));
             tempq.setScore(questionrelscoreService.getOne(new QueryWrapper<Questionrelscore>().eq("questionId", tempq.getId()).eq("paperId", t.getPaperId())).getScore());
-
+            log.info(String.valueOf(tempq.getId()));
             PaperJustify paperJustify = paperJustifyService.getOne(new QueryWrapper<PaperJustify>()
                     .eq("testId", testId)
                     .eq("studentphone", testrelstudent.get(0).getStudentPhone())
                     .eq("questionid", tempq.getId()));
-            tempq.setGetScore(paperJustify.getScore());
-            if (paperJustify == null) {
-                return CommonReturnType.create(null, "没有该测试的答卷信息");
+            if(paperJustify==null){
+                tempq.setGetScore(0.0);
             }
+            else {
+                tempq.setGetScore(paperJustify.getScore());
+            }
+//            if (paperJustify == null) {
+//                return CommonReturnType.create(null, "没有该测试的答卷信息");
+//            }
             tempq.setStudentAnswer(paperJustify.getExmaineAnswer());
             q.add(tempq);
         }
