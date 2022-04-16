@@ -79,7 +79,7 @@ public class ScoreController {
 
 //    分页
     @GetMapping("/score/{page}/{size}/{studentId}")
-    public CommonReturnType findById(@PathVariable("page") Integer page, @PathVariable("size") Integer size, @PathVariable("studentId") Integer studentId) {
+    public CommonReturnType findById(@PathVariable("page") Integer page, @PathVariable("size") Integer size, @PathVariable("studentId") String studentId) {
         Page<Score> scorePage = new Page<>(page, size);
         IPage<Score> res = scoreService.findById(scorePage, studentId);
         return CommonReturnType.create(res,"ID查询学生成绩");

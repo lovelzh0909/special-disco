@@ -12,7 +12,7 @@ public interface ScoreService extends IService<Score> {
 
     List<Score> findAll();
 
-    IPage<Score> findById(Page page, Integer studentId);
+    IPage<Score> findById(Page page, String studentId);
 
     List<Score> findById(Integer studentId);
 

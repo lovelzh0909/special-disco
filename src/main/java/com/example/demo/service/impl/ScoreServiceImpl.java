@@ -30,7 +30,7 @@ public class ScoreServiceImpl extends ServiceImpl<ScoreMapper, Score> implements
     }
 
     @Override
-    public IPage<Score> findById(Page page, Integer studentId) {
+    public IPage<Score> findById(Page page, String studentId) {
         return scoreMapper.findById(page, studentId);
     }
 

@@ -142,7 +142,7 @@ public class NoticeController {
         // String dateString = "2017-01-01 11:11:11";
         Calendar calendar = Calendar.getInstance();
         long specialDate;
-        long betweenDate = 0;
+        double betweenDate = 0;
         long nowDate = calendar.getTime().getTime(); //Date.getTime() 获得毫秒型日期
         QueryWrapper<Test> queryWrapper = new QueryWrapper();
         queryWrapper.select("testtime","coursename","note");
@@ -151,20 +151,23 @@ public class NoticeController {
         List<Testrelstudent> testrelstudents =testrelstudentService.list(new QueryWrapper<Testrelstudent>().eq("studentPhone",phone));
         for(Testrelstudent testrelstudent:testrelstudents){
             Test test = testService.getById(testrelstudent.getTestId());
+            if(test!=null)
             note.add(test);
         }
+        List<Test> notes =new ArrayList<>();
         for (int i = 0; i < note.size(); i++) {
             try {
                 specialDate = sdf.parse(note.get(i).getTesttime()).getTime();
-                betweenDate = (specialDate - nowDate) / (1000 * 60 * 60 * 24);
+                betweenDate = (specialDate - nowDate) / (1000 * 60 * 60 * 24 *1.0);
             } catch (ParseException e) {
                 e.printStackTrace();
             }
             if (betweenDate > 7 || betweenDate<0) {
-                note.remove(i);
+                log.info(String.valueOf(note.get(i)));
             }
             else {
-                note.get(i).setNote(String.valueOf(betweenDate));
+                note.get(i).setNote(String.valueOf((int) betweenDate));
+                notes.add(note.get(i));
             }
         }
         // if (note.size() == 0) {
@@ -174,9 +177,9 @@ public class NoticeController {
         //     map.put("data", note);
         // }
         // return map;
-        log.info("后端发送:"+note);
-        if(note!=null&&note.size() != 0){
-            return CommonReturnType.create(note,"success");
+        log.info("后端发送:"+notes);
+        if(notes!=null&&notes.size() != 0){
+            return CommonReturnType.create(notes,"success");
         }
         else{
             return CommonReturnType.create(null,"暂无通知");
